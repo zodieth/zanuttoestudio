@@ -2,8 +2,17 @@ import React, { useState } from "react";
 
 function BasicForm({ setForm }) {
   const [sexo, setSexo] = useState("");
-  const [fecha, setFecha] = useState("");
-  console.log(fecha);
+  const [fecha, setFecha] = useState(false);
+  const [hijos, setHijos] = useState(0);
+  const [num, setNum] = useState("");
+
+  // ------------aportes----------------
+
+  const [hasta2008, sethasta2008] = useState(0);
+  const [desde2008, setDesde2008] = useState(0);
+
+  const [hasta2012, sethasta2012] = useState(0);
+  const [desde2012, setDesde2012] = useState(0);
 
   return (
     <div
@@ -39,24 +48,24 @@ function BasicForm({ setForm }) {
 
                     <div className="mt-2 flex flex-row items-center justify-center w-full">
                       <button
-                        onClick={() => setSexo("MASCULINO")}
-                        className={
-                          sexo === "MASCULINO"
-                            ? "m-2 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm md:w-[12rem]"
-                            : "m-2 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto md:w-[12rem] "
-                        }
-                      >
-                        MASCULINO
-                      </button>
-                      <button
                         onClick={() => setSexo("FEMENINO")}
                         className={
                           sexo === "FEMENINO"
-                            ? "m-2 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm md:w-[12rem]  "
-                            : "m-2 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto md:w-[12rem]"
+                            ? "m-2 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  "
+                            : "m-2 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 "
                         }
                       >
                         FEMENINO
+                      </button>
+                      <button
+                        onClick={() => setSexo("MASCULINO")}
+                        className={
+                          sexo === "MASCULINO"
+                            ? "m-2 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm "
+                            : "m-2 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3  "
+                        }
+                      >
+                        MASCULINO
                       </button>
                     </div>
                   </div>
@@ -70,6 +79,93 @@ function BasicForm({ setForm }) {
                       <input
                         type="date"
                         onChange={(e) => setFecha(e.target.value)}
+                        className="mx-2 w-full text-black border-2 rounded-md "
+                      />
+                    </div>
+                  </div>
+                  {/* -------------------------- */}
+                  {/* --------Hijos si es mujer-------- */}
+                  {sexo === "FEMENINO" ? (
+                    <div>
+                      <div className="mt-2 flex flex-row items-center justify-start ">
+                        <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                          Cantidad de hijos
+                        </h2>
+                        <input
+                          type="number"
+                          onChange={(e) => setHijos(e.target.value)}
+                          className="mx-2 w-full text-black border-2 rounded-md "
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  {/* -------------------------- */}
+                  {/* --------Si fecha hasta 31/12/1964 Aportes hasta 2008/desde 2008-------- */}
+                  {/* --------Si fecha desde 01/01/1965 Aportes hasta 2012/desde 2012-------- */}
+                  {fecha >= "1965-01-01" ? (
+                    <div>
+                      <div className="mt-2 flex flex-row items-center justify-start ">
+                        <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                          Aportes hasta 2012 (años)
+                        </h2>
+                        <input
+                          type="number"
+                          onChange={(e) => sethasta2012(e.target.value)}
+                          className="mx-2 w-full text-black border-2 rounded-md "
+                        />
+                      </div>
+                      <div className="mt-2 flex flex-row items-center justify-start ">
+                        <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                          Aportes desde 2012 (años)
+                        </h2>
+                        <input
+                          type="number"
+                          onChange={(e) => setDesde2012(e.target.value)}
+                          className="mx-2 w-full text-black border-2 rounded-md "
+                        />
+                      </div>
+                    </div>
+                  ) : fecha <= "1964-12-31" ? (
+                    <div>
+                      <div className="mt-2 flex flex-row items-center justify-start ">
+                        <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                          Aportes hasta 2008 (años)
+                        </h2>
+                        <input
+                          type="number"
+                          onChange={(e) => sethasta2008(e.target.value)}
+                          className="mx-2 w-full text-black border-2 rounded-md "
+                        />
+                      </div>
+                      <div className="mt-2 flex flex-row items-center justify-start ">
+                        <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                          Aportes desde 2008 (años)
+                        </h2>
+                        <input
+                          type="number"
+                          onChange={(e) => setDesde2008(e.target.value)}
+                          className="mx-2 w-full text-black border-2 rounded-md "
+                        />
+                      </div>
+                    </div>
+                  ) : !fecha ? (
+                    ""
+                  ) : (
+                    ""
+                  )}
+                  {/* -------------------------- */}
+                  {/* -----------número--------------- */}
+                  <div>
+                    <div className="mt-2 flex flex-row items-center justify-start ">
+                      <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                        Número de teléfono
+                      </h2>
+                      <input
+                        type="text"
+                        onChange={(e) => setNum(e.target.value)}
                         className="mx-2 w-full text-black border-2 rounded-md "
                       />
                     </div>

@@ -27,7 +27,7 @@ function Banner() {
           </p>
           <button
             onClick={() => setForm(true)}
-            className="px-6 py-2 inline-block bg-[#2e1cff] text-1xl font-bold text-white hover:bg-[#4B3AFF] transition-colors mt-10 rounded-[1rem]"
+            className="px-6 py-2 inline-block bg-[#2e1cff] text-1xl font-bold text-white hover:bg-[#4B3AFF] transition-colors mt-10 rounded-md"
           >
             Consultá
           </button>
