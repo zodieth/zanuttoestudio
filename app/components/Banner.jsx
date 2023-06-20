@@ -7,7 +7,6 @@ import BasicForm from "./BasicForm";
 
 function Banner() {
   const [form, setForm] = useState(false);
-  const [sexo, setSexo] = useState("");
 
   return (
     <div

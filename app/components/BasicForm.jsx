@@ -2,9 +2,31 @@ import React, { useState } from "react";
 
 function BasicForm({ setForm }) {
   const [sexo, setSexo] = useState("");
-  const [fecha, setFecha] = useState(false);
+  const [fecha, setFecha] = useState("");
   const [hijos, setHijos] = useState(0);
   const [num, setNum] = useState("");
+  const [mensaje, setMensaje] = useState("");
+
+  // ------------Cálculo de edad----------------
+
+  // split the string into an array of year, month and day
+  let dobArray = fecha.toString().split("-");
+  // convert the array elements to numbers
+  let year = Number(dobArray[0]);
+  let month = Number(dobArray[1]);
+  let day = Number(dobArray[2]);
+  // get the current date
+  let today = new Date();
+  // get the current year, month and day
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth() + 1; // months are zero-based
+  let currentDay = today.getDate();
+  // calculate the age
+  let age = currentYear - year;
+  // adjust the age if the birthday has not passed yet
+  if (currentMonth < month || (currentMonth == month && currentDay < day)) {
+    age--;
+  }
 
   // ------------aportes----------------
 
@@ -13,6 +35,28 @@ function BasicForm({ setForm }) {
 
   const [hasta2012, sethasta2012] = useState(0);
   const [desde2012, setDesde2012] = useState(0);
+
+  // ------------Cumple con edad jubilatoria?----------------
+
+  function edadJubilatoria() {
+    if (sexo === "MASCULINO" && age >= 65) {
+      setMensaje("USTED YA TIENE LA EDAD JUBILATORIA");
+    } else if (sexo === "FEMENINO" && age >= 60) {
+      setMensaje("USTED YA TIENE LA EDAD JUBILATORIA");
+    } else setMensaje("USTED NO TIENE LA EDAD JUBILATORIA");
+  }
+
+  // ------------errores----------------
+  const [errors, setErrors] = useState(true);
+  const [showError, setShowError] = useState(false);
+
+  () => {
+    if (sexo === "") setErrors(true);
+    else if (fecha === "") setErrors(true);
+    setErrors(false);
+  };
+
+  console.log(fecha);
 
   return (
     <div
@@ -57,6 +101,7 @@ function BasicForm({ setForm }) {
                       >
                         FEMENINO
                       </button>
+
                       <button
                         onClick={() => setSexo("MASCULINO")}
                         className={
@@ -68,6 +113,13 @@ function BasicForm({ setForm }) {
                         MASCULINO
                       </button>
                     </div>
+                    {showError && sexo === "" ? (
+                      <h1 className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
+                        Debe seleccionar sexo
+                      </h1>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   {/* -------------------------- */}
                   {/* --------nacimiento-------- */}
@@ -82,6 +134,13 @@ function BasicForm({ setForm }) {
                         className="mx-2 w-full text-black border-2 rounded-md "
                       />
                     </div>
+                    {showError && fecha === "" ? (
+                      <h1 className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
+                        Debe seleccionar fecha de nacimiento
+                      </h1>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   {/* -------------------------- */}
                   {/* --------Hijos si es mujer-------- */}
@@ -93,8 +152,10 @@ function BasicForm({ setForm }) {
                         </h2>
                         <input
                           type="number"
+                          min={0}
                           onChange={(e) => setHijos(e.target.value)}
                           className="mx-2 w-full text-black border-2 rounded-md "
+                          defaultValue={0}
                         />
                       </div>
                     </div>
@@ -113,6 +174,8 @@ function BasicForm({ setForm }) {
                         </h2>
                         <input
                           type="number"
+                          min={0}
+                          defaultValue={0}
                           onChange={(e) => sethasta2012(e.target.value)}
                           className="mx-2 w-full text-black border-2 rounded-md "
                         />
@@ -123,6 +186,8 @@ function BasicForm({ setForm }) {
                         </h2>
                         <input
                           type="number"
+                          min={0}
+                          defaultValue={0}
                           onChange={(e) => setDesde2012(e.target.value)}
                           className="mx-2 w-full text-black border-2 rounded-md "
                         />
@@ -136,6 +201,8 @@ function BasicForm({ setForm }) {
                         </h2>
                         <input
                           type="number"
+                          min={0}
+                          defaultValue={0}
                           onChange={(e) => sethasta2008(e.target.value)}
                           className="mx-2 w-full text-black border-2 rounded-md "
                         />
@@ -146,6 +213,8 @@ function BasicForm({ setForm }) {
                         </h2>
                         <input
                           type="number"
+                          min={0}
+                          defaultValue={0}
                           onChange={(e) => setDesde2008(e.target.value)}
                           className="mx-2 w-full text-black border-2 rounded-md "
                         />
@@ -158,7 +227,7 @@ function BasicForm({ setForm }) {
                   )}
                   {/* -------------------------- */}
                   {/* -----------número--------------- */}
-                  <div>
+                  {/* <div>
                     <div className="mt-2 flex flex-row items-center justify-start ">
                       <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
                         Número de teléfono
@@ -169,7 +238,7 @@ function BasicForm({ setForm }) {
                         className="mx-2 w-full text-black border-2 rounded-md "
                       />
                     </div>
-                  </div>
+                  </div> */}
                   {/* -------------------------- */}
                 </div>
               </div>
@@ -178,6 +247,9 @@ function BasicForm({ setForm }) {
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                onClick={() =>
+                  errors ? setShowError(true) : edadJubilatoria()
+                }
               >
                 Continuar
               </button>
