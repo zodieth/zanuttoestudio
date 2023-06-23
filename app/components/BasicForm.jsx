@@ -49,24 +49,6 @@ function BasicForm({ setForm }) {
   const [errors, setErrors] = useState(true);
   const [showError, setShowError] = useState(false);
 
-  function getErrors() {
-    if (sexo === "") {
-      setErrors(true);
-    } else if (fecha === "") {
-      setErrors(true);
-    } else {
-      setErrors(false);
-    }
-  }
-
-  // getErrors();
-
-  // useEffect(() => {
-  //   if (sexo === "") setErrors(true);
-  //   else if (fecha === "") setErrors(true);
-  //   setErrors(false);
-  // });
-
   // ------------segundo form----------------
   const [numForm, setNumForm] = useState("");
   const [num, setNum] = useState("");
@@ -194,7 +176,7 @@ function BasicForm({ setForm }) {
                         <div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                              Aportes hasta 2012 (años)
+                              Aportes hasta 03/2012 (años)
                             </h2>
                             <input
                               type="number"
@@ -206,7 +188,7 @@ function BasicForm({ setForm }) {
                           </div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                              Aportes desde 2012 (años)
+                              Aportes desde 04/2012 (años)
                             </h2>
                             <input
                               type="number"
@@ -221,7 +203,7 @@ function BasicForm({ setForm }) {
                         <div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                              Aportes hasta 2008 (años)
+                              Aportes hasta 12/2008 (años)
                             </h2>
                             <input
                               type="number"
@@ -233,7 +215,7 @@ function BasicForm({ setForm }) {
                           </div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                              Aportes desde 2008 (años)
+                              Aportes desde 12/2008 (años)
                             </h2>
                             <input
                               type="number"
