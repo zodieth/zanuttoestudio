@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { differenceInMonths, differenceInYears } from "date-fns";
+import { RxDividerHorizontal } from "react-icons/rx";
 
 function BasicForm({ setForm }) {
   const [firstForm, setFirstForm] = useState(true);
@@ -37,32 +39,18 @@ function BasicForm({ setForm }) {
 
   // ------------Cumple con edad jubilatoria?----------------
 
-  function edadJubilatoria() {
-    if (sexo === "MASCULINO" && age >= 65) {
-      setMensaje.edadjubilatoria("USTED YA TIENE LA EDAD JUBILATORIA");
-    } else if (sexo === "FEMENINO" && age >= 60) {
-      setMensaje.edadjubilatoria("USTED YA TIENE LA EDAD JUBILATORIA");
-    } else setMensaje.edadjubilatoria("USTED NO TIENE LA EDAD JUBILATORIA");
-  }
+  const date = new Date(year + 18, month, day);
+  const fechaMoratoria2008 = new Date(2008, 12, 31);
+  const fechaMoratoria2012 = new Date(2012, 3, 31);
 
-  // const mayorDeEdad = year + 18 + "-" + month + "-" + day;
-
-  // moratoria2008 = 2008 - year + 18 + "-";
-
-  // console.log(fecha);
-
-  // const date = new Date(fecha).getTime();
-  // const fechaMoratoria2008 = new Date("2028-12-31").getTime();
-
-  // console.log(new Date(date - fechaMoratoria2008));
-
-  // const calculo =  - "2028-12-31";
-  // console.log(calculo);
-
-  // function compraMoratoria() {
-  //   if (fecha <= "1965-02-28" && sexo === "FEMENINO") {
-  //   }
-  // }
+  const diferenciaMesesMoratoria2008 = differenceInMonths(
+    fechaMoratoria2008,
+    date
+  );
+  const diferenciaMesesMoratoria2012 = differenceInMonths(
+    fechaMoratoria2012,
+    date
+  );
 
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
@@ -74,7 +62,30 @@ function BasicForm({ setForm }) {
   const [mensaje, setMensaje] = useState({
     edadjubilatoria: "",
     moratoria: "",
+    numero: num,
   });
+
+  // ------------Cumple con edad jubilatoria?----------------
+
+  function edadJubilatoria() {
+    if (sexo === "MASCULINO" && age >= 65) {
+      setMensaje({
+        ...mensaje,
+        edadjubilatoria: "USTED YA TIENE LA EDAD JUBILATORIA",
+      });
+    } else if (sexo === "FEMENINO" && age >= 60) {
+      setMensaje({
+        ...mensaje,
+        edadjubilatoria: "USTED YA TIENE LA EDAD JUBILATORIA",
+      });
+    } else
+      setMensaje({
+        ...mensaje,
+        edadjubilatoria: "USTED NO TIENE LA EDAD JUBILATORIA",
+      });
+  }
+
+  // -----------------------exceso de edad---------------------------------
 
   return (
     <>
@@ -192,6 +203,7 @@ function BasicForm({ setForm }) {
                       {/* -------------------------- */}
                       {/* --------Si fecha hasta 31/12/1964 Aportes hasta 2008/desde 2008-------- */}
                       {/* --------Si fecha desde 01/01/1965 Aportes hasta 2012/desde 2012-------- */}
+
                       {fecha === "" ? (
                         ""
                       ) : fecha >= "1965-01-03" && sexo === "FEMENINO" ? (
