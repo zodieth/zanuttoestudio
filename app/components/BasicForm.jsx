@@ -30,7 +30,7 @@ function BasicForm({ setForm }) {
   // ------------aportes----------------
 
   const [hasta2008, sethasta2008] = useState(0);
-  const [desde2008, setDesde2008] = useState(0);
+  const [desde2009, setDesde2009] = useState(0);
 
   const [hasta2012, sethasta2012] = useState(0);
   const [desde2012, setDesde2012] = useState(0);
@@ -39,11 +39,30 @@ function BasicForm({ setForm }) {
 
   function edadJubilatoria() {
     if (sexo === "MASCULINO" && age >= 65) {
-      setMensaje("USTED YA TIENE LA EDAD JUBILATORIA");
+      setMensaje.edadjubilatoria("USTED YA TIENE LA EDAD JUBILATORIA");
     } else if (sexo === "FEMENINO" && age >= 60) {
-      setMensaje("USTED YA TIENE LA EDAD JUBILATORIA");
-    } else setMensaje("USTED NO TIENE LA EDAD JUBILATORIA");
+      setMensaje.edadjubilatoria("USTED YA TIENE LA EDAD JUBILATORIA");
+    } else setMensaje.edadjubilatoria("USTED NO TIENE LA EDAD JUBILATORIA");
   }
+
+  // const mayorDeEdad = year + 18 + "-" + month + "-" + day;
+
+  // moratoria2008 = 2008 - year + 18 + "-";
+
+  // console.log(fecha);
+
+  // const date = new Date(fecha).getTime();
+  // const fechaMoratoria2008 = new Date("2028-12-31").getTime();
+
+  // console.log(new Date(date - fechaMoratoria2008));
+
+  // const calculo =  - "2028-12-31";
+  // console.log(calculo);
+
+  // function compraMoratoria() {
+  //   if (fecha <= "1965-02-28" && sexo === "FEMENINO") {
+  //   }
+  // }
 
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
@@ -52,7 +71,10 @@ function BasicForm({ setForm }) {
   // ------------segundo form----------------
   const [numForm, setNumForm] = useState("");
   const [num, setNum] = useState("");
-  const [mensaje, setMensaje] = useState("");
+  const [mensaje, setMensaje] = useState({
+    edadjubilatoria: "",
+    moratoria: "",
+  });
 
   return (
     <>
@@ -172,11 +194,11 @@ function BasicForm({ setForm }) {
                       {/* --------Si fecha desde 01/01/1965 Aportes hasta 2012/desde 2012-------- */}
                       {fecha === "" ? (
                         ""
-                      ) : fecha >= "1965-01-01" ? (
+                      ) : fecha >= "1965-01-03" && sexo === "FEMENINO" ? (
                         <div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                              Aportes hasta 03/2012 (años)
+                              Aportes hasta el año 2012 (años)
                             </h2>
                             <input
                               type="number"
@@ -188,7 +210,7 @@ function BasicForm({ setForm }) {
                           </div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                              Aportes desde 04/2012 (años)
+                              Aportes desde el año 2012 (años)
                             </h2>
                             <input
                               type="number"
@@ -199,7 +221,7 @@ function BasicForm({ setForm }) {
                             />
                           </div>
                         </div>
-                      ) : fecha <= "1964-12-31" ? (
+                      ) : fecha <= "1965-02-28" && sexo === "FEMENINO" ? (
                         <div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
@@ -215,13 +237,67 @@ function BasicForm({ setForm }) {
                           </div>
                           <div className="mt-2 flex flex-row items-center justify-start ">
                             <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                              Aportes desde 12/2008 (años)
+                              Aportes desde 01/2009 (años)
                             </h2>
                             <input
                               type="number"
                               min={0}
                               defaultValue={0}
-                              onChange={(e) => setDesde2008(e.target.value)}
+                              onChange={(e) => setDesde2009(e.target.value)}
+                              className="mx-2 w-full text-black border-2 rounded-md text-center"
+                            />
+                          </div>
+                        </div>
+                      ) : fecha <= "1960-03-03" && sexo === "MASCULINO" ? (
+                        <div>
+                          <div className="mt-2 flex flex-row items-center justify-start ">
+                            <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                              Aportes hasta 12/2008 (años)
+                            </h2>
+                            <input
+                              type="number"
+                              min={0}
+                              defaultValue={0}
+                              onChange={(e) => sethasta2008(e.target.value)}
+                              className="mx-2 w-full text-black border-2 rounded-md text-center"
+                            />
+                          </div>
+                          <div className="mt-2 flex flex-row items-center justify-start ">
+                            <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                              Aportes desde 01/2009 (años)
+                            </h2>
+                            <input
+                              type="number"
+                              min={0}
+                              defaultValue={0}
+                              onChange={(e) => setDesde2009(e.target.value)}
+                              className="mx-2 w-full text-black border-2 rounded-md text-center"
+                            />
+                          </div>
+                        </div>
+                      ) : fecha >= "1960-02-28" && sexo === "MASCULINO" ? (
+                        <div>
+                          <div className="mt-2 flex flex-row items-center justify-start ">
+                            <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                              Aportes hasta el año 2012 (años)
+                            </h2>
+                            <input
+                              type="number"
+                              min={0}
+                              defaultValue={0}
+                              onChange={(e) => sethasta2008(e.target.value)}
+                              className="mx-2 w-full text-black border-2 rounded-md text-center"
+                            />
+                          </div>
+                          <div className="mt-2 flex flex-row items-center justify-start ">
+                            <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                              Aportes desde el año 2012 (años)
+                            </h2>
+                            <input
+                              type="number"
+                              min={0}
+                              defaultValue={0}
+                              onChange={(e) => setDesde2009(e.target.value)}
                               className="mx-2 w-full text-black border-2 rounded-md text-center"
                             />
                           </div>
