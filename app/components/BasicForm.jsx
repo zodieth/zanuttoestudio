@@ -10,21 +10,15 @@ function BasicForm({ setForm }) {
 
   // ------------Cálculo de edad----------------
 
-  // split the string into an array of year, month and day
   let dobArray = fecha.toString().split("-");
-  // convert the array elements to numbers
   let year = Number(dobArray[0]);
   let month = Number(dobArray[1]);
   let day = Number(dobArray[2]);
-  // get the current date
   let today = new Date();
-  // get the current year, month and day
   let currentYear = today.getFullYear();
-  let currentMonth = today.getMonth() + 1; // months are zero-based
+  let currentMonth = today.getMonth() + 1;
   let currentDay = today.getDate();
-  // calculate the age
   let age = currentYear - year;
-  // adjust the age if the birthday has not passed yet
   if (currentMonth < month || (currentMonth == month && currentDay < day)) {
     age--;
   }
@@ -43,14 +37,22 @@ function BasicForm({ setForm }) {
   const fechaMoratoria2008 = new Date(2008, 12, 31);
   const fechaMoratoria2012 = new Date(2012, 3, 31);
 
-  const diferenciaMesesMoratoria2008 = differenceInMonths(
-    fechaMoratoria2008,
-    date
-  );
-  const diferenciaMesesMoratoria2012 = differenceInMonths(
-    fechaMoratoria2012,
-    date
-  );
+  const diferenciaMesesMoratoria2008 =
+    differenceInMonths(fechaMoratoria2008, date) +
+    1 -
+    hasta2008 * 12 -
+    desde2009 * 12 -
+    hasta2012 * 12 -
+    desde2012 * 12 -
+    hijos;
+  const diferenciaMesesMoratoria2012 =
+    differenceInMonths(fechaMoratoria2012, date) +
+    1 -
+    hasta2008 * 12 -
+    desde2009 * 12 -
+    hasta2012 * 12 -
+    desde2012 * 12 -
+    hijos;
 
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
@@ -60,30 +62,20 @@ function BasicForm({ setForm }) {
   const [numForm, setNumForm] = useState("");
   const [num, setNum] = useState("");
   const [mensaje, setMensaje] = useState({
-    edadjubilatoria: "",
+    fecha: "",
+    hijos: "",
+    sexo: "",
+    edadJubilatoria: "",
     moratoria: "",
-    numero: num,
+    numero: "",
+    aportes: "",
+    hasta2008: "",
+    desde2009: "",
+    hasta2012: "",
+    desde2012: "",
   });
 
-  // ------------Cumple con edad jubilatoria?----------------
-
-  function edadJubilatoria() {
-    if (sexo === "MASCULINO" && age >= 65) {
-      setMensaje({
-        ...mensaje,
-        edadjubilatoria: "USTED YA TIENE LA EDAD JUBILATORIA",
-      });
-    } else if (sexo === "FEMENINO" && age >= 60) {
-      setMensaje({
-        ...mensaje,
-        edadjubilatoria: "USTED YA TIENE LA EDAD JUBILATORIA",
-      });
-    } else
-      setMensaje({
-        ...mensaje,
-        edadjubilatoria: "USTED NO TIENE LA EDAD JUBILATORIA",
-      });
-  }
+  console.log(mensaje);
 
   // -----------------------exceso de edad---------------------------------
 
@@ -297,7 +289,7 @@ function BasicForm({ setForm }) {
                               type="number"
                               min={0}
                               defaultValue={0}
-                              onChange={(e) => sethasta2008(e.target.value)}
+                              onChange={(e) => sethasta2012(e.target.value)}
                               className="mx-2 w-full text-black border-2 rounded-md text-center"
                             />
                           </div>
@@ -309,7 +301,7 @@ function BasicForm({ setForm }) {
                               type="number"
                               min={0}
                               defaultValue={0}
-                              onChange={(e) => setDesde2009(e.target.value)}
+                              onChange={(e) => setDesde2012(e.target.value)}
                               className="mx-2 w-full text-black border-2 rounded-md text-center"
                             />
                           </div>
@@ -331,7 +323,35 @@ function BasicForm({ setForm }) {
                         : [
                             setNumForm(true),
                             setFirstForm(false),
-                            edadJubilatoria(),
+                            setMensaje({
+                              ...mensaje,
+                              fecha: fecha,
+                              hijos: hijos,
+                              sexo: sexo,
+                              edadJubilatoria:
+                                sexo === "MASCULINO" &&
+                                (age >= 65) | (sexo === "FEMENINO") &&
+                                age >= 60
+                                  ? "USTED YA TIENE LA EDAD JUBILATORIA"
+                                  : "USTED NO TIENE LA EDAD JUBILATORIA",
+                              moratoria:
+                                fecha >= "1965-01-03" &&
+                                (sexo === "FEMENINO") |
+                                  (fecha >= "1960-02-28") &&
+                                sexo === "MASCULINO"
+                                  ? diferenciaMesesMoratoria2012
+                                  : diferenciaMesesMoratoria2008,
+                              aportes:
+                                (hasta2008 + desde2009 >= 30) |
+                                (hasta2012 + desde2012 >= 30)
+                                  ? "USTED TIENE LA CANTIDAD DE APORTES NECESARIOS PARA JUBILARSE"
+                                  : "USTED PUEDE COMPRAR EN MORATORIA",
+                              num: num,
+                              hasta2008: hasta2008 * 12,
+                              desde2009: desde2009 * 12,
+                              hasta2012: hasta2012 * 12,
+                              desde2012: desde2012 * 12,
+                            }),
                           ]
                     }
                   >
