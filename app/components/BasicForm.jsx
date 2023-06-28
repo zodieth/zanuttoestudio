@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { differenceInMonths, differenceInYears } from "date-fns";
 import { RxDividerHorizontal } from "react-icons/rx";
+import Resultados from "./Resultados";
 
 function BasicForm({ setForm }) {
   const [firstForm, setFirstForm] = useState(true);
@@ -73,7 +74,7 @@ function BasicForm({ setForm }) {
   const [showError, setShowError] = useState(false);
 
   // ------------segundo form----------------
-  const [numForm, setNumForm] = useState("");
+  const [numForm, setNumForm] = useState(false);
   const [mensaje, setMensaje] = useState({
     fecha: "",
     hijos: "",
@@ -90,7 +91,10 @@ function BasicForm({ setForm }) {
 
   console.log(mensaje);
 
-  // -----------------------exceso de edad---------------------------------
+  // -----------------------tercer cartel resultados---------------------------------
+  const [resultados, setResultados] = useState(false);
+
+  console.log(resultados);
 
   return (
     <>
@@ -359,7 +363,6 @@ function BasicForm({ setForm }) {
                                 (hasta2012 + desde2012 >= 30 * 12)
                                   ? "USTED TIENE LA CANTIDAD DE APORTES NECESARIOS PARA JUBILARSE"
                                   : "USTED PUEDE COMPRAR EN MORATORIA",
-                              num: num,
                               hasta2008: hasta2008 * 12,
                               desde2009: desde2009 * 12,
                               hasta2012: hasta2012 * 12,
@@ -439,13 +442,15 @@ function BasicForm({ setForm }) {
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                     onClick={() =>
-                      errors ? setShowError(true) : setNumForm(false)
+                      errors
+                        ? setShowError(true)
+                        : [setNumForm(false), setResultados(true)]
                     }
                   >
                     Continuar
                   </button>
                   <button
-                    onClick={() => setForm(false)}
+                    onClick={() => [setForm(false)]}
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                   >
@@ -456,6 +461,11 @@ function BasicForm({ setForm }) {
             </div>
           </div>
         </div>
+      ) : (
+        ""
+      )}
+      {resultados === true ? (
+        <Resultados mensaje={mensaje} setResultados={setResultados} />
       ) : (
         ""
       )}
