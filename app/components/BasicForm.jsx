@@ -37,6 +37,17 @@ function BasicForm({ setForm }) {
   const fechaMoratoria2008 = new Date(2008, 12, 31);
   const fechaMoratoria2012 = new Date(2012, 3, 31);
 
+  const excesoDeEdad =
+    sexo === "MASCULINO" && age > 65
+      ? Math.floor(
+          differenceInMonths(today, new Date(year + 65, month, day)) / 2
+        )
+      : sexo === "FEMENINO" && age > 60
+      ? Math.floor(
+          differenceInMonths(today, new Date(year + 60, month, day)) / 2
+        )
+      : 0;
+
   const diferenciaMesesMoratoria2008 =
     differenceInMonths(fechaMoratoria2008, date) +
     1 -
@@ -44,7 +55,8 @@ function BasicForm({ setForm }) {
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12 -
-    hijos * 12;
+    hijos * 12 -
+    excesoDeEdad;
 
   const diferenciaMesesMoratoria2012 =
     differenceInMonths(fechaMoratoria2012, date) +
@@ -53,9 +65,8 @@ function BasicForm({ setForm }) {
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12 -
-    hijos * 12;
-
-  console.log(diferenciaMesesMoratoria2008);
+    hijos * 12 -
+    excesoDeEdad;
 
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
@@ -90,7 +101,7 @@ function BasicForm({ setForm }) {
           role="dialog"
           aria-modal="true"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "></div>
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
           <div className=" flex items-center justify-center fixed inset-0 z-10 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
