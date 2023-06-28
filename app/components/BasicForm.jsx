@@ -44,7 +44,8 @@ function BasicForm({ setForm }) {
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12 -
-    hijos;
+    hijos * 12;
+
   const diferenciaMesesMoratoria2012 =
     differenceInMonths(fechaMoratoria2012, date) +
     1 -
@@ -52,7 +53,9 @@ function BasicForm({ setForm }) {
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12 -
-    hijos;
+    hijos * 12;
+
+  console.log(diferenciaMesesMoratoria2008);
 
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
@@ -60,7 +63,6 @@ function BasicForm({ setForm }) {
 
   // ------------segundo form----------------
   const [numForm, setNumForm] = useState("");
-  const [num, setNum] = useState("");
   const [mensaje, setMensaje] = useState({
     fecha: "",
     hijos: "",
@@ -342,8 +344,8 @@ function BasicForm({ setForm }) {
                                   ? diferenciaMesesMoratoria2012
                                   : diferenciaMesesMoratoria2008,
                               aportes:
-                                (hasta2008 + desde2009 >= 30) |
-                                (hasta2012 + desde2012 >= 30)
+                                (hasta2008 + desde2009 >= 30 * 12) |
+                                (hasta2012 + desde2012 >= 30 * 12)
                                   ? "USTED TIENE LA CANTIDAD DE APORTES NECESARIOS PARA JUBILARSE"
                                   : "USTED PUEDE COMPRAR EN MORATORIA",
                               num: num,
@@ -407,7 +409,12 @@ function BasicForm({ setForm }) {
                           </h2>
                           <input
                             type="text"
-                            onChange={(e) => setNum(e.target.value)}
+                            onChange={(e) =>
+                              setMensaje({
+                                ...mensaje,
+                                numero: e.target.value,
+                              })
+                            }
                             className="mx-2 w-full text-black border-2 rounded-md "
                           />
                         </div>
