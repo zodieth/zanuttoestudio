@@ -1,59 +1,58 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
-const { PHONE_NUMBER_ID, BEARER_META_WPP_TOKEN } = process.env;
-
-// const instance = axios.create({
-//   headers: {
-//     "Content-Type": "application/json",
-//     Authorization: `Bearer ${BEARER_META_WPP_TOKEN}`,
-//   },
-// });
-
-console.log(PHONE_NUMBER_ID, "AAAAAAAAAA");
-
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
-    const { from, to, message } = req.body;
+  const { to } = req.body;
 
-    const params = {
-      access_token: process.env.BEARER_META_WPP_TOKEN, // Your system user access token
-      recipient_type: "individual",
-      to: to,
-      type: "text",
-      text: {
-        body: message,
-      },
-    };
+  console.log(to, "aaaaaaaaaaaaaaa");
 
-    try {
-      // Make a POST request to the API endpoint
-      const response = await axios.post(
-        `https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages`,
-        params
-      );
+  const instance = axios.create({
+    headers: {
+      "Content-Type": "application/json",
+      // Authorization: `Bearer ${process.env.BEARER_META_WPP_TOKEN}`,
+    },
+  });
 
-      // Return the response data
-      res.json(response.data);
-    } catch (error) {
-      // Handle any errors
-      res.status(500).json(error);
-    }
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/v17.0/${process.env.PHONE_NUMBER_ID}/messages`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.BEARER_META_WPP_TOKEN}`,
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          to: to,
+          type: "template",
+          template: {
+            name: "hello_world",
+            language: {
+              code: "en_US",
+            },
+          },
+        }),
+      }
+    );
 
-    // instance.post(
-    //   `https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages`,
-    //   {
+    // const response = await instance.post(
+    //   `https://graph.facebook.com/v17.0/${process.env.PHONE_NUMBER_ID}/messages`,
+    //   JSON.stringify({
     //     messaging_product: "whatsapp",
-    //     recipient_type: "individual",
-    //     to: router.query.number,
-    //     type: "text",
-    //     text: {
-    //       preview_url: false,
-    //       body: text,
+    //     to: to,
+    //     type: "template",
+    //     template: {
+    //       name: "hello_world",
+    //       language: {
+    //         code: "en_US",
+    //       },
     //     },
-    //   }
+    //   })
     // );
-  } else {
-    // Handle any other HTTP method
+
+    res.json(response);
+  } catch (error) {
+    res.status(500).send(error);
   }
 }
