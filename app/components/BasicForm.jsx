@@ -391,6 +391,7 @@ function BasicForm({ setForm }) {
       )}
       {numForm === true ? (
         <NumberForm
+          age={age}
           setMensaje={setMensaje}
           mensaje={mensaje}
           setShowError={setShowError}

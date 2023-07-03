@@ -7,6 +7,7 @@ function NumberForm({
   setNumForm,
   setResultados,
   setForm,
+  age,
 }) {
   const [error, setError] = useState(false);
   return (
@@ -81,13 +82,25 @@ function NumberForm({
                         setResultados(true),
                         sendMsg(
                           mensaje.numero,
-                          `*${mensaje.edadJubilatoria}*, ${mensaje.aportes} ${
-                            mensaje.moratoria <= 0
-                              ? ""
-                              : mensaje.moratoria >= 360
-                              ? ""
-                              : `${mensaje.moratoria} aportes`
-                          }`
+                          `*${mensaje.edadJubilatoria}.* ${
+                            (age >= 50) & (mensaje.sexo === "FEMENINO")
+                              ? `, ${mensaje.aportes} ${
+                                  mensaje.moratoria <= 0
+                                    ? ""
+                                    : mensaje.moratoria >= 360
+                                    ? ""
+                                    : ` ${mensaje.moratoria} aportes`
+                                }`
+                              : (age >= 55) & (mensaje.sexo === "MASCULINO")
+                              ? `, ${mensaje.aportes} ${
+                                  mensaje.moratoria <= 0
+                                    ? ""
+                                    : mensaje.moratoria >= 360
+                                    ? ""
+                                    : ` ${mensaje.moratoria} aportes`
+                                }`
+                              : ""
+                          } `
                         ),
                       ]
                 }
