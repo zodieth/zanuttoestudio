@@ -360,10 +360,10 @@ function BasicForm({ setForm }) {
                                   ? diferenciaMesesMoratoria2012
                                   : diferenciaMesesMoratoria2008,
                               aportes:
-                                (hasta2008 + desde2009 >= 30 * 12) |
-                                (hasta2012 + desde2012 >= 30 * 12)
-                                  ? "USTED TIENE LA CANTIDAD DE APORTES NECESARIOS PARA JUBILARSE"
-                                  : "USTED PUEDE COMPRAR EN MORATORIA",
+                                (hasta2008 + desde2009 >= 360) |
+                                (hasta2012 + desde2012 >= 360)
+                                  ? "TIENE LA CANTIDAD DE APORTES NECESARIOS PARA JUBILARSE"
+                                  : "PUEDE COMPRAR EN MORATORIA",
                               hasta2008: hasta2008 * 12,
                               desde2009: desde2009 * 12,
                               hasta2012: hasta2012 * 12,

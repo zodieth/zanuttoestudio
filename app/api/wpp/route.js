@@ -16,7 +16,7 @@ export async function POST(request) {
       `https://graph.facebook.com/v17.0/${process.env.PHONE_NUMBER_ID}/messages`,
       JSON.stringify({
         messaging_product: "whatsapp",
-        to: to,
+        to: "+54" + to,
         type: "text",
         text: {
           preview_url: true,

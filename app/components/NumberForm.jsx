@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { sendMsg } from "../lib/utils";
 
 function NumberForm({
   setMensaje,
@@ -39,7 +40,7 @@ function NumberForm({
                   <div>
                     <div className="mt-2 flex flex-row items-center justify-start ">
                       <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                        Número de teléfono
+                        Número de teléfono (+54)
                       </h2>
 
                       <input
@@ -75,7 +76,20 @@ function NumberForm({
                 onClick={() =>
                   !mensaje.numero.length | (mensaje.numero.length < 10)
                     ? setError(true)
-                    : [setNumForm(false), setResultados(true)]
+                    : [
+                        setNumForm(false),
+                        setResultados(true),
+                        sendMsg(
+                          mensaje.numero,
+                          `*${mensaje.edadJubilatoria}*, ${mensaje.aportes} ${
+                            mensaje.moratoria <= 0
+                              ? ""
+                              : mensaje.moratoria >= 360
+                              ? ""
+                              : `${mensaje.moratoria} aportes`
+                          }`
+                        ),
+                      ]
                 }
               >
                 Continuar
