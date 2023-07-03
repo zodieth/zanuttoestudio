@@ -92,7 +92,7 @@ export default function PersistentDrawerLeft() {
           edge="start"
           className="text-white"
         >
-          <MenuIcon />
+          <MenuIcon className="text-white" />
         </IconButton>
       ) : (
         ""
