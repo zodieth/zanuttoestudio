@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function POST(request) {
-  const { to } = await request.json();
+  const { to, body } = await request.json();
 
   const instance = axios.create({
     headers: {
@@ -17,18 +17,16 @@ export async function POST(request) {
       JSON.stringify({
         messaging_product: "whatsapp",
         to: to,
-        type: "template",
-        template: {
-          name: "hello_world",
-          language: {
-            code: "en_US",
-          },
+        type: "text",
+        text: {
+          preview_url: true,
+          body: body,
         },
       })
     );
 
-    NextResponse.json(response);
+    return NextResponse.json(response.data);
   } catch (error) {
-    NextResponse.json({ error: error }), { status: 500 };
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }
