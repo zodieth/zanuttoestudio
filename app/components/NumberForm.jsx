@@ -82,17 +82,17 @@ function NumberForm({
                         setResultados(true),
                         sendMsg(
                           mensaje.numero,
-                          `*${mensaje.edadJubilatoria}.* ${
+                          `*${mensaje.edadJubilatoria}*. ${
                             (age >= 50) & (mensaje.sexo === "FEMENINO")
-                              ? `, ${mensaje.aportes} ${
+                              ? `${mensaje.aportes}${
                                   mensaje.moratoria <= 0
                                     ? ""
                                     : mensaje.moratoria >= 360
                                     ? ""
-                                    : ` ${mensaje.moratoria} aportes`
+                                    : ` *${mensaje.moratoria}* aportes.`
                                 }`
                               : (age >= 55) & (mensaje.sexo === "MASCULINO")
-                              ? `, ${mensaje.aportes} ${
+                              ? ` ${mensaje.aportes} ${
                                   mensaje.moratoria <= 0
                                     ? ""
                                     : mensaje.moratoria >= 360
@@ -100,7 +100,12 @@ function NumberForm({
                                     : ` ${mensaje.moratoria} aportes`
                                 }`
                               : ""
-                          } `
+                          } ${
+                            ((mensaje.sexo === "FEMENINO") & (age > 50)) |
+                            ((mensaje.sexo === "MASCULINO") & (age > 55))
+                              ? "Para regularizar su situación previsional. Si quiere comenzar su trámite, complete el próximo formulario y un operador se comunicará con usted. "
+                              : ""
+                          }`
                         ),
                       ]
                 }
