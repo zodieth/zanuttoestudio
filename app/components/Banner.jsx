@@ -18,10 +18,10 @@ function Banner() {
     >
       <div className="flex-1 flex items-center justify-center ">
         <div className="flex flex-col justify-center items-center  mx-auto">
-          <h1 className="text-4xl font-semibold md:text-6xl">
+          <h1 className="mx-6 text-center text-4xl font-semibold md:text-6xl ">
             Averiguá si te podés jubilar{" "}
           </h1>
-          <p className="font-light text-1xl mt-5 w-[25rem] md:w-[40rem] lg:w-[50rem] md:text-2xl ">
+          <p className="mx-10 text-center font-light text-1xl mt-5 w-[25rem] md:w-[40rem] lg:w-[50rem] md:text-2xl ">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime vero
           </p>
           <button
