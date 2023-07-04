@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { sendMsg } from "../lib/utils";
+import { createPerson, sendMsg } from "../lib/utils";
 
 function NumberForm({
   setMensaje,
@@ -80,6 +80,19 @@ function NumberForm({
                     : [
                         setNumForm(false),
                         setResultados(true),
+                        createPerson({
+                          nombre: "",
+                          sexo: mensaje.sexo,
+                          fecha: mensaje.fecha,
+                          hijos: mensaje.hijos,
+                          num: mensaje.numero,
+                          aportes: 0, //ver estoo!!!
+                          hasta2008: mensaje.hasta2008,
+                          desde2009: mensaje.desde2009,
+                          hasta2012: mensaje.hasta2012,
+                          desde2012: mensaje.desde2012,
+                          moratoria: mensaje.moratoria,
+                        }),
                         sendMsg(
                           mensaje.numero,
                           `*${mensaje.edadJubilatoria}.* ${

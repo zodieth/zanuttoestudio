@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { differenceInMonths, differenceInYears } from "date-fns";
-import { RxDividerHorizontal } from "react-icons/rx";
+import React, { useState } from "react";
+import { differenceInMonths } from "date-fns";
 import Resultados from "./Resultados";
 import NumberForm from "./NumberForm";
 
@@ -78,19 +77,17 @@ function BasicForm({ setForm }) {
   const [numForm, setNumForm] = useState(false);
   const [mensaje, setMensaje] = useState({
     fecha: "",
-    hijos: "",
+    hijos: 0,
     sexo: "",
     edadJubilatoria: "",
-    moratoria: "",
+    moratoria: 0,
     numero: "",
-    aportes: "",
-    hasta2008: "",
-    desde2009: "",
-    hasta2012: "",
-    desde2012: "",
+    aportes: 0,
+    hasta2008: 0,
+    desde2009: 0,
+    hasta2012: 0,
+    desde2012: 0,
   });
-
-  console.log(mensaje);
 
   // -----------------------tercer cartel resultados---------------------------------
   const [resultados, setResultados] = useState(false);
