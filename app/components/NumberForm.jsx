@@ -45,7 +45,7 @@ function NumberForm({
                       </h2>
 
                       <input
-                        type="text"
+                        type="number"
                         onChange={(e) =>
                           setMensaje({
                             ...mensaje,
@@ -86,40 +86,13 @@ function NumberForm({
                           fecha: mensaje.fecha,
                           hijos: mensaje.hijos,
                           num: mensaje.numero,
-                          aportes: 0, //ver estoo!!!
+                          aportes: mensaje.aportes,
                           hasta2008: mensaje.hasta2008,
                           desde2009: mensaje.desde2009,
                           hasta2012: mensaje.hasta2012,
                           desde2012: mensaje.desde2012,
                           moratoria: mensaje.moratoria,
                         }),
-                        sendMsg(
-                          mensaje.numero,
-                          `*${mensaje.edadJubilatoria}*. ${
-                            (age >= 50) & (mensaje.sexo === "FEMENINO")
-                              ? `${mensaje.aportes}${
-                                  mensaje.moratoria <= 0
-                                    ? ""
-                                    : mensaje.moratoria >= 360
-                                    ? ""
-                                    : ` *${mensaje.moratoria}* aportes.`
-                                }`
-                              : (age >= 55) & (mensaje.sexo === "MASCULINO")
-                              ? ` ${mensaje.aportes} ${
-                                  mensaje.moratoria <= 0
-                                    ? ""
-                                    : mensaje.moratoria >= 360
-                                    ? ""
-                                    : ` ${mensaje.moratoria} aportes`
-                                }`
-                              : ""
-                          } ${
-                            ((mensaje.sexo === "FEMENINO") & (age > 50)) |
-                            ((mensaje.sexo === "MASCULINO") & (age > 55))
-                              ? "Para regularizar su situación previsional. Si quiere comenzar su trámite, complete el próximo formulario y un operador se comunicará con usted. "
-                              : ""
-                          }`
-                        ),
                       ]
                 }
               >

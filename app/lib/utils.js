@@ -17,7 +17,13 @@ export const createPerson = async (
   desde2012,
   moratoria
 ) => {
-  const person = await axios.post("http://localhost:3000/api/person", {
+  const instance = axios.create({
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  await instance.post("http://localhost:3000/api/person", {
     nombre,
     sexo,
     fecha,
@@ -30,6 +36,4 @@ export const createPerson = async (
     desde2012,
     moratoria,
   });
-
-  return person;
 };

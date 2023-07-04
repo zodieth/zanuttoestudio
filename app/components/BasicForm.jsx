@@ -92,8 +92,6 @@ function BasicForm({ setForm }) {
   // -----------------------tercer cartel resultados---------------------------------
   const [resultados, setResultados] = useState(false);
 
-  console.log(resultados);
-
   return (
     <>
       {firstForm ? (
@@ -357,10 +355,12 @@ function BasicForm({ setForm }) {
                                   ? diferenciaMesesMoratoria2012
                                   : diferenciaMesesMoratoria2008,
                               aportes:
-                                (hasta2008 + desde2009 >= 360) |
-                                (hasta2012 + desde2012 >= 360)
-                                  ? "Tiene la cantidad de aportes necesarios para jubilarse"
-                                  : "Debe pagar en moratoria",
+                                hasta2008 * 12 +
+                                desde2009 * 12 +
+                                hasta2012 * 12 +
+                                desde2012 * 12 +
+                                hijos * 12 +
+                                excesoDeEdad,
                               hasta2008: hasta2008 * 12,
                               desde2009: desde2009 * 12,
                               hasta2012: hasta2012 * 12,
