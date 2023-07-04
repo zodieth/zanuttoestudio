@@ -23,7 +23,7 @@ export const createPerson = async (
     },
   });
 
-  await instance.post("http://localhost:3000/api/person", {
+  await instance.post("http://localhost:3000/api/people", {
     nombre,
     sexo,
     fecha,

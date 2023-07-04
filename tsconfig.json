@@ -26,7 +26,8 @@
     "**/*.tsx",
     "app/api/wpp/route.js",
     "app/api/wpp/route.js",
-    "app/api/wpp/route.js"
+    "app/api/wpp/route.js",
+    "app/lib/dbConnect.js"
   ],
   "exclude": ["node_modules"]
 }

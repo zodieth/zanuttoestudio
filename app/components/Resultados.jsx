@@ -1,5 +1,3 @@
-import React from "react";
-
 function Resultados({ mensaje, setResultados }) {
   return (
     <div
@@ -20,11 +18,19 @@ function Resultados({ mensaje, setResultados }) {
                     className="flex flex-col items-center justify-center text-base font-semibold leading-6 text-gray-900"
                     id="modal-title"
                   >
-                    {mensaje.edadJubilatoria}
+                    {
+                      // people.length === 3 ? "" :
+                      mensaje.edadJubilatoria
+                    }
                   </h3>
                   <p className=" mx-4 text-1xl text-gray-500">
-                    Le enviamos los resultados al número {mensaje.numero} por
-                    Whatsapp
+                    {
+                      // people.length === 3
+                      //   ? ""
+                      //   :
+                      ` Le enviamos los resultados al número ${mensaje.numero} por
+                    Whatsapp`
+                    }
                   </p>
                 </div>
               </div>

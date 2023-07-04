@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import dbConnect from "../../lib/dbConnect";
 import Person from "../../models/Person";
 import { sendMsg } from "../../lib/utils";
+import dbConnect from "../../lib/dbConnect";
 
 export async function GET(request) {
   await dbConnect();
-
   const person = await Person.find({});
 
   return NextResponse.json(person);
@@ -25,7 +24,6 @@ export async function POST(request) {
     desde2012,
     moratoria,
   } = await request.json();
-
   await dbConnect();
 
   const person = await new Person(
