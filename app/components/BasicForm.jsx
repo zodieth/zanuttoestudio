@@ -348,7 +348,7 @@ function BasicForm({ setForm }) {
                                 (age >= 65) | (sexo === "FEMENINO") &&
                                 age >= 60
                                   ? "USTED YA TIENE LA EDAD JUBILATORIA"
-                                  : "USTED NO TIENE LA EDAD JUBILATORIA",
+                                  : "USTED AÚN NO TIENE LA EDAD JUBILATORIA",
                               moratoria:
                                 fecha >= "1965-01-03" &&
                                 (sexo === "FEMENINO") |
@@ -359,8 +359,8 @@ function BasicForm({ setForm }) {
                               aportes:
                                 (hasta2008 + desde2009 >= 360) |
                                 (hasta2012 + desde2012 >= 360)
-                                  ? "TIENE LA CANTIDAD DE APORTES NECESARIOS PARA JUBILARSE"
-                                  : "PUEDE COMPRAR EN MORATORIA",
+                                  ? "Tiene la cantidad de aportes necesarios para jubilarse"
+                                  : "Debe pagar en moratoria",
                               hasta2008: hasta2008 * 12,
                               desde2009: desde2009 * 12,
                               hasta2012: hasta2012 * 12,
