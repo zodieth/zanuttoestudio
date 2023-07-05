@@ -29,7 +29,7 @@ export async function PUT(request) {
     return NextResponse.json({ msg: "Person not found" }, { status: 404 });
   }
 
-  const newPerson = new Person(
+  console.log(
     nombre,
     sexo,
     fecha,
@@ -62,7 +62,7 @@ export async function PUT(request) {
   //   }
   // );
 
-  return NextResponse.json(newPerson);
+  return NextResponse.json(findPerson);
 }
 
 export async function GET(request) {
