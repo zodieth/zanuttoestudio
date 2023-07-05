@@ -1,4 +1,12 @@
+"use client";
+import { useContext } from "react";
+import { peopleContext } from "../layout";
+
 function Resultados({ mensaje, setResultados }) {
+  let data = useContext(peopleContext);
+
+  const filterNumbers = data.filter((e) => mensaje.numero === e.num);
+
   return (
     <div
       className="relative z-10 "
@@ -18,19 +26,15 @@ function Resultados({ mensaje, setResultados }) {
                     className="flex flex-col items-center justify-center text-base font-semibold leading-6 text-gray-900"
                     id="modal-title"
                   >
-                    {
-                      // people.length === 3 ? "" :
-                      mensaje.edadJubilatoria
-                    }
+                    {filterNumbers.length === 3
+                      ? "YA HAY 3 NÚMERO REGISTRADOS A SU NOMBRE"
+                      : mensaje.edadJubilatoria}
                   </h3>
                   <p className=" mx-4 text-1xl text-gray-500">
-                    {
-                      // people.length === 3
-                      //   ? ""
-                      //   :
-                      ` Le enviamos los resultados al número ${mensaje.numero} por
-                    Whatsapp`
-                    }
+                    {filterNumbers.length === 3
+                      ? "Para realizar otra consulta ultilice otro número"
+                      : ` Le enviamos los resultados al número ${mensaje.numero} por
+                    Whatsapp`}
                   </p>
                 </div>
               </div>
