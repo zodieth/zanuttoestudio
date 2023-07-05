@@ -3,6 +3,68 @@ import Person from "../../models/Person";
 import { sendMsg } from "../../lib/utils";
 import dbConnect from "../../lib/dbConnect";
 
+export async function PUT(request) {
+  const {
+    nombre,
+    sexo,
+    fecha,
+    hijos,
+    num,
+    aportes,
+    hasta2008,
+    desde2009,
+    hasta2012,
+    desde2012,
+    moratoria,
+  } = await request.json();
+  await dbConnect();
+
+  const people = await Person.find({});
+
+  const findPerson = people.filter(
+    (e) => (e.num === num) & (e.fecha === fecha)
+  );
+
+  if (!findPerson) {
+    return NextResponse.json({ msg: "Person not found" }, { status: 404 });
+  }
+
+  const newPerson = new Person(
+    nombre,
+    sexo,
+    fecha,
+    hijos,
+    num,
+    aportes,
+    hasta2008,
+    desde2009,
+    hasta2012,
+    desde2012,
+    moratoria
+  );
+
+  // const personUpdated = Person.updateOne(
+  //   { _id: findPerson._id },
+  //   {
+  //     $set: {
+  //       nombre,
+  //       sexo,
+  //       fecha,
+  //       hijos,
+  //       num,
+  //       aportes,
+  //       hasta2008,
+  //       desde2009,
+  //       hasta2012,
+  //       desde2012,
+  //       moratoria,
+  //     },
+  //   }
+  // );
+
+  return NextResponse.json(newPerson);
+}
+
 export async function GET(request) {
   await dbConnect();
   const person = await Person.find({});
