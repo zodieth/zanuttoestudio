@@ -7,6 +7,10 @@ function Resultados({ mensaje, setResultados }) {
 
   const filterNumbers = data.filter((e) => mensaje.numero === e.num);
 
+  const equalPerson = data.filter(
+    (e) => (e.fecha === mensaje.fecha) & (e.num === mensaje.numero)
+  );
+
   return (
     <div
       className="relative z-10 "
@@ -23,15 +27,19 @@ function Resultados({ mensaje, setResultados }) {
               <div className="sm:flex sm:items-start">
                 <div className=" mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                   <h3
-                    className="flex flex-col items-center justify-center text-base font-semibold leading-6 text-gray-900"
+                    className="mb-1 text-center flex flex-col items-center justify-center text-base font-semibold leading-6 text-gray-900"
                     id="modal-title"
                   >
-                    {filterNumbers.length === 3
-                      ? "YA HAY 3 NÚMERO REGISTRADOS A SU NOMBRE"
+                    {equalPerson.length >= 1
+                      ? "YA HAY UN USUARIO REGISTRADO CON SU NÚMERO Y FECHA"
+                      : filterNumbers.length === 3
+                      ? "YA HAY 3 USUARIOS REGISTRADOS CON ESTE NÚMERO"
                       : mensaje.edadJubilatoria}
                   </h3>
                   <p className=" mx-4 text-1xl text-gray-500">
-                    {filterNumbers.length === 3
+                    {equalPerson.length >= 1
+                      ? "Para realizar otra consulta ultilice otro número"
+                      : filterNumbers.length === 3
                       ? "Para realizar otra consulta ultilice otro número"
                       : ` Le enviamos los resultados al número ${mensaje.numero} por
                     Whatsapp`}

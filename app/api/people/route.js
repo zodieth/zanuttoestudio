@@ -25,11 +25,13 @@ export async function PUT(request) {
     (e) => (e.num === num) & (e.fecha === fecha)
   );
 
+  console.log(findPerson);
+
   if (!findPerson) {
     return NextResponse.json({ msg: "Person not found" }, { status: 404 });
   }
 
-  console.log(
+  const personUpdated = Person.findByIdAndUpdate(findPerson._id, {
     nombre,
     sexo,
     fecha,
@@ -40,29 +42,10 @@ export async function PUT(request) {
     desde2009,
     hasta2012,
     desde2012,
-    moratoria
-  );
+    moratoria,
+  });
 
-  // const personUpdated = Person.updateOne(
-  //   { _id: findPerson._id },
-  //   {
-  //     $set: {
-  //       nombre,
-  //       sexo,
-  //       fecha,
-  //       hijos,
-  //       num,
-  //       aportes,
-  //       hasta2008,
-  //       desde2009,
-  //       hasta2012,
-  //       desde2012,
-  //       moratoria,
-  //     },
-  //   }
-  // );
-
-  return NextResponse.json(findPerson);
+  return NextResponse.json(personUpdated);
 }
 
 export async function GET(request) {
@@ -123,7 +106,11 @@ export async function POST(request) {
     data.filter((e) => e.num === person.num)
   );
 
-  if (peopleFound.length === 3) {
+  const equalPerson = await Person.find({}).then((data) =>
+    data.filter((e) => (e.fecha === person.fecha) & (e.num === person.num))
+  );
+
+  if ((peopleFound.length === 3) | (equalPerson.length >= 1)) {
     return NextResponse.json({ msg: "Num already exists" }, { status: 409 });
   }
 
@@ -140,10 +127,14 @@ export async function POST(request) {
       ((age >= 50) & (person.sexo === "FEMENINO")) |
       ((age >= 55) & (person.sexo === "MASCULINO"))
         ? `${
-            aportes >= 360
-              ? "Tiene la cantidad de aportes necesarios para jubilarse"
+            (person.aportes >= 360) | (person.hijos >= 7)
+              ? "Tiene la cantidad de aportes necesarios para jubilarse. "
               : "Debe pagar en moratoria"
-          }${person.aportes >= 360 ? "" : ` *${person.moratoria}* aportes`}`
+          }${
+            (person.aportes >= 360) | (person.hijos >= 7)
+              ? ""
+              : ` *${person.moratoria}* aportes`
+          }`
         : ""
     } ${
       ((person.sexo === "FEMENINO") & (age >= 50)) |
