@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { peopleContext } from "../layout";
 
 function Resultados({ mensaje, setResultados }) {
-  let data = useContext(peopleContext);
+  const data = useContext(peopleContext);
 
   const filterNumbers = data.filter((e) => mensaje.numero === e.num);
 
