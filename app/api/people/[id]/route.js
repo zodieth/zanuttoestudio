@@ -48,8 +48,8 @@ export async function PUT(request, { params }) {
   }
 }
 
-export async function DELETE(request, { params }) {
-  const { id } = params;
+export async function DELETE(request) {
+  const { id } = await request.json();
 
   await dbConnect();
 
