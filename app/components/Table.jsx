@@ -101,7 +101,7 @@ function Table() {
           </tbody>
         </table>
       ) : (
-        <RiLoader5Fill size={40} className="animate-spin text-blue-600" />
+        <RiLoader5Fill size={40} className="animate-spin text-blue-500" />
       )}
     </div>
   );
