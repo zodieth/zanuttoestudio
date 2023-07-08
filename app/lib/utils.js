@@ -37,3 +37,7 @@ export const createPerson = async (
     moratoria,
   });
 };
+
+export const deleteUser = async (id) => {
+  await axios.delete(`http://localhost:3000/api/people/${id}`);
+};

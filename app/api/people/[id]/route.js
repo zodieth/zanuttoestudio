@@ -48,13 +48,15 @@ export async function PUT(request, { params }) {
   }
 }
 
-export async function DELETE(request) {
-  const { id } = await request.json();
+export async function DELETE(request, { params }) {
+  const { id } = params;
+
+  console.log(id);
 
   await dbConnect();
 
   try {
-    const personDeleted = await Person.findByIdAndDelete(id);
+    const personDeleted = await Person.deleteOne({ _id: id });
 
     return NextResponse.json(personDeleted);
   } catch (error) {
