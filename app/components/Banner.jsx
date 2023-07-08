@@ -1,8 +1,5 @@
 "use client";
-import Image from "next/image";
 import React, { useState } from "react";
-import banner from "../img/background.png";
-
 import BasicForm from "./BasicForm";
 
 function Banner() {
