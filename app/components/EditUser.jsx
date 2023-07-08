@@ -1,7 +1,6 @@
 import React from "react";
-import { deleteUser } from "../lib/utils";
 
-function DeleteConfirm({ user, setDeleteUser }) {
+function EditUser({ user, setEditUser }) {
   return (
     <div
       className="relative z-10 "
@@ -30,22 +29,18 @@ function DeleteConfirm({ user, setDeleteUser }) {
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                onClick={() => [
-                  deleteUser(user._id),
-                  setDeleteUser(false),
-                  location.reload(),
-                ]}
+                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                onClick={() => [setEditUser(false), location.reload()]}
               >
-                Eliminar
+                Editar
               </button>
-              <button
-                onClick={() => [setDeleteUser(false)]}
+              <div
+                onClick={() => [setEditUser(false)]}
                 type="button"
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto cursor-pointer"
               >
                 Cancelar
-              </button>
+              </div>
             </div>
           </div>
         </div>
@@ -55,4 +50,4 @@ function DeleteConfirm({ user, setDeleteUser }) {
   );
 }
 
-export default DeleteConfirm;
+export default EditUser;
