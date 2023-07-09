@@ -186,7 +186,7 @@ function EditUser({ user, setEditUser }) {
                       : ""}
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     id="UserFecha1960M"
                     className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     defaultValue={
@@ -202,6 +202,25 @@ function EditUser({ user, setEditUser }) {
                     }
                   />
                 </div>
+              </div>
+              {/* --------------------- */}
+              <div className="m-3">
+                <label
+                  htmlFor="UserNum"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Número
+                </label>
+
+                <input
+                  type="text"
+                  id="UserNum"
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  defaultValue={usuario.num}
+                  onChange={(e) =>
+                    setUsuario({ ...usuario, num: e.target.value })
+                  }
+                />
               </div>
 
               {/* -----------------inputs------------------------- */}
