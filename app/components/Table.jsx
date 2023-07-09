@@ -58,7 +58,7 @@ function Table() {
                 </td>
                 <td className="whitespace-nowrap px-4 py-2">
                   <div
-                    onClick={() => setEditUser(true)}
+                    onClick={() => [setUser(e), setEditUser(true)]}
                     className="mx-1 inline-block rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
                   >
                     <svg
@@ -77,7 +77,7 @@ function Table() {
                     </svg>
                   </div>
                   <div
-                    onClick={() => [setUser(e), setDeleteUser(true)]}
+                    onClick={() => [setDeleteUser(true)]}
                     className="mx-1 inline-block rounded bg-red-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-500 cursor-pointer"
                   >
                     <svg
