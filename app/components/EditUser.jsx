@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { updateUser } from "../lib/utils";
 
 function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
@@ -149,7 +150,7 @@ function EditUser({ user, setEditUser }) {
                       : ""}
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     id="UserFecha1960M"
                     className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     defaultValue={
@@ -161,7 +162,23 @@ function EditUser({ user, setEditUser }) {
                         : usuario.hasta2012
                     }
                     onChange={(e) =>
-                      setUsuario({ ...usuario, hasta2008: e.target.value })
+                      setUsuario({
+                        ...usuario,
+                        hasta2008:
+                          (usuario.fecha <= "1960-03-03" &&
+                            usuario.sexo === "MASCULINO") |
+                          (usuario.fecha <= "1965-02-28" &&
+                            usuario.sexo === "FEMENINO")
+                            ? e.target.value
+                            : 0,
+                        hasta2012:
+                          (usuario.fecha <= "1960-03-03" &&
+                            usuario.sexo === "MASCULINO") |
+                          (usuario.fecha <= "1965-02-28" &&
+                            usuario.sexo === "FEMENINO")
+                            ? 0
+                            : e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -186,7 +203,7 @@ function EditUser({ user, setEditUser }) {
                       : ""}
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     id="UserFecha1960M"
                     className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     defaultValue={
@@ -198,7 +215,19 @@ function EditUser({ user, setEditUser }) {
                         : usuario.desde2012
                     }
                     onChange={(e) =>
-                      setUsuario({ ...usuario, hasta2008: e.target.value })
+                      setUsuario({
+                        ...usuario,
+                        desde2009:
+                          usuario.fecha <= "1965-02-28" &&
+                          usuario.sexo === "FEMENINO"
+                            ? e.target.value
+                            : 0,
+                        desde2012:
+                          usuario.fecha <= "1965-02-28" &&
+                          usuario.sexo === "FEMENINO"
+                            ? 0
+                            : e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -213,7 +242,7 @@ function EditUser({ user, setEditUser }) {
                 </label>
 
                 <input
-                  type="text"
+                  type="number"
                   id="UserNum"
                   className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                   defaultValue={usuario.num}
@@ -229,7 +258,24 @@ function EditUser({ user, setEditUser }) {
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                onClick={() => [setEditUser(false), location.reload()]}
+                onClick={() => [
+                  setEditUser(false),
+                  updateUser(
+                    usuario._id,
+                    usuario.nombre,
+                    usuario.sexo,
+                    usuario.fecha,
+                    usuario.hijos,
+                    usuario.num,
+                    usuario.aportes,
+                    usuario.hasta2008,
+                    usuario.desde2009,
+                    usuario.hasta2012,
+                    usuario.desde2012,
+                    usuario.moratoria
+                  ),
+                  location.reload(),
+                ]}
               >
                 Editar
               </button>

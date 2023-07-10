@@ -45,7 +45,7 @@ function Table() {
             {data?.map((e, index) => (
               <tr key={index}>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  {e.name}
+                  {e.nombre}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                   {e.fecha}
