@@ -12,8 +12,6 @@ function Table() {
 
   const [user, setUser] = useState({});
 
-  console.log(user);
-
   return (
     <div className="overflow-x-auto mx-20 my-10 w-full flex items-start justify-center ">
       {deleteUser && (
@@ -77,7 +75,7 @@ function Table() {
                     </svg>
                   </div>
                   <div
-                    onClick={() => [setDeleteUser(true)]}
+                    onClick={() => [setDeleteUser(true), setUser(e)]}
                     className="mx-1 inline-block rounded bg-red-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-500 cursor-pointer"
                   >
                     <svg

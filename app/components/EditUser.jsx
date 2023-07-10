@@ -119,7 +119,7 @@ function EditUser({ user, setEditUser }) {
                     className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     defaultValue={usuario.hijos >= 0 ? usuario.hijos : 0}
                     onChange={(e) =>
-                      setUsuario({ ...usuario, fecha: e.target.value })
+                      setUsuario({ ...usuario, hijos: e.target.value })
                     }
                   />
                 </div>

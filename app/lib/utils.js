@@ -56,20 +56,6 @@ export const updateUser = async (
   desde2012,
   moratoria
 ) => {
-  console.log(
-    nombre,
-    sexo,
-    fecha,
-    hijos,
-    num,
-    aportes,
-    hasta2008,
-    desde2009,
-    hasta2012,
-    desde2012,
-    moratoria
-  );
-
   await axios.put(`http://localhost:3000/api/people/${id}`, {
     nombre,
     sexo,
