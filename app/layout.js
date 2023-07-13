@@ -3,6 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import axios from "axios";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,15 +19,17 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/people")
+      .get(`http://localhost:3000/api/people`)
       .then((data) => setData(data.data));
   }, []);
 
   return (
     <html lang="en">
-      <peopleContext.Provider value={data}>
-        <body className={`${inter.className}`}>{children}</body>
-      </peopleContext.Provider>
+      <SessionProvider>
+        <peopleContext.Provider value={data}>
+          <body className={`${inter.className}`}>{children}</body>
+        </peopleContext.Provider>
+      </SessionProvider>
     </html>
   );
 }
