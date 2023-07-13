@@ -40,6 +40,9 @@ const handler = NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: "/auth/signIn",
+  },
   callbacks: {
     async jwt({ token, user }) {
       return { ...token, ...user };
