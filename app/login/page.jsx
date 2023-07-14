@@ -1,14 +1,42 @@
-import React from "react";
+"use client";
+import { signIn } from "next-auth/react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { RiLoader5Fill } from "react-icons/ri";
 
 function SignInPage() {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const res = await signIn("credentials", {
+      email: user.email,
+      password: user.password,
+      redirect: false,
+    });
+
+    if (res?.error) setError(res.error);
+
+    if (res?.ok) return router.push("/oficina");
+  };
+
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg text-center">
-        <h1 className="text-2xl font-bold sm:text-3xl">Get started today!</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">
+          Oficina virtual Estudio Zanutto
+        </h1>
 
         <p className="mt-4 text-gray-500">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero
-          nulla eaque error neque ipsa culpa autem, at itaque nostrum!
+          Ingrese su mail y contraseña para entrar a la oficina
         </p>
       </div>
 
@@ -20,9 +48,15 @@ function SignInPage() {
 
           <div className="relative">
             <input
+              onChange={(e) =>
+                setUser({
+                  ...user,
+                  email: e.target.value,
+                })
+              }
               type="email"
               className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-              placeholder="Enter email"
+              placeholder="Email"
             />
 
             <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -53,7 +87,13 @@ function SignInPage() {
             <input
               type="password"
               className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-              placeholder="Enter password"
+              placeholder="Contraseña"
+              onChange={(e) =>
+                setUser({
+                  ...user,
+                  password: e.target.value,
+                })
+              }
             />
 
             <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -81,19 +121,31 @@ function SignInPage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-500">
+        <div className="flex items-center justify-end">
+          {/* <p className="text-sm text-gray-500">
             No account?
             <a className="underline" href="">
               Sign up
             </a>
-          </p>
+          </p> */}
 
           <button
-            type="submit"
-            className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+            disabled={
+              loading | ((user.email.length < 10) | (user.password.length < 6))
+                ? true
+                : false
+            }
+            className={
+              loading
+                ? "flex flex-row items-center justify-center rounded-lg bg-blue-300 px-5 py-3 text-sm font-medium text-white cursor-pointer"
+                : "flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer"
+            }
+            onClick={(e) => [handleSubmit(e), setLoading(true)]}
           >
-            Sign in
+            Entrar
+            {loading && (
+              <RiLoader5Fill className="ml-2 animate-spin text-white" />
+            )}
           </button>
         </div>
       </form>

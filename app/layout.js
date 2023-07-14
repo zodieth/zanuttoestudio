@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import axios from "axios";
-import Providers from "./components/Provider";
+import Provider from "./components/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,11 +25,11 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <Providers>
+      <Provider>
         <peopleContext.Provider value={data}>
           <body className={`${inter.className}`}>{children}</body>
         </peopleContext.Provider>
-      </Providers>
+      </Provider>
     </html>
   );
 }
