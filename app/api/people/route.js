@@ -81,6 +81,8 @@ export async function POST(request) {
           ? "USTED YA TIENE LA EDAD JUBILATORIA"
           : "USTED AÚN NO TIENE LA EDAD JUBILATORIA"
       }*. ${
+        person.hijos >= 7 ? "" : `Tiene ${person.aportes} aportes en posesión.`
+      }${
         ((age >= 50) & (person.sexo === "FEMENINO")) |
         ((age >= 55) & (person.sexo === "MASCULINO"))
           ? `${
@@ -88,15 +90,19 @@ export async function POST(request) {
                 ? "Tiene la cantidad de aportes necesarios para jubilarse. "
                 : "Debe pagar en moratoria"
             }${
-              (person.aportes >= 360) | (person.hijos >= 7)
+              (person.aportes < 360) | (person.hijos < 7)
                 ? ""
-                : ` *${person.moratoria}* aportes`
+                : ` *${person.moratoria}* aportes.`
             }`
           : ""
       } ${
         ((person.sexo === "FEMENINO") & (age >= 50)) |
         ((person.sexo === "MASCULINO") & (age >= 55))
-          ? "para regularizar su situación previsional, Si quiere comenzar su trámite, complete el próximo formulario y un operador se comunicará con usted. "
+          ? `Para regularizar su situación previsional Si quiere comenzar su trámite, complete el próximo formulario y un operador se comunicará con usted.${
+              (person.aportes >= 360) | (person.hijos >= 7)
+                ? ""
+                : "Recuerde que necesita la cantidad de 360 aportes para jubilarse"
+            }`
           : ""
       }`
     );

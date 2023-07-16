@@ -51,8 +51,6 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   const { id } = params;
 
-  console.log(id);
-
   await dbConnect();
 
   try {

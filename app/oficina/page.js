@@ -5,7 +5,6 @@ import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import SignInPage from "../login/page";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 function page() {
   const { data: session, status } = useSession();
