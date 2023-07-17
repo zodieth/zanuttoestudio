@@ -16,7 +16,9 @@ function Table({ people }) {
       )}
       {editUser && <EditUser user={user} setEditUser={setEditUser} />}
 
-      {people ? (
+      {people.isLoading === true ? (
+        <RiLoader5Fill size={40} className="animate-spin text-blue-500" />
+      ) : (
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="ltr:text-left rtl:text-right">
             <tr>
@@ -95,8 +97,6 @@ function Table({ people }) {
             ))}
           </tbody>
         </table>
-      ) : (
-        <RiLoader5Fill size={40} className="animate-spin text-blue-500" />
       )}
     </div>
   );

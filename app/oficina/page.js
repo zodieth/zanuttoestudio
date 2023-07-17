@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPeople } from "../redux/features/peopleSlice";
 import { api } from "../page";
+import { RiLoader5Fill } from "react-icons/ri";
 
 function Oficina() {
   const people = useSelector((state) => state.people);
@@ -32,11 +33,15 @@ function Oficina() {
     );
   }
 
-  return (
-    <div className="">
-      <SignInPage />
-    </div>
-  );
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center h-screen ">
+        <RiLoader5Fill size={40} className="animate-spin text-blue-500" />
+      </div>
+    );
+  }
+
+  return <SignInPage />;
 }
 
 export default Oficina;
