@@ -1,13 +1,20 @@
 "use client";
-import { useContext } from "react";
-import { peopleContext } from "../layout";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addPeople } from "../redux/features/peopleSlice";
+import { api } from "../page";
 
 function Resultados({ mensaje, setResultados }) {
-  const data = useContext(peopleContext);
+  const data = useSelector((state) => state.people);
+  const dispatch = useDispatch();
 
-  const filterNumbers = data.filter((e) => mensaje.numero === e.num);
+  useEffect(() => {
+    api.get("people").then((data) => dispatch(addPeople(data.data)));
+  }, [dispatch]);
 
-  const equalPerson = data.filter(
+  const filterNumbers = data.people?.filter((e) => mensaje.numero === e.num);
+
+  const equalPerson = data.people?.filter(
     (e) => (e.fecha === mensaje.fecha) & (e.num === mensaje.numero)
   );
 

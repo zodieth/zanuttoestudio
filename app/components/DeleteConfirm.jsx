@@ -1,7 +1,10 @@
 import React from "react";
 import { deleteUser } from "../lib/utils";
+import { deletePerson } from "../redux/features/peopleSlice";
+import { useDispatch } from "react-redux";
 
 function DeleteConfirm({ user, setDeleteUser }) {
+  const dispatch = useDispatch();
   return (
     <div
       className="relative z-10 "
@@ -33,8 +36,8 @@ function DeleteConfirm({ user, setDeleteUser }) {
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                 onClick={() => [
                   deleteUser(user._id),
+                  dispatch(deletePerson(user._id)),
                   setDeleteUser(false),
-                  location.reload(),
                 ]}
               >
                 Eliminar

@@ -1,12 +1,9 @@
 "use client";
-import React, { Suspense, useState } from "react";
-import { useContext } from "react";
-import { peopleContext } from "../layout";
+import React, { useState } from "react";
 import { RiLoader5Fill } from "react-icons/ri";
 import DeleteConfirm from "../components/DeleteConfirm";
 import EditUser from "../components/EditUser";
-function Table() {
-  const data = useContext(peopleContext);
+function Table({ people }) {
   const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
 
@@ -19,7 +16,7 @@ function Table() {
       )}
       {editUser && <EditUser user={user} setEditUser={setEditUser} />}
 
-      {data ? (
+      {people ? (
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="ltr:text-left rtl:text-right">
             <tr>
@@ -40,7 +37,7 @@ function Table() {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {data?.map((e, index) => (
+            {people.people?.map((e, index) => (
               <tr key={index}>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                   {e.nombre}

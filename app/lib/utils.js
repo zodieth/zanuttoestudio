@@ -1,7 +1,7 @@
-const axios = require("axios");
+const { api } = require("../page");
 
 export const sendMsg = async (to, body) => {
-  await axios.post("http://localhost:3000/api/wpp", { to, body });
+  await api.post("wpp", { to, body });
 };
 
 export const createPerson = async (
@@ -17,13 +17,7 @@ export const createPerson = async (
   desde2012,
   moratoria
 ) => {
-  const instance = axios.create({
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  await instance.post("http://localhost:3000/api/people", {
+  await api.post("people", {
     nombre,
     sexo,
     fecha,
@@ -39,7 +33,7 @@ export const createPerson = async (
 };
 
 export const deleteUser = async (id) => {
-  await axios.delete(`http://localhost:3000/api/people/${id}`);
+  await api.delete(`people/${id}`);
 };
 
 export const updateUser = async (
@@ -56,7 +50,7 @@ export const updateUser = async (
   desde2012,
   moratoria
 ) => {
-  await axios.put(`http://localhost:3000/api/people/${id}`, {
+  await api.put(`/people/${id}`, {
     nombre,
     sexo,
     fecha,

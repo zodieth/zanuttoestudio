@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { updateUser } from "../lib/utils";
+import { useDispatch } from "react-redux";
+import { editPerson } from "../redux/features/peopleSlice";
 
 function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
 
-  console.log(usuario);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -274,7 +276,7 @@ function EditUser({ user, setEditUser }) {
                     usuario.desde2012,
                     usuario.moratoria
                   ),
-                  location.reload(),
+                  dispatch(editPerson(usuario)),
                 ]}
               >
                 Editar

@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Banner from "./components/Banner";
+import axios from "axios";
 
 export default function Home() {
   return (
@@ -9,3 +10,10 @@ export default function Home() {
     </main>
   );
 }
+
+export const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
