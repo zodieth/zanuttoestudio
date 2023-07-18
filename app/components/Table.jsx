@@ -46,6 +46,9 @@ function Table({ people }) {
               <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 Aportes
               </th>
+              <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Número
+              </th>
               <th className="px-4 py-2"></th>
             </tr>
           </thead>
@@ -69,6 +72,9 @@ function Table({ people }) {
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                   {e.aportes}
+                </td>
+                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                  {e.num}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2">
                   <div
