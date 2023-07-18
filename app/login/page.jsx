@@ -1,5 +1,5 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RiLoader5Fill } from "react-icons/ri";
@@ -28,6 +28,20 @@ function SignInPage() {
 
     if (res?.ok) return router.push("/oficina");
   };
+
+  const { data: session, status } = useSession();
+
+  if (session && session.user) {
+    return router.push("/oficina");
+  }
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center h-screen ">
+        <RiLoader5Fill size={40} className="animate-spin text-blue-500" />
+      </div>
+    );
+  }
 
   return (
     <div>

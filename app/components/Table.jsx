@@ -3,14 +3,23 @@ import React, { useState } from "react";
 import { RiLoader5Fill } from "react-icons/ri";
 import DeleteConfirm from "../components/DeleteConfirm";
 import EditUser from "../components/EditUser";
+import Pagination from "../components/Pagination";
 function Table({ people }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [peoplePerPage, setPeoplePerPage] = useState(8);
+  const lastPersonIndex = currentPage * peoplePerPage;
+  const firstPersonIndex = lastPersonIndex - peoplePerPage;
+  const currentPeople = people.people.slice(firstPersonIndex, lastPersonIndex);
+
+  // ----------------------------
+
   const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
 
   const [user, setUser] = useState({});
 
   return (
-    <div className="overflow-x-auto mx-20 my-10 w-full flex items-start justify-center ">
+    <div className="overflow-x-auto mx-20 my-10 w-full flex-col items-start justify-center ">
       {deleteUser && (
         <DeleteConfirm user={user} setDeleteUser={setDeleteUser} />
       )}
@@ -42,7 +51,7 @@ function Table({ people }) {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {people.people?.map((e, index) => (
+            {currentPeople?.map((e, index) => (
               <tr key={index}>
                 <td className="whitespace-nowrap px-4 py-2 text-blue-600">
                   <h1 className="hover:underline cursor-pointer">
@@ -106,6 +115,12 @@ function Table({ people }) {
           </tbody>
         </table>
       )}
+      <Pagination
+        peopleData={people.people?.length}
+        peoplePerPage={peoplePerPage}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      />
     </div>
   );
 }
