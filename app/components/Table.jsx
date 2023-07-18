@@ -55,7 +55,7 @@ function Table({ people }) {
               <tr key={index}>
                 <td className="whitespace-nowrap px-4 py-2 text-blue-600">
                   <h1 className="hover:underline cursor-pointer">
-                    {e._id.substring(0, 5)}...
+                    {e._id.substring(0, 6)}...
                   </h1>
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
