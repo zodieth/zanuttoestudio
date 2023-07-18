@@ -23,6 +23,9 @@ function Table({ people }) {
           <thead className="ltr:text-left rtl:text-right">
             <tr>
               <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Id
+              </th>
+              <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 Nombre
               </th>
               <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -41,6 +44,11 @@ function Table({ people }) {
           <tbody className="divide-y divide-gray-200">
             {people.people?.map((e, index) => (
               <tr key={index}>
+                <td className="whitespace-nowrap px-4 py-2 text-blue-600">
+                  <h1 className="hover:underline cursor-pointer">
+                    {e._id.substring(0, 5)}...
+                  </h1>
+                </td>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                   {e.nombre}
                 </td>
