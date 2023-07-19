@@ -91,7 +91,7 @@ function Table({ people }) {
                         .includes(search.toLocaleLowerCase());
                 })
                 .map((e, index) => (
-                  <tr key={index}>
+                  <tr key={index} className="">
                     <td className="whitespace-nowrap px-4 py-2 text-blue-600">
                       <h1 className="hover:underline cursor-pointer">
                         {e._id.substring(0, 6)}...
@@ -109,9 +109,12 @@ function Table({ people }) {
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {e.aportes}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <a
+                      href={`https://wa.me/${e.num}`}
+                      className="whitespace-nowrap px-4 py-2 text-gray-700 hover:underline"
+                    >
                       {e.num}
-                    </td>
+                    </a>
                     <td className="whitespace-nowrap px-4 py-2">
                       <div
                         onClick={() => [setUser(e), setEditUser(true)]}
