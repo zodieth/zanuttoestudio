@@ -1,10 +1,12 @@
 import React from "react";
 import Header from "../components/Header";
+import FormularioAvanzado from "../components/FormularioAvanzado";
 
 function page() {
   return (
-    <div>
+    <div className="">
       <Header />
+      <FormularioAvanzado />
     </div>
   );
 }
