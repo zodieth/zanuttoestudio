@@ -19,6 +19,8 @@ const PersonSchema = new mongoose.Schema({
     default: "consulta",
   },
   extranjero: { type: Boolean, default: false },
+  auh: { type: Number, default: 0 },
+  aportando: { type: Boolean, default: false },
 });
 
 export default mongoose.models.Person || mongoose.model("Person", PersonSchema);
