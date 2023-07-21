@@ -24,8 +24,6 @@ function FormularioAvanzado() {
     fiscal: [],
   });
 
-  console.log(usuario);
-
   return (
     <div className="flex flex-col items-center justify-center mt-10">
       <h1 className="text-center mx-10">
