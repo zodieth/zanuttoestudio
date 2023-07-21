@@ -21,6 +21,8 @@ const PersonSchema = new mongoose.Schema({
   extranjero: { type: Boolean, default: false },
   auh: { type: Number, default: 0 },
   aportando: { type: Boolean, default: false },
+  pension: { type: String, required: false },
+  fiscal: [{ type: String }],
 });
 
 export default mongoose.models.Person || mongoose.model("Person", PersonSchema);
