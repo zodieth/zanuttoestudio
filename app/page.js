@@ -12,7 +12,7 @@ export default function Home() {
 }
 
 export const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://zanuttoestudio.caprover.alubric.com/api",
   headers: {
     "Content-Type": "application/json",
   },
