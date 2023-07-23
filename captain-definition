@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "dockerfileLines": [
+    "FROM node:latest",
+    "WORKDIR /client",
+    "COPY package*.json ./",
+    "RUN npm install",
+    "COPY . .",
+    "RUN npm install -g npm@9.6.5",
+    "RUN npm run build",
+    "CMD [npm, start]"
+  ]
+}
