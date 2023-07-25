@@ -27,6 +27,13 @@ export async function POST(request) {
     hasta2012,
     desde2012,
     moratoria,
+    hijosDiscapacidad,
+    hijosAdoptados,
+    status,
+    extranjero,
+    auh,
+    aportando,
+    fiscal,
   } = await request.json();
 
   try {
@@ -43,7 +50,14 @@ export async function POST(request) {
       desde2009,
       hasta2012,
       desde2012,
-      moratoria
+      moratoria,
+      hijosDiscapacidad,
+      hijosAdoptados,
+      status,
+      extranjero,
+      auh,
+      aportando,
+      fiscal
     );
 
     let dobArray = person.fecha.split("-");

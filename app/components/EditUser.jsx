@@ -56,8 +56,8 @@ function EditUser({ user, setEditUser }) {
                     value="FEMENINO"
                     className={
                       usuario.sexo === "FEMENINO"
-                        ? "bg-blue-600 text-white p-2 mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm mx-1"
-                        : "p-2 mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm mx-1"
+                        ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-sm font-semibold text-white shadow-sm"
+                        : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 "
                     }
                     onClick={(e) =>
                       setUsuario({
@@ -71,8 +71,8 @@ function EditUser({ user, setEditUser }) {
                   <button
                     className={
                       usuario.sexo === "MASCULINO"
-                        ? "bg-blue-600 text-white p-2 mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm mx-1"
-                        : "p-2 mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm mx-1"
+                        ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-sm font-semibold text-white shadow-sm"
+                        : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 "
                     }
                     value="MASCULINO"
                     onClick={(e) =>
@@ -92,7 +92,11 @@ function EditUser({ user, setEditUser }) {
                   htmlFor="UserFecha"
                   className="block text-xs font-medium text-gray-700"
                 >
-                  Fecha
+                  {usuario.extranjero ? (
+                    <div>Fecha de ingreso al país</div>
+                  ) : (
+                    <div> Fecha</div>
+                  )}
                 </label>
 
                 <input
@@ -107,23 +111,77 @@ function EditUser({ user, setEditUser }) {
               </div>
               {/* ---------------------------------- */}
               {usuario.sexo === "FEMENINO" ? (
-                <div className="m-3">
-                  <label
-                    htmlFor="UserHijos"
-                    className="block text-xs font-medium text-gray-700"
-                  >
-                    Hijos
-                  </label>
-
-                  <input
-                    type="number"
-                    id="UserHijos"
-                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                    defaultValue={usuario.hijos >= 0 ? usuario.hijos : 0}
-                    onChange={(e) =>
-                      setUsuario({ ...usuario, hijos: e.target.value })
-                    }
-                  />
+                <div className="m-3 ">
+                  <div className="flex items-center justify-center">
+                    <div className="mt-1 mx-2">
+                      <label
+                        htmlFor="UserHijos"
+                        className="block text-xs font-medium text-gray-700"
+                      >
+                        Hijos naturales
+                      </label>
+                      <input
+                        type="number"
+                        id="UserHijos"
+                        min={0}
+                        className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                        defaultValue={usuario.hijos >= 0 ? usuario.hijos : 0}
+                        onChange={(e) =>
+                          setUsuario({ ...usuario, hijos: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="mt-1  mx-2">
+                      <label
+                        htmlFor="UserHijos"
+                        className="block text-xs font-medium text-gray-700"
+                      >
+                        Hijos discapacitados
+                      </label>
+                      <input
+                        type="number"
+                        id="UserHijos"
+                        className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                        min={0}
+                        defaultValue={
+                          usuario.hijosDiscapacidad >= 0
+                            ? usuario.hijosDiscapacidad
+                            : 0
+                        }
+                        onChange={(e) =>
+                          setUsuario({
+                            ...usuario,
+                            hijosDiscapacidad: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="mt-1  mx-2">
+                      <label
+                        htmlFor="UserHijos"
+                        className="block text-xs font-medium text-gray-700"
+                      >
+                        Hijos adoptados
+                      </label>
+                      <input
+                        type="number"
+                        id="UserHijos"
+                        min={0}
+                        className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                        defaultValue={
+                          usuario.hijosAdoptados >= 0
+                            ? usuario.hijosAdoptados
+                            : 0
+                        }
+                        onChange={(e) =>
+                          setUsuario({
+                            ...usuario,
+                            hijosAdoptados: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
               ) : (
                 ""
@@ -253,6 +311,70 @@ function EditUser({ user, setEditUser }) {
                   }
                 />
               </div>
+              {/* --------------------- */}
+              <div className="m-3">
+                <label
+                  htmlFor="UserNum"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Extranjero
+                </label>
+                <div className="flex items-center justify-center">
+                  {["SI", "NO"].map((e, index) => (
+                    <button
+                      key={index}
+                      className={
+                        (e === "SI") & (usuario.extranjero === true)
+                          ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-sm font-semibold text-white shadow-sm"
+                          : (e === "NO") & (usuario.extranjero === false)
+                          ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-sm font-semibold text-white shadow-sm"
+                          : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 "
+                      }
+                      onClick={() =>
+                        e === "SI"
+                          ? setUsuario({ ...usuario, extranjero: true })
+                          : setUsuario({ ...usuario, extranjero: false })
+                      }
+                    >
+                      {e}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {/* --------------------- */}
+              <div className="m-3">
+                <label
+                  htmlFor="UserNum"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Estado
+                </label>
+                <div className="flex items-center justify-center ">
+                  {["CONSULTA", "CARPETA", "DERIVADO"].map((e, index) => (
+                    <button
+                      key={index}
+                      className={
+                        (e === "CONSULTA") & (usuario.status === "consulta")
+                          ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-1 py-3.5 text-xs font-semibold text-white shadow-sm"
+                          : (e === "CARPETA") & (usuario.status === "carpeta")
+                          ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-1 py-3.5 text-xs font-semibold text-white shadow-sm"
+                          : (e === "DERIVADO") & (usuario.status === "derivado")
+                          ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-1 py-3.5 text-xs font-semibold text-white shadow-sm"
+                          : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-1 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 "
+                      }
+                      onClick={() =>
+                        e === "CONSULTA"
+                          ? setUsuario({ ...usuario, status: "consulta" })
+                          : e === "CARPETA"
+                          ? setUsuario({ ...usuario, status: "carpeta" })
+                          : setUsuario({ ...usuario, status: "derivado" })
+                      }
+                    >
+                      {e}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               {/* -----------------inputs------------------------- */}
             </div>
@@ -274,7 +396,14 @@ function EditUser({ user, setEditUser }) {
                     usuario.desde2009,
                     usuario.hasta2012,
                     usuario.desde2012,
-                    usuario.moratoria
+                    usuario.moratoria,
+                    usuario.hijosDiscapacidad,
+                    usuario.hijosAdoptados,
+                    usuario.status,
+                    usuario.extranjero,
+                    usuario.auh,
+                    usuario.aportando,
+                    usuario.fiscal
                   ),
                   dispatch(editPerson(usuario)),
                 ]}

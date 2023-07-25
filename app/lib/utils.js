@@ -15,7 +15,14 @@ export const createPerson = async (
   desde2009,
   hasta2012,
   desde2012,
-  moratoria
+  moratoria,
+  hijosDiscapacidad,
+  hijosAdoptados,
+  status,
+  extranjero,
+  auh,
+  aportando,
+  fiscal
 ) => {
   await api.post("people", {
     nombre,
@@ -29,6 +36,13 @@ export const createPerson = async (
     hasta2012,
     desde2012,
     moratoria,
+    hijosDiscapacidad,
+    hijosAdoptados,
+    status,
+    extranjero,
+    auh,
+    aportando,
+    fiscal,
   });
 };
 
@@ -48,7 +62,14 @@ export const updateUser = async (
   desde2009,
   hasta2012,
   desde2012,
-  moratoria
+  moratoria,
+  hijosDiscapacidad,
+  hijosAdoptados,
+  status,
+  extranjero,
+  auh,
+  aportando,
+  fiscal
 ) => {
   await api.put(`/people/${id}`, {
     nombre,
@@ -62,5 +83,12 @@ export const updateUser = async (
     hasta2012,
     desde2012,
     moratoria,
+    hijosDiscapacidad,
+    hijosAdoptados,
+    status,
+    extranjero,
+    auh,
+    aportando,
+    fiscal,
   });
 };

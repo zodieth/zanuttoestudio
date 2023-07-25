@@ -15,6 +15,13 @@ export async function PUT(request, { params }) {
     hasta2012,
     desde2012,
     moratoria,
+    hijosDiscapacidad,
+    hijosAdoptados,
+    status,
+    extranjero,
+    auh,
+    aportando,
+    fiscal,
   } = await request.json();
 
   const { id } = params;
@@ -40,6 +47,13 @@ export async function PUT(request, { params }) {
       hasta2012,
       desde2012,
       moratoria,
+      hijosDiscapacidad,
+      hijosAdoptados,
+      status,
+      extranjero,
+      auh,
+      aportando,
+      fiscal,
     });
 
     return NextResponse.json(personUpdated);
