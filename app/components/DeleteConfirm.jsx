@@ -1,6 +1,6 @@
 import React from "react";
 import { deleteUser } from "../lib/utils";
-import { deletePerson } from "../redux/features/peopleSlice";
+import { changeLoading, deletePerson } from "../redux/features/peopleSlice";
 import { useDispatch } from "react-redux";
 
 function DeleteConfirm({ user, setDeleteUser }) {
@@ -34,10 +34,12 @@ function DeleteConfirm({ user, setDeleteUser }) {
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                onClick={() => [
-                  deleteUser(user._id),
+                onClick={async () => [
+                  dispatch(changeLoading(true)),
+                  await deleteUser(user._id),
                   dispatch(deletePerson(user._id)),
                   setDeleteUser(false),
+                  dispatch(changeLoading(false)),
                 ]}
               >
                 Eliminar

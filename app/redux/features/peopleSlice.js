@@ -14,6 +14,9 @@ export const peopleSlice = createSlice({
       state.peopleCopy = action.payload;
       state.isLoading = false;
     },
+    changeLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
     editPerson: (state, action) => {
       const findPerson = state.people.map((e) => {
         if (e._id === action.payload._id) {
@@ -22,11 +25,14 @@ export const peopleSlice = createSlice({
         }
         return e;
       });
-
+      state.peopleCopy = findPerson;
       state.people = findPerson;
     },
     deletePerson: (state, action) => {
       state.people = state.people.filter((e) => action.payload !== e._id);
+      state.peopleCopy = state.peopleCopy.filter(
+        (e) => action.payload !== e._id
+      );
     },
     filterStatus: (state, action) => {
       const people = [...state.peopleCopy];
@@ -38,7 +44,12 @@ export const peopleSlice = createSlice({
   },
 });
 
-export const { addPeople, editPerson, deletePerson, filterStatus } =
-  peopleSlice.actions;
+export const {
+  addPeople,
+  editPerson,
+  deletePerson,
+  filterStatus,
+  changeLoading,
+} = peopleSlice.actions;
 
 export default peopleSlice.reducer;
