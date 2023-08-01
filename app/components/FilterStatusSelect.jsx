@@ -13,6 +13,7 @@ const FilterStatusSelect = ({ useDispatch }) => {
         onChange={(e) => dispatch(filterStatus(e.target.value))}
       >
         <option disabled>Estado</option>
+        <option value="todos">Todos</option>
         <option value="consulta">Consulta</option>
         <option value="carpeta">Carpeta</option>
         <option value="derivado">Derivado</option>

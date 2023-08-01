@@ -31,7 +31,9 @@ export const peopleSlice = createSlice({
     filterStatus: (state, action) => {
       const people = [...state.peopleCopy];
 
-      state.people = people.filter((e) => e.status.includes(action.payload));
+      state.people = people.filter((e) =>
+        action.payload === "todos" ? e : e.status.includes(action.payload)
+      );
     },
   },
 });
