@@ -5,10 +5,13 @@ export const peopleSlice = createSlice({
   initialState: {
     isLoading: true,
     people: [{}],
+    peopleCopy: [{}],
   },
+
   reducers: {
     addPeople: (state, action) => {
       state.people = action.payload;
+      state.peopleCopy = action.payload;
       state.isLoading = false;
     },
     editPerson: (state, action) => {
@@ -25,9 +28,15 @@ export const peopleSlice = createSlice({
     deletePerson: (state, action) => {
       state.people = state.people.filter((e) => action.payload !== e._id);
     },
+    filterStatus: (state, action) => {
+      const people = [...state.peopleCopy];
+
+      state.people = people.filter((e) => e.status.includes(action.payload));
+    },
   },
 });
 
-export const { addPeople, editPerson, deletePerson } = peopleSlice.actions;
+export const { addPeople, editPerson, deletePerson, filterStatus } =
+  peopleSlice.actions;
 
 export default peopleSlice.reducer;

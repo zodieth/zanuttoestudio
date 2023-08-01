@@ -5,7 +5,9 @@ import DeleteConfirm from "../components/DeleteConfirm";
 import EditUser from "../components/EditUser";
 import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
-import FilterStatus from "../components/FilterStatus";
+import FilterStatusSelect from "../components/FilterStatusSelect";
+import { useDispatch } from "react-redux";
+
 function Table({ people }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [peoplePerPage, setPeoplePerPage] = useState(8);
@@ -32,7 +34,10 @@ function Table({ people }) {
       {editUser && <EditUser user={user} setEditUser={setEditUser} />}
 
       <div className="flex flex-row items-center justify-between mb-10">
-        <SearchBar setSearch={setSearch} />
+        <div className="flex gap-4">
+          <SearchBar setSearch={setSearch} />
+          <FilterStatusSelect useDispatch={useDispatch} />
+        </div>
 
         <div className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer">
           <h1 className="text-md">Crear</h1>
