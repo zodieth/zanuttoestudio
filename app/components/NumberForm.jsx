@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { createPerson, sendMsg } from "../lib/utils";
-import { getPeople } from "../lib/utils";
+import { createPerson } from "../lib/utils";
 
 function NumberForm({
   setMensaje,

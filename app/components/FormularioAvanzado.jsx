@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import { differenceInMonths } from "date-fns";
+import { RiLoader5Fill } from "react-icons/ri";
+import { createPerson } from "../lib/utils";
 
 function FormularioAvanzado() {
   const [usuario, setUsuario] = useState({
@@ -24,6 +27,8 @@ function FormularioAvanzado() {
     fiscal: [],
   });
 
+  console.log(usuario);
+
   return (
     <div className="flex flex-col items-center justify-center mt-10">
       <h1 className="text-center mx-10">
@@ -37,16 +42,26 @@ function FormularioAvanzado() {
           <Extranjero usuario={usuario} setUsuario={setUsuario} />
           <Fecha usuario={usuario} setUsuario={setUsuario} />
         </div>
+
         <div className="formulario grid grid-cols-1 mx-6 ">
           {usuario.sexo === "FEMENINO" && (
             <Hijos usuario={usuario} setUsuario={setUsuario} />
           )}
-          {usuario.hijos > 0 && (
+          {(usuario.hijos > 0) |
+          (usuario.hijosAdoptados > 0) |
+          (usuario.hijosDiscapacidad > 0) ? (
             <Auh usuario={usuario} setUsuario={setUsuario} />
+          ) : (
+            ""
           )}
           <Aportes usuario={usuario} setUsuario={setUsuario} />
           <Pension usuario={usuario} setUsuario={setUsuario} />
+          <Num usuario={usuario} setUsuario={setUsuario} />
         </div>
+      </div>
+
+      <div className="mx-10 mt-10 ">
+        <Submit usuario={usuario} setUsuario={setUsuario} />
       </div>
     </div>
   );
@@ -271,8 +286,8 @@ const Aportes = ({ usuario, setUsuario }) => {
             onChange={(e) =>
               (usuario.sexo === "FEMENINO" && usuario.fecha >= "1965-01-03") |
               (usuario.sexo === "MASCULINO" && usuario.fecha >= "1960-02-28")
-                ? setUsuario({ ...usuario, hasta2012: e.target.value })
-                : setUsuario({ ...usuario, hasta2008: e.target.value })
+                ? setUsuario({ ...usuario, hasta2012: e.target.value * 12 })
+                : setUsuario({ ...usuario, hasta2008: e.target.value * 12 })
             }
           />
         </div>
@@ -297,8 +312,8 @@ const Aportes = ({ usuario, setUsuario }) => {
             onChange={(e) =>
               (usuario.sexo === "FEMENINO" && usuario.fecha >= "1965-01-03") |
               (usuario.sexo === "MASCULINO" && usuario.fecha >= "1960-02-28")
-                ? setUsuario({ ...usuario, desde2012: e.target.value })
-                : setUsuario({ ...usuario, desde2009: e.target.value })
+                ? setUsuario({ ...usuario, desde2012: e.target.value * 12 })
+                : setUsuario({ ...usuario, desde2009: e.target.value * 12 })
             }
           />
         </div>
@@ -353,7 +368,7 @@ const Fiscalidad = ({ usuario, setUsuario }) => {
 
   return (
     <div className="mt-2 flex items-center justify-between">
-      la frase que tenga que decir aca
+      Aportes como
       <div className="grid grid-cols-2  ">
         <div className="flex items-center mx-2 mt-1 ">
           <input
@@ -463,5 +478,104 @@ const Pension = ({ usuario, setUsuario }) => {
         </div>
       )}
     </div>
+  );
+};
+
+const Num = ({ usuario, setUsuario }) => {
+  return (
+    <div className="mx-2 m-2 w-full">
+      <label className="">Número de teléfono(+54)</label>
+      <input
+        type="number"
+        id="number"
+        min={0}
+        className="mt-1 w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+        onChange={(e) => setUsuario({ ...usuario, num: e.target.value })}
+      />
+    </div>
+  );
+};
+
+const Submit = ({ usuario, setUsuario }) => {
+  let dobArray = usuario.fecha.toString().split("-");
+  let year = Number(dobArray[0]);
+  let month = Number(dobArray[1]);
+  let day = Number(dobArray[2]);
+  let today = new Date();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth() + 1;
+  let currentDay = today.getDate();
+  let age = currentYear - year;
+  if (currentMonth < month || (currentMonth == month && currentDay < day)) {
+    age--;
+  }
+
+  const excesoDeEdad =
+    usuario.sexo === "MASCULINO" && age > 65
+      ? Math.floor(
+          differenceInMonths(today, new Date(year + 65, month, day)) / 2
+        )
+      : usuario.sexo === "FEMENINO" && age > 60
+      ? Math.floor(
+          differenceInMonths(today, new Date(year + 60, month, day)) / 2
+        )
+      : 0;
+
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <button
+      className={
+        loading
+          ? "flex flex-row items-center justify-center rounded-lg bg-blue-300 px-5 py-3 text-sm font-medium text-white cursor-pointer"
+          : "flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer"
+      }
+      onClick={async () => [
+        // setLoading(true),
+        await setUsuario({
+          ...usuario,
+          aportes:
+            usuario.sexo === "FEMENINO"
+              ? usuario.hasta2008 +
+                usuario.desde2009 +
+                usuario.hasta2012 +
+                usuario.desde2012 +
+                usuario.hijos * 12 +
+                usuario.hijosAdoptados * 24 +
+                usuario.hijosDiscapacidad * 24 +
+                excesoDeEdad +
+                usuario.auh * 12
+              : usuario.hasta2008 +
+                usuario.desde2009 +
+                usuario.hasta2012 +
+                usuario.desde2012 +
+                excesoDeEdad,
+        }),
+        createPerson({
+          nombre: usuario.nombre,
+          sexo: usuario.sexo,
+          fecha: usuario.fecha,
+          hijos: usuario.hijos,
+          num: usuario.num,
+          aportes: usuario.aportes,
+          hasta2008: usuario.hasta2008,
+          desde2009: usuario.desde2009,
+          hasta2012: usuario.hasta2012,
+          desde2012: usuario.desde2012,
+          moratoria: usuario.moratoria,
+          hijosDiscapacidad: usuario.hijosDiscapacidad,
+          hijosAdoptados: usuario.hijosAdoptados,
+          status: usuario.status,
+          extranjero: usuario.extranjero,
+          auh: usuario.auh,
+          aportando: usuario.aportando,
+          fiscal: usuario.fiscal,
+          pension: usuario.pension,
+        }),
+      ]}
+    >
+      Enviar
+      {loading && <RiLoader5Fill className="ml-2 animate-spin text-white" />}
+    </button>
   );
 };

@@ -34,6 +34,7 @@ export async function POST(request) {
     auh,
     aportando,
     fiscal,
+    pension,
   } = await request.json();
 
   try {
@@ -57,7 +58,8 @@ export async function POST(request) {
       extranjero,
       auh,
       aportando,
-      fiscal
+      fiscal,
+      pension
     );
 
     let dobArray = person.fecha.split("-");

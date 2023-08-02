@@ -8,6 +8,23 @@ function EditUser({ user, setEditUser }) {
 
   const dispatch = useDispatch();
 
+  const handleChangeFiscalidad = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setUsuario({
+        ...usuario,
+        fiscal: [...usuario.fiscal, value],
+      });
+    } else {
+      setUsuario({
+        ...usuario,
+        fiscal: usuario.fiscal.filter((e) => e !== value),
+      });
+    }
+  };
+
+  console.log(usuario);
+
   return (
     <div
       className="relative z-10 "
@@ -374,6 +391,86 @@ function EditUser({ user, setEditUser }) {
                     </button>
                   ))}
                 </div>
+              </div>
+              {/* --------------------- */}
+              <div className="m-3">
+                <label className="block text-xs font-medium text-gray-700">
+                  Fiscal
+                </label>
+                <div className="grid grid-cols-2  ">
+                  <div className="flex items-center mx-2 mt-1 ">
+                    <input
+                      onChange={(e) => handleChangeFiscalidad(e)}
+                      type="checkbox"
+                      value="monotributo"
+                      checked={usuario.fiscal.includes("monotributo")}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
+                    />
+                    <label className="ml-2 text-xs font-medium text-gray-500">
+                      Monotributo
+                    </label>
+                  </div>
+                  {/* ---------------------- */}
+                  <div className="flex items-center mx-2 mt-1">
+                    <input
+                      onChange={(e) => handleChangeFiscalidad(e)}
+                      type="checkbox"
+                      value="autónomo"
+                      checked={usuario.fiscal.includes("autonomo")}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
+                    />
+                    <label className="ml-2 text-xs  font-medium text-gray-500">
+                      Autónomo
+                    </label>
+                  </div>
+                  {/* ---------------------- */}
+                  <div className="flex items-center mx-2 mt-1">
+                    <input
+                      onChange={(e) => handleChangeFiscalidad(e)}
+                      type="checkbox"
+                      value="doméstico"
+                      checked={usuario.fiscal.includes("domestico")}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
+                    />
+                    <label className="ml-2 text-xs font-medium text-gray-500">
+                      Servicio doméstico
+                    </label>
+                  </div>
+                  {/* ---------------------- */}
+                  <div className="flex items-center mx-2 mt-1">
+                    <input
+                      onChange={(e) => handleChangeFiscalidad(e)}
+                      type="checkbox"
+                      value="dependencia"
+                      checked={usuario.fiscal.includes("dependencia")}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
+                    />
+                    <label className="ml-2 text-xs font-medium text-gray-500">
+                      Dependencia
+                    </label>
+                  </div>
+                </div>
+              </div>
+              {/* ---------------------- */}
+
+              <div className="m-3">
+                <label
+                  htmlFor="UserName"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Auh
+                </label>
+
+                <input
+                  type="number"
+                  id="auh"
+                  placeholder="auh"
+                  defaultValue={usuario.auh}
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  onChange={(e) =>
+                    setUsuario({ ...usuario, auh: e.target.value })
+                  }
+                />
               </div>
 
               {/* -----------------inputs------------------------- */}

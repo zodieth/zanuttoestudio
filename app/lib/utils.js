@@ -22,7 +22,8 @@ export const createPerson = async (
   extranjero,
   auh,
   aportando,
-  fiscal
+  fiscal,
+  pension
 ) => {
   await api.post("people", {
     nombre,
@@ -43,6 +44,7 @@ export const createPerson = async (
     auh,
     aportando,
     fiscal,
+    pension,
   });
 };
 
@@ -69,7 +71,8 @@ export const updateUser = async (
   extranjero,
   auh,
   aportando,
-  fiscal
+  fiscal,
+  pension
 ) => {
   await api.put(`/people/${id}`, {
     nombre,
@@ -90,5 +93,6 @@ export const updateUser = async (
     auh,
     aportando,
     fiscal,
+    pension,
   });
 };

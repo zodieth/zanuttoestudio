@@ -22,6 +22,7 @@ export async function PUT(request, { params }) {
     auh,
     aportando,
     fiscal,
+    pension,
   } = await request.json();
 
   const { id } = params;
@@ -54,6 +55,7 @@ export async function PUT(request, { params }) {
       auh,
       aportando,
       fiscal,
+      pension,
     });
 
     return NextResponse.json(personUpdated);
