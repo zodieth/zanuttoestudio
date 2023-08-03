@@ -12,6 +12,9 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      clipPath: {
+        "inset-0-100": "inset(0% 0% 100% 100%)",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

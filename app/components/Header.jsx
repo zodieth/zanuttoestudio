@@ -13,7 +13,7 @@ function Header() {
       <div className="hidden md:flex items-center justify-center mx-40">
         {["Home", "Turnos", "Contacto"].map((e) => (
           <span className="mx-2 text-bold cursor-pointer text-white hover:underline">
-            <Link href={`/${e}`}>{e}</Link>
+            <Link href={`/${e.toLowerCase()}`}>{e}</Link>
           </span>
         ))}
       </div>
