@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-import { differenceInMonths } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
-import { createPerson } from "../lib/utils";
+import { createPerson, updateOrCreatePerson } from "../lib/utils";
 
 function FormularioAvanzado() {
   const [usuario, setUsuario] = useState({
@@ -26,8 +25,6 @@ function FormularioAvanzado() {
     pension: "",
     fiscal: [],
   });
-
-  console.log(usuario);
 
   return (
     <div className="flex flex-col items-center justify-center mt-10">
@@ -497,30 +494,6 @@ const Num = ({ usuario, setUsuario }) => {
 };
 
 const Submit = ({ usuario, setUsuario }) => {
-  let dobArray = usuario.fecha.toString().split("-");
-  let year = Number(dobArray[0]);
-  let month = Number(dobArray[1]);
-  let day = Number(dobArray[2]);
-  let today = new Date();
-  let currentYear = today.getFullYear();
-  let currentMonth = today.getMonth() + 1;
-  let currentDay = today.getDate();
-  let age = currentYear - year;
-  if (currentMonth < month || (currentMonth == month && currentDay < day)) {
-    age--;
-  }
-
-  const excesoDeEdad =
-    usuario.sexo === "MASCULINO" && age > 65
-      ? Math.floor(
-          differenceInMonths(today, new Date(year + 65, month, day)) / 2
-        )
-      : usuario.sexo === "FEMENINO" && age > 60
-      ? Math.floor(
-          differenceInMonths(today, new Date(year + 60, month, day)) / 2
-        )
-      : 0;
-
   const [loading, setLoading] = useState(false);
 
   return (
@@ -531,27 +504,8 @@ const Submit = ({ usuario, setUsuario }) => {
           : "flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer"
       }
       onClick={async () => [
-        // setLoading(true),
-        await setUsuario({
-          ...usuario,
-          aportes:
-            usuario.sexo === "FEMENINO"
-              ? usuario.hasta2008 +
-                usuario.desde2009 +
-                usuario.hasta2012 +
-                usuario.desde2012 +
-                usuario.hijos * 12 +
-                usuario.hijosAdoptados * 24 +
-                usuario.hijosDiscapacidad * 24 +
-                excesoDeEdad +
-                usuario.auh * 12
-              : usuario.hasta2008 +
-                usuario.desde2009 +
-                usuario.hasta2012 +
-                usuario.desde2012 +
-                excesoDeEdad,
-        }),
-        createPerson({
+        setLoading(true),
+        await updateOrCreatePerson({
           nombre: usuario.nombre,
           sexo: usuario.sexo,
           fecha: usuario.fecha,
@@ -572,6 +526,7 @@ const Submit = ({ usuario, setUsuario }) => {
           fiscal: usuario.fiscal,
           pension: usuario.pension,
         }),
+        // setLoading(false),
       ]}
     >
       Enviar

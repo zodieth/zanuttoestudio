@@ -14,6 +14,92 @@ export async function GET() {
   }
 }
 
+export async function PUT(request) {
+  const {
+    nombre,
+    sexo,
+    fecha,
+    hijos,
+    num,
+    aportes,
+    hasta2008,
+    desde2009,
+    hasta2012,
+    desde2012,
+    moratoria,
+    hijosDiscapacidad,
+    hijosAdoptados,
+    status,
+    extranjero,
+    auh,
+    aportando,
+    fiscal,
+    pension,
+  } = await request.json();
+
+  await dbConnect();
+
+  try {
+    const person = new Person(
+      nombre,
+      sexo,
+      fecha,
+      hijos,
+      num,
+      aportes,
+      hasta2008,
+      desde2009,
+      hasta2012,
+      desde2012,
+      moratoria,
+      hijosDiscapacidad,
+      hijosAdoptados,
+      status,
+      extranjero,
+      auh,
+      aportando,
+      fiscal,
+      pension
+    );
+
+    const find = await Person.find({});
+
+    const filter = find.filter(
+      (e) => (e.fecha === person.fecha) & (e.num === person.num)
+    );
+
+    // if (filter.length) {
+    const personUpdated = await Person.findByIdAndUpdate(filter[0]._id, {
+      nombre: person.nombre,
+      sexo: person.sexo,
+      fecha: person.fecha,
+      hijos: person.hijos,
+      num: person.num,
+      aportes: person.aportes,
+      hasta2008: person.hasta2008,
+      desde2009: person.desde2009,
+      hasta2012: person.hasta2012,
+      desde2012: person.desde2012,
+      moratoria: person.moratoria,
+      hijosDiscapacidad: person.hijosDiscapacidad,
+      hijosAdoptados: person.hijosAdoptados,
+      status: person.status,
+      extranjero: person.extranjero,
+      auh: person.auh,
+      aportando: person.aportando,
+      fiscal: person.fiscal,
+      pension: person.pension,
+    });
+
+    return NextResponse.json(personUpdated), { status: 200 };
+    // } else {
+    //   return NextResponse.json(""), { status: 500 };
+    // }
+  } catch (error) {
+    return NextResponse.json({ msg: error }, { status: 500 });
+  }
+}
+
 export async function POST(request) {
   const {
     nombre,

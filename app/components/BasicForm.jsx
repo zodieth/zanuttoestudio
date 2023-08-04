@@ -56,8 +56,6 @@ function BasicForm({ setForm }) {
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12;
-  // hijos * 12 -
-  // excesoDeEdad;
 
   const diferenciaMesesMoratoria2012 =
     differenceInMonths(fechaMoratoria2012, date) +
@@ -66,8 +64,6 @@ function BasicForm({ setForm }) {
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12;
-  // hijos * 12 -
-  // excesoDeEdad;
 
   // ------------errores----------------
   const [errors, setErrors] = useState(true);

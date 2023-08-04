@@ -22,9 +22,6 @@ function Table({ people }) {
 
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState({
-    status: [],
-  });
 
   return (
     <div className="overflow-x-auto mx-10 my-10 w-full flex-col items-start justify-center ">
@@ -86,9 +83,7 @@ function Table({ people }) {
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     Sexo
                   </th>
-                  <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Aportes
-                  </th>
+
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     Número
                   </th>
@@ -138,9 +133,7 @@ function Table({ people }) {
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                         {e.sexo}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        {e.aportes}
-                      </td>
+
                       <td>
                         <a
                           href={`https://wa.me/${e.num}`}

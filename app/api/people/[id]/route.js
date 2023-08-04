@@ -25,6 +25,28 @@ export async function PUT(request, { params }) {
     pension,
   } = await request.json();
 
+  console.log(
+    nombre,
+    sexo,
+    fecha,
+    hijos,
+    num,
+    aportes,
+    hasta2008,
+    desde2009,
+    hasta2012,
+    desde2012,
+    moratoria,
+    hijosDiscapacidad,
+    hijosAdoptados,
+    status,
+    extranjero,
+    auh,
+    aportando,
+    fiscal,
+    pension
+  );
+
   const { id } = params;
 
   await dbConnect();

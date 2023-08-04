@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { updateUser } from "../lib/utils";
 import { useDispatch } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
+import { differenceInMonths } from "date-fns";
 
 function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
@@ -23,7 +24,33 @@ function EditUser({ user, setEditUser }) {
     }
   };
 
-  console.log(usuario);
+  // ------------Cálculo de edad----------------
+
+  let dobArray = usuario.fecha.toString().split("-");
+  let year = Number(dobArray[0]);
+  let month = Number(dobArray[1]);
+  let day = Number(dobArray[2]);
+  let today = new Date();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth() + 1;
+  let currentDay = today.getDate();
+  let age = currentYear - year;
+  if (currentMonth < month || (currentMonth == month && currentDay < day)) {
+    age--;
+  }
+
+  const excesoDeEdad =
+    usuario.sexo === "MASCULINO" && age > 65
+      ? Math.floor(
+          differenceInMonths(today, new Date(year + 65, month, day)) / 2
+        )
+      : usuario.sexo === "FEMENINO" && age > 60
+      ? Math.floor(
+          differenceInMonths(today, new Date(year + 60, month, day)) / 2
+        )
+      : 0;
+
+  console.log(excesoDeEdad);
 
   return (
     <div
@@ -308,6 +335,33 @@ function EditUser({ user, setEditUser }) {
                     }
                   />
                 </div>
+              </div>
+              {/* --------------------- */}
+              <div className="m-3">
+                <label
+                  htmlFor="aportes"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Cantidad de aportes
+                </label>
+
+                <input
+                  type="number"
+                  id="aportes"
+                  disabled
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  defaultValue={
+                    Number(usuario.hasta2008) +
+                    Number(usuario.desde2009) +
+                    Number(usuario.hasta2012) +
+                    Number(usuario.desde2012) +
+                    usuario.hijos * 12 +
+                    usuario.hijosAdoptados * 12 +
+                    usuario.hijosDiscapacidad * 12 +
+                    excesoDeEdad +
+                    usuario.auh * 12
+                  }
+                />
               </div>
               {/* --------------------- */}
               <div className="m-3">
