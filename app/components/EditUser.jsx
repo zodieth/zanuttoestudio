@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { updateUser } from "../lib/utils";
 import { useDispatch } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
-import { differenceInMonths } from "date-fns";
+import { differenceInMonths, differenceInDays } from "date-fns";
 
 function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
@@ -41,16 +41,28 @@ function EditUser({ user, setEditUser }) {
 
   const excesoDeEdad =
     usuario.sexo === "MASCULINO" && age > 65
-      ? Math.floor(
-          differenceInMonths(today, new Date(year + 65, month, day)) / 2
-        )
+      ? Math.round(
+          differenceInDays(today, new Date(year + 65, month, day)) / 30
+        ) / 2
       : usuario.sexo === "FEMENINO" && age > 60
-      ? Math.floor(
-          differenceInMonths(today, new Date(year + 60, month, day)) / 2
+      ? Math.round(
+          differenceInDays(today, new Date(year + 60, month, day)) / 30 / 2
         )
       : 0;
 
   console.log(excesoDeEdad);
+
+  console.log(
+    Number(usuario.hasta2008) +
+      Number(usuario.desde2009) +
+      Number(usuario.hasta2012) +
+      Number(usuario.desde2012) +
+      usuario.hijos * 12 +
+      usuario.hijosAdoptados * 24 +
+      usuario.hijosDiscapacidad * 24 +
+      excesoDeEdad +
+      usuario.auh * 12
+  );
 
   return (
     <div
@@ -356,8 +368,8 @@ function EditUser({ user, setEditUser }) {
                     Number(usuario.hasta2012) +
                     Number(usuario.desde2012) +
                     usuario.hijos * 12 +
-                    usuario.hijosAdoptados * 12 +
-                    usuario.hijosDiscapacidad * 12 +
+                    usuario.hijosAdoptados * 24 +
+                    usuario.hijosDiscapacidad * 24 +
                     excesoDeEdad +
                     usuario.auh * 12
                   }

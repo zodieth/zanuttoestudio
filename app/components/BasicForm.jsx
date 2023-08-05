@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { differenceInMonths } from "date-fns";
+import { differenceInMonths, differenceInDays } from "date-fns";
 import Resultados from "./Resultados";
 import NumberForm from "./NumberForm";
 
@@ -39,16 +39,15 @@ function BasicForm({ setForm }) {
   const fechaMoratoria2012 = new Date(2012, 3, 31);
 
   const excesoDeEdad =
-    sexo === "MASCULINO" && age > 65
-      ? Math.floor(
-          differenceInMonths(today, new Date(year + 65, month, day)) / 2
-        )
-      : sexo === "FEMENINO" && age > 60
-      ? Math.floor(
-          differenceInMonths(today, new Date(year + 60, month, day)) / 2
+    usuario.sexo === "MASCULINO" && age > 65
+      ? Math.round(
+          differenceInDays(today, new Date(year + 65, month, day)) / 30
+        ) / 2
+      : usuario.sexo === "FEMENINO" && age > 60
+      ? Math.round(
+          differenceInDays(today, new Date(year + 60, month, day)) / 30 / 2
         )
       : 0;
-
   const diferenciaMesesMoratoria2008 =
     differenceInMonths(fechaMoratoria2008, date) +
     1 -
