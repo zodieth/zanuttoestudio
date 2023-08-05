@@ -11,8 +11,11 @@ function Header() {
         <Image src={logo} height={50} alt="logo " className="md:mx-10" />
       </Link>
       <div className="hidden md:flex items-center justify-center mx-40">
-        {["Home", "Turnos", "Contacto"].map((e) => (
-          <span className="mx-2 text-bold cursor-pointer text-white hover:underline">
+        {["Home", "Turnos", "Contacto"].map((e, index) => (
+          <span
+            className="mx-2 text-bold cursor-pointer text-white hover:underline"
+            key={index}
+          >
             <Link href={`/${e.toLowerCase()}`}>{e}</Link>
           </span>
         ))}
