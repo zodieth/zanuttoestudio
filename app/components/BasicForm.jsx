@@ -39,31 +39,30 @@ function BasicForm({ setForm }) {
   const fechaMoratoria2012 = new Date(2012, 3, 31);
 
   const excesoDeEdad =
-    usuario.sexo === "MASCULINO" && age > 65
+    sexo === "MASCULINO" && age > 65
       ? Math.round(
           differenceInDays(today, new Date(year + 65, month, day)) / 30
         ) / 2
-      : usuario.sexo === "FEMENINO" && age > 60
+      : sexo === "FEMENINO" && age > 60
       ? Math.round(
           differenceInDays(today, new Date(year + 60, month, day)) / 30 / 2
         )
       : 0;
   const diferenciaMesesMoratoria2008 =
-    differenceInMonths(fechaMoratoria2008, date) +
-    1 -
+    differenceInMonths(fechaMoratoria2008, date) -
     hasta2008 * 12 -
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12;
 
   const diferenciaMesesMoratoria2012 =
-    differenceInMonths(fechaMoratoria2012, date) +
-    1 -
+    differenceInMonths(fechaMoratoria2012, date) -
     hasta2008 * 12 -
     desde2009 * 12 -
     hasta2012 * 12 -
     desde2012 * 12;
 
+  console.log(diferenciaMesesMoratoria2008);
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
   const [showError, setShowError] = useState(false);
@@ -337,18 +336,12 @@ function BasicForm({ setForm }) {
                               hijos: hijos,
                               sexo: sexo,
                               edadJubilatoria:
-                                sexo === "MASCULINO" &&
-                                (age >= 65) | (sexo === "FEMENINO") &&
-                                age >= 60
+                                sexo === "MASCULINO" && age >= 65
+                                  ? "USTED YA TIENE LA EDAD JUBILATORIA"
+                                  : sexo === "FEMENINO" && age >= 60
                                   ? "USTED YA TIENE LA EDAD JUBILATORIA"
                                   : "USTED AÚN NO TIENE LA EDAD JUBILATORIA",
-                              moratoria:
-                                fecha >= "1965-01-03" &&
-                                (sexo === "FEMENINO") |
-                                  (fecha >= "1960-02-28") &&
-                                sexo === "MASCULINO"
-                                  ? diferenciaMesesMoratoria2012
-                                  : diferenciaMesesMoratoria2008,
+
                               aportes:
                                 hasta2008 * 12 +
                                 desde2009 * 12 +
@@ -356,6 +349,27 @@ function BasicForm({ setForm }) {
                                 desde2012 * 12 +
                                 hijos * 12 +
                                 excesoDeEdad,
+                              moratoria:
+                                fecha >= "1965-01-03" &&
+                                (sexo === "FEMENINO") |
+                                  (fecha >= "1960-02-28") &&
+                                sexo === "MASCULINO"
+                                  ? diferenciaMesesMoratoria2012 -
+                                    (360 -
+                                      (hasta2008 * 12 +
+                                        desde2009 * 12 +
+                                        hasta2012 * 12 +
+                                        desde2012 * 12 +
+                                        hijos * 12 +
+                                        excesoDeEdad))
+                                  : diferenciaMesesMoratoria2008 -
+                                    (360 -
+                                      (hasta2008 * 12 +
+                                        desde2009 * 12 +
+                                        hasta2012 * 12 +
+                                        desde2012 * 12 +
+                                        hijos * 12 +
+                                        excesoDeEdad)),
                               hasta2008: hasta2008 * 12,
                               desde2009: desde2009 * 12,
                               hasta2012: hasta2012 * 12,
