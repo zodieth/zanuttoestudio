@@ -23,7 +23,7 @@ function FormularioAvanzado() {
     aportando: false,
     status: "carpeta",
     pension: "",
-    fiscal: [],
+    tipoAporte: [],
   });
 
   return (
@@ -316,7 +316,7 @@ const Aportes = ({ usuario, setUsuario }) => {
         </div>
       </div>
 
-      <Fiscalidad usuario={usuario} setUsuario={setUsuario} />
+      <TipoAporte usuario={usuario} setUsuario={setUsuario} />
 
       <div className="mt-2 flex items-center w-full">
         <div className="w-full">¿Está aportando actualmente?</div>
@@ -347,18 +347,18 @@ const Aportes = ({ usuario, setUsuario }) => {
   );
 };
 
-const Fiscalidad = ({ usuario, setUsuario }) => {
+const TipoAporte = ({ usuario, setUsuario }) => {
   const handleChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
       setUsuario({
         ...usuario,
-        fiscal: [...usuario.fiscal, value],
+        tipoAporte: [...usuario.tipoAporte, value],
       });
     } else {
       setUsuario({
         ...usuario,
-        fiscal: usuario.fiscal.filter((e) => e !== value),
+        tipoAporte: usuario.tipoAporte.filter((e) => e !== value),
       });
     }
   };
@@ -375,19 +375,7 @@ const Fiscalidad = ({ usuario, setUsuario }) => {
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
           />
           <label className="ml-2 text-sm font-medium text-gray-500">
-            Monotributo
-          </label>
-        </div>
-        {/* ---------------------- */}
-        <div className="flex items-center mx-2 mt-1">
-          <input
-            onChange={(e) => handleChange(e)}
-            type="checkbox"
-            value="autónomo"
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
-          />
-          <label className="ml-2 text-sm font-medium text-gray-500">
-            Autónomo
+            Monotributo / Autónomo
           </label>
         </div>
         {/* ---------------------- */}
@@ -413,6 +401,16 @@ const Fiscalidad = ({ usuario, setUsuario }) => {
           <label className="ml-2 text-sm font-medium text-gray-500">
             Dependencia
           </label>
+        </div>
+        {/* ---------------------- */}
+        <div className="flex items-center mx-2 mt-1">
+          <input
+            onChange={(e) => handleChange(e)}
+            type="checkbox"
+            value="ips"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
+          />
+          <label className="ml-2 text-sm font-medium text-gray-500">IPS</label>
         </div>
         {/* ---------------------- */}
       </div>
@@ -523,7 +521,7 @@ const Submit = ({ usuario, setUsuario }) => {
           extranjero: usuario.extranjero,
           auh: usuario.auh,
           aportando: usuario.aportando,
-          fiscal: usuario.fiscal,
+          tipoAporte: usuario.tipoAporte,
           pension: usuario.pension,
         }),
         // setLoading(false),

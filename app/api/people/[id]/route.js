@@ -21,9 +21,15 @@ export async function PUT(request, { params }) {
     extranjero,
     auh,
     aportando,
-    fiscal,
+    tipoAporte,
     pension,
+    dni,
+    claveAnses,
   } = await request.json();
+
+  const { id } = params;
+
+  await dbConnect();
 
   console.log(
     nombre,
@@ -43,13 +49,11 @@ export async function PUT(request, { params }) {
     extranjero,
     auh,
     aportando,
-    fiscal,
-    pension
+    tipoAporte,
+    pension,
+    dni,
+    claveAnses
   );
-
-  const { id } = params;
-
-  await dbConnect();
 
   try {
     const people = await Person.find({});
@@ -76,8 +80,10 @@ export async function PUT(request, { params }) {
       extranjero,
       auh,
       aportando,
-      fiscal,
+      tipoAporte,
       pension,
+      dni,
+      claveAnses,
     });
 
     return NextResponse.json(personUpdated);

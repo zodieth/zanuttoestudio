@@ -9,17 +9,17 @@ function EditUser({ user, setEditUser }) {
 
   const dispatch = useDispatch();
 
-  const handleChangeFiscalidad = (e) => {
+  const handleChangeTipoAporte = (e) => {
     const { value, checked } = e.target;
     if (checked) {
       setUsuario({
         ...usuario,
-        fiscal: [...usuario.fiscal, value],
+        tipoAporte: [...usuario.tipoAporte, value],
       });
     } else {
       setUsuario({
         ...usuario,
-        fiscal: usuario.fiscal.filter((e) => e !== value),
+        tipoAporte: usuario.tipoAporte.filter((e) => e !== value),
       });
     }
   };
@@ -50,20 +50,6 @@ function EditUser({ user, setEditUser }) {
         )
       : 0;
 
-  console.log(excesoDeEdad);
-
-  console.log(
-    Number(usuario.hasta2008) +
-      Number(usuario.desde2009) +
-      Number(usuario.hasta2012) +
-      Number(usuario.desde2012) +
-      usuario.hijos * 12 +
-      usuario.hijosAdoptados * 24 +
-      usuario.hijosDiscapacidad * 24 +
-      excesoDeEdad +
-      usuario.auh * 12
-  );
-
   return (
     <div
       className="relative z-10 "
@@ -71,9 +57,9 @@ function EditUser({ user, setEditUser }) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "></div>
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity  "></div>
 
-      <div className=" flex items-center justify-center fixed inset-0 z-10 overflow-y-auto">
+      <div className=" flex items-center justify-center fixed inset-0 z-10 overflow-y-auto ">
         <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
           <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 w-full grid grid-cols-2  items-center justify-center  ">
@@ -244,25 +230,52 @@ function EditUser({ user, setEditUser }) {
               )}
               {/* ------------------------------------------------------ */}
 
+              {(usuario.hijos > 0) |
+              (usuario.hijosAdoptados > 0) |
+              (usuario.hijosDiscapacidad > 0) ? (
+                <div className="m-3">
+                  <label
+                    htmlFor="UserName"
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    ¿ Por cuántos hijos cobra o cobró AUH ?
+                  </label>
+
+                  <input
+                    type="number"
+                    id="auh"
+                    placeholder="auh"
+                    defaultValue={usuario.auh}
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    onChange={(e) =>
+                      setUsuario({ ...usuario, auh: e.target.value })
+                    }
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+              {/* ---------------------- */}
+
               <div className="m-3 flex">
                 <div className="mx-1">
                   <label
                     htmlFor="UserFecha1960M"
-                    className="block text-xs font-medium text-gray-700"
+                    className="block text-xs font-medium text-gray-700 w-full"
                   >
                     {usuario.fecha <= "1960-03-03" &&
                     usuario.sexo === "MASCULINO"
-                      ? "Hasta 2008"
+                      ? "Aportes hasta 2008"
                       : usuario.fecha >= "1960-02-28" &&
                         usuario.sexo === "MASCULINO"
-                      ? "Hasta 2012"
+                      ? "Aportes hasta 2012"
                       : ""}
                     {usuario.fecha <= "1965-02-28" &&
                     usuario.sexo === "FEMENINO"
-                      ? "Hasta 2008"
+                      ? "Aportes hasta 2008"
                       : usuario.fecha >= "1965-01-03" &&
                         usuario.sexo === "FEMENINO"
-                      ? "Hasta 2012"
+                      ? "Aportes hasta 2012"
                       : ""}
                   </label>
                   <input
@@ -305,17 +318,17 @@ function EditUser({ user, setEditUser }) {
                   >
                     {usuario.fecha <= "1960-03-03" &&
                     usuario.sexo === "MASCULINO"
-                      ? "Desde 2008"
+                      ? "Aportes desde 2008"
                       : usuario.fecha >= "1960-02-28" &&
                         usuario.sexo === "MASCULINO"
-                      ? "Desde 2012"
+                      ? "Aportes desde 2012"
                       : ""}
                     {usuario.fecha <= "1965-02-28" &&
                     usuario.sexo === "FEMENINO"
-                      ? "Desde 2009"
+                      ? "Aportes desde 2009"
                       : usuario.fecha >= "1965-01-03" &&
                         usuario.sexo === "FEMENINO"
-                      ? "Desde 2012"
+                      ? "Aportes desde 2012"
                       : ""}
                   </label>
                   <input
@@ -461,41 +474,41 @@ function EditUser({ user, setEditUser }) {
               {/* --------------------- */}
               <div className="m-3">
                 <label className="block text-xs font-medium text-gray-700">
-                  Fiscal
+                  Tipo de aportes
                 </label>
                 <div className="grid grid-cols-2  ">
                   <div className="flex items-center mx-2 mt-1 ">
                     <input
-                      onChange={(e) => handleChangeFiscalidad(e)}
+                      onChange={(e) => handleChangeTipoAporte(e)}
                       type="checkbox"
                       value="monotributo"
-                      checked={usuario.fiscal.includes("monotributo")}
+                      checked={usuario.tipoAporte.includes("monotributo")}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
                     />
                     <label className="ml-2 text-xs font-medium text-gray-500">
-                      Monotributo
+                      Monotributo / Autónomo
                     </label>
                   </div>
                   {/* ---------------------- */}
                   <div className="flex items-center mx-2 mt-1">
                     <input
-                      onChange={(e) => handleChangeFiscalidad(e)}
+                      onChange={(e) => handleChangeTipoAporte(e)}
                       type="checkbox"
-                      value="autónomo"
-                      checked={usuario.fiscal.includes("autonomo")}
+                      value="ips"
+                      checked={usuario.tipoAporte.includes("ips")}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
                     />
                     <label className="ml-2 text-xs  font-medium text-gray-500">
-                      Autónomo
+                      IPS
                     </label>
                   </div>
                   {/* ---------------------- */}
                   <div className="flex items-center mx-2 mt-1">
                     <input
-                      onChange={(e) => handleChangeFiscalidad(e)}
+                      onChange={(e) => handleChangeTipoAporte(e)}
                       type="checkbox"
-                      value="doméstico"
-                      checked={usuario.fiscal.includes("domestico")}
+                      value="domestico"
+                      checked={usuario.tipoAporte.includes("domestico")}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
                     />
                     <label className="ml-2 text-xs font-medium text-gray-500">
@@ -505,10 +518,10 @@ function EditUser({ user, setEditUser }) {
                   {/* ---------------------- */}
                   <div className="flex items-center mx-2 mt-1">
                     <input
-                      onChange={(e) => handleChangeFiscalidad(e)}
+                      onChange={(e) => handleChangeTipoAporte(e)}
                       type="checkbox"
                       value="dependencia"
-                      checked={usuario.fiscal.includes("dependencia")}
+                      checked={usuario.tipoAporte.includes("dependencia")}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-200 focus:ring-2 dark:bg-gray-200 dark:border-gray-300"
                     />
                     <label className="ml-2 text-xs font-medium text-gray-500">
@@ -517,6 +530,26 @@ function EditUser({ user, setEditUser }) {
                   </div>
                 </div>
               </div>
+
+              <div className="m-3">
+                <label
+                  htmlFor="UserName"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  DNI
+                </label>
+
+                <input
+                  type="number"
+                  id="dni"
+                  placeholder="DNI"
+                  defaultValue={usuario.dni}
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  onChange={(e) =>
+                    setUsuario({ ...usuario, dni: e.target.value })
+                  }
+                />
+              </div>
               {/* ---------------------- */}
 
               <div className="m-3">
@@ -524,21 +557,20 @@ function EditUser({ user, setEditUser }) {
                   htmlFor="UserName"
                   className="block text-xs font-medium text-gray-700"
                 >
-                  Auh
+                  Clave Anses
                 </label>
 
                 <input
-                  type="number"
-                  id="auh"
-                  placeholder="auh"
-                  defaultValue={usuario.auh}
+                  type="text"
+                  id="claveAnses"
+                  placeholder="Contraseña"
+                  defaultValue={usuario.claveAnses}
                   className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                   onChange={(e) =>
-                    setUsuario({ ...usuario, auh: e.target.value })
+                    setUsuario({ ...usuario, claveAnses: e.target.value })
                   }
                 />
               </div>
-
               {/* -----------------inputs------------------------- */}
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
@@ -567,7 +599,10 @@ function EditUser({ user, setEditUser }) {
                     usuario.extranjero,
                     usuario.auh,
                     usuario.aportando,
-                    usuario.fiscal
+                    usuario.tipoAporte,
+                    usuario.pension,
+                    usuario.dni,
+                    usuario.claveAnses
                   ),
                   dispatch(editPerson(usuario)),
                   dispatch(changeLoading(false)),

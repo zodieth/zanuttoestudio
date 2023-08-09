@@ -22,7 +22,7 @@ export const createPerson = async (
   extranjero,
   auh,
   aportando,
-  fiscal,
+  tipoAporte,
   pension
 ) => {
   await api.post("people", {
@@ -43,7 +43,7 @@ export const createPerson = async (
     extranjero,
     auh,
     aportando,
-    fiscal,
+    tipoAporte,
     pension,
   });
 };
@@ -66,7 +66,7 @@ export const updateOrCreatePerson = async (
   extranjero,
   auh,
   aportando,
-  fiscal,
+  tipoAporte,
   pension
 ) => {
   const update = await api.put("people", {
@@ -87,11 +87,9 @@ export const updateOrCreatePerson = async (
     extranjero,
     auh,
     aportando,
-    fiscal,
+    tipoAporte,
     pension,
   });
-
-  console.log(update);
 
   if (update.length) return;
   else {
@@ -113,7 +111,7 @@ export const updateOrCreatePerson = async (
       extranjero,
       auh,
       aportando,
-      fiscal,
+      tipoAporte,
       pension,
     });
   }
@@ -142,8 +140,10 @@ export const updateUser = async (
   extranjero,
   auh,
   aportando,
-  fiscal,
-  pension
+  tipoAporte,
+  pension,
+  dni,
+  claveAnses
 ) => {
   await api.put(`people/${_id}`, {
     nombre,
@@ -163,7 +163,9 @@ export const updateUser = async (
     extranjero,
     auh,
     aportando,
-    fiscal,
+    tipoAporte,
     pension,
+    dni,
+    claveAnses,
   });
 };

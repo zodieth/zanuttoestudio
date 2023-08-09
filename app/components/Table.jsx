@@ -20,7 +20,29 @@ function Table({ people }) {
   const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    nombr: "",
+    sexo: "",
+    fecha: "",
+    hijos: 0,
+    num: 0,
+    aportes: 0,
+    hasta2008: 0,
+    desde2009: 0,
+    hasta2012: 0,
+    desde2012: 0,
+    moratoria: 0,
+    hijosDiscapacidad: 0,
+    hijosAdoptados: 0,
+    status: "",
+    extranjero: false,
+    auh: 0,
+    aportando: false,
+    tipoAporte: [],
+    pension: "",
+    dni: 0,
+    claveAnses: "",
+  });
   const [search, setSearch] = useState("");
 
   return (

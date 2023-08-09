@@ -20,7 +20,6 @@ export const peopleSlice = createSlice({
     editPerson: (state, action) => {
       const findPerson = state.people.map((e) => {
         if (e._id === action.payload._id) {
-          console.log(action.payload);
           e = action.payload;
         }
         return e;

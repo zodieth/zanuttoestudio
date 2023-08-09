@@ -22,7 +22,9 @@ const PersonSchema = new mongoose.Schema({
   auh: { type: Number, default: 0 },
   aportando: { type: Boolean, default: false },
   pension: { type: String, required: false },
-  fiscal: [{ type: String }],
+  tipoAporte: [{ type: String }],
+  dni: { type: String, required: false },
+  claveAnses: { type: String, required: false },
 });
 
 export default mongoose.models.Person || mongoose.model("Person", PersonSchema);
