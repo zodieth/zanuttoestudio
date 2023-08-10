@@ -380,10 +380,10 @@ function EditUser({ user, setEditUser }) {
                     Number(usuario.desde2009) +
                     Number(usuario.hasta2012) +
                     Number(usuario.desde2012) +
+                    excesoDeEdad +
                     usuario.hijos * 12 +
                     usuario.hijosAdoptados * 24 +
                     usuario.hijosDiscapacidad * 24 +
-                    excesoDeEdad +
                     usuario.auh * 12
                   }
                 />
