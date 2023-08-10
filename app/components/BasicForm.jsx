@@ -53,16 +53,17 @@ function BasicForm({ setForm }) {
     hasta2008 * 12 -
     desde2009 * 12 -
     hasta2012 * 12 -
-    desde2012 * 12;
+    desde2012 * 12 -
+    excesoDeEdad;
 
   const diferenciaMesesMoratoria2012 =
     differenceInMonths(fechaMoratoria2012, date) -
     hasta2008 * 12 -
     desde2009 * 12 -
     hasta2012 * 12 -
-    desde2012 * 12;
+    desde2012 * 12 -
+    excesoDeEdad;
 
-  console.log(diferenciaMesesMoratoria2008);
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
   const [showError, setShowError] = useState(false);
@@ -354,22 +355,8 @@ function BasicForm({ setForm }) {
                                 (sexo === "FEMENINO") |
                                   (fecha >= "1960-02-28") &&
                                 sexo === "MASCULINO"
-                                  ? diferenciaMesesMoratoria2012 -
-                                    (360 -
-                                      (hasta2008 * 12 +
-                                        desde2009 * 12 +
-                                        hasta2012 * 12 +
-                                        desde2012 * 12 +
-                                        hijos * 12 +
-                                        excesoDeEdad))
-                                  : diferenciaMesesMoratoria2008 -
-                                    (360 -
-                                      (hasta2008 * 12 +
-                                        desde2009 * 12 +
-                                        hasta2012 * 12 +
-                                        desde2012 * 12 +
-                                        hijos * 12 +
-                                        excesoDeEdad)),
+                                  ? diferenciaMesesMoratoria2012
+                                  : diferenciaMesesMoratoria2008,
                               hasta2008: hasta2008 * 12,
                               desde2009: desde2009 * 12,
                               hasta2012: hasta2012 * 12,

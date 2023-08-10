@@ -25,6 +25,9 @@ const PersonSchema = new mongoose.Schema({
   tipoAporte: [{ type: String }],
   dni: { type: String, required: false },
   claveAnses: { type: String, required: false },
+  direccion: { type: String, required: false },
+  localidad: { type: String, required: false },
+  provincia: { type: String, required: false },
 });
 
 export default mongoose.models.Person || mongoose.model("Person", PersonSchema);

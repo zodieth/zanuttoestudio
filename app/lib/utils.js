@@ -143,7 +143,10 @@ export const updateUser = async (
   tipoAporte,
   pension,
   dni,
-  claveAnses
+  claveAnses,
+  direccion,
+  localidad,
+  provincia
 ) => {
   await api.put(`people/${_id}`, {
     nombre,
@@ -167,5 +170,23 @@ export const updateUser = async (
     pension,
     dni,
     claveAnses,
+    direccion,
+    localidad,
+    provincia,
   });
+};
+
+export const addCita = async (cliente, fecha, hora, calendario) => {
+  const hora = fecha.toTimeString().slice(0, 5);
+  const horaInt = parseInt(hora.slice(0, 2));
+  const horaArg = (horaInt - 3 + 24) % 24;
+
+  if (horaArg >= 10 && horaArg < 16) {
+    await api.post("/cita", {
+      cliente,
+      fecha,
+      hora,
+      calendario,
+    });
+  }
 };

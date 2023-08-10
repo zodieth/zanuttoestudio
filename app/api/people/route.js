@@ -185,24 +185,30 @@ export async function POST(request) {
       }*. ${
         person.aportes >= 360
           ? ""
-          : `Tiene ${person.aportes} aportes en posesión.`
+          : `Actualmente usted registra *${person.aportes}* aportes en posesión,`
       }${
         ((age >= 50) & (person.sexo === "FEMENINO")) |
         ((age >= 55) & (person.sexo === "MASCULINO"))
           ? `${
               person.aportes >= 360
                 ? "Tiene la cantidad de aportes necesarios para jubilarse. "
-                : ` Debe pagar en moratoria *${person.moratoria}* aportes.`
+                : ` y necesita acumular 360 aportes para cumplir los requisitos de su jubilación. Le faltan *${
+                    360 - person.aportes
+                  }* aportes. Usted puede abonar en moratoria *${
+                    person.moratoria > 360 - person.aportes
+                      ? `${360 - person.aportes}* aportes.`
+                      : `${
+                          person.moratoria
+                        } aportes*, pero aún asi no alcanzaría la cantidad necesaria para jubilarse. Le harían falta un total de *${
+                          360 - person.moratoria - person.aportes
+                        }* aportes adicionales.`
+                  }`
             }`
           : ""
       } ${
         ((person.sexo === "FEMENINO") & (age >= 50)) |
         ((person.sexo === "MASCULINO") & (age >= 55))
-          ? `Para regularizar su situación previsional, Si quiere comenzar su trámite, complete el próximo formulario y un operador se comunicará con usted.${
-              person.aportes >= 360
-                ? ""
-                : " Recuerde que necesita la cantidad de 360 aportes para jubilarse"
-            }`
+          ? ` Si está interesado en regularizar si situación previsional y comenzar su trámite, le recomendamos completar el siguiente formulario y un operador se pondrá en contacto con usted para brindarle más información`
           : ""
       }`
     );

@@ -4,6 +4,7 @@ import dbConnect from "../../../lib/dbConnect";
 
 export async function PUT(request, { params }) {
   const {
+    _id,
     nombre,
     sexo,
     fecha,
@@ -25,35 +26,14 @@ export async function PUT(request, { params }) {
     pension,
     dni,
     claveAnses,
+    direccion,
+    localidad,
+    provincia,
   } = await request.json();
 
   const { id } = params;
 
   await dbConnect();
-
-  console.log(
-    nombre,
-    sexo,
-    fecha,
-    hijos,
-    num,
-    aportes,
-    hasta2008,
-    desde2009,
-    hasta2012,
-    desde2012,
-    moratoria,
-    hijosDiscapacidad,
-    hijosAdoptados,
-    status,
-    extranjero,
-    auh,
-    aportando,
-    tipoAporte,
-    pension,
-    dni,
-    claveAnses
-  );
 
   try {
     const people = await Person.find({});
@@ -63,6 +43,7 @@ export async function PUT(request, { params }) {
     }
 
     const personUpdated = await Person.findByIdAndUpdate(id, {
+      _id,
       nombre,
       sexo,
       fecha,
@@ -84,6 +65,9 @@ export async function PUT(request, { params }) {
       pension,
       dni,
       claveAnses,
+      direccion,
+      localidad,
+      provincia,
     });
 
     return NextResponse.json(personUpdated);

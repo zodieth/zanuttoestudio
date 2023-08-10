@@ -571,6 +571,69 @@ function EditUser({ user, setEditUser }) {
                   }
                 />
               </div>
+              {/* ---------------------- */}
+
+              <div className="m-3">
+                <label
+                  htmlFor="UserName"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Dirección
+                </label>
+
+                <input
+                  type="text"
+                  id="direccion"
+                  placeholder="Dirección"
+                  defaultValue={usuario.direccion}
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  onChange={(e) =>
+                    setUsuario({ ...usuario, direccion: e.target.value })
+                  }
+                />
+              </div>
+              {/* ---------------------- */}
+
+              <div className="m-3">
+                <label
+                  htmlFor="UserName"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Localidad
+                </label>
+
+                <input
+                  type="text"
+                  id="direccion"
+                  placeholder="Dirección"
+                  defaultValue={usuario.localidad}
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  onChange={(e) =>
+                    setUsuario({ ...usuario, localidad: e.target.value })
+                  }
+                />
+              </div>
+              {/* ---------------------- */}
+
+              <div className="m-3">
+                <label
+                  htmlFor="UserName"
+                  className="block text-xs font-medium text-gray-700"
+                >
+                  Provincia
+                </label>
+
+                <input
+                  type="text"
+                  id="provincia"
+                  placeholder="Provincia"
+                  defaultValue={usuario.provincia}
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  onChange={(e) =>
+                    setUsuario({ ...usuario, provincia: e.target.value })
+                  }
+                />
+              </div>
               {/* -----------------inputs------------------------- */}
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
@@ -602,7 +665,10 @@ function EditUser({ user, setEditUser }) {
                     usuario.tipoAporte,
                     usuario.pension,
                     usuario.dni,
-                    usuario.claveAnses
+                    usuario.claveAnses,
+                    usuario.direccion,
+                    usuario.localidad,
+                    usuario.provincia
                   ),
                   dispatch(editPerson(usuario)),
                   dispatch(changeLoading(false)),
