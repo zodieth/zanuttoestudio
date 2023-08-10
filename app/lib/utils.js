@@ -176,17 +176,17 @@ export const updateUser = async (
   });
 };
 
-export const addCita = async (cliente, fecha, hora, calendario) => {
-  const horaTimeString = fecha.toTimeString().slice(0, 5);
-  const horaInt = parseInt(horaTimeString.slice(0, 2));
-  const horaArg = (horaInt - 3 + 24) % 24;
+// export const addCita = async (cliente, fecha, hora, calendario) => {
+//   const horaTimeString = fecha.toTimeString().slice(0, 5);
+//   const horaInt = parseInt(horaTimeString.slice(0, 2));
+//   const horaArg = (horaInt - 3 + 24) % 24;
 
-  if (horaArg >= 10 && horaArg < 16) {
-    await api.post("/cita", {
-      cliente,
-      fecha,
-      hora,
-      calendario,
-    });
-  }
-};
+//   if (horaArg >= 10 && horaArg < 16) {
+//     await api.post("/cita", {
+//       cliente,
+//       fecha,
+//       hora,
+//       calendario,
+//     });
+//   }
+// };

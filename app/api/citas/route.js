@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "../../lib/dbConnect";
-import Cita from "../../models/Cita";
+// import Cita from "../../models/Cita";
 
 export async function POST(request) {
   const { nombre, telefono, fecha, hora, calendario } = await request.json();
