@@ -38,18 +38,41 @@ function Resultados({ mensaje, setResultados }) {
                     id="modal-title"
                   >
                     {equalPerson.length >= 1
-                      ? "YA HAY UN USUARIO REGISTRADO CON SU NÚMERO Y FECHA"
+                      ? "YA HAY UN USUARIO REGISTRADO CON SU NÚMERO Y FECHA DE NACIMIENTO"
                       : filterNumbers.length === 3
                       ? "YA HAY 3 USUARIOS REGISTRADOS CON ESTE NÚMERO"
                       : mensaje.edadJubilatoria}
                   </h3>
                   <p className=" mx-4 text-1xl text-gray-500">
-                    {equalPerson.length >= 1
-                      ? "Para realizar otra consulta ultilice otro número"
-                      : filterNumbers.length === 3
-                      ? "Para realizar otra consulta ultilice otro número"
-                      : ` Le enviamos los resultados al número ${mensaje.numero} por
-                    Whatsapp`}
+                    {equalPerson.length >= 1 ? (
+                      "Para realizar otra consulta ultilice otro número"
+                    ) : filterNumbers.length === 3 ? (
+                      "Para realizar otra consulta ultilice otro número"
+                    ) : (
+                      <div>
+                        <div className="flex flex-col items-center justify-center">
+                          <div className="text-xs flex flex-row mt-2">
+                            <h1>
+                              ATENCIÓN (Este cálculo es general y aproximado.
+                              Obtenga su análisis completo haciendo click en
+                              CONTINUAR)
+                            </h1>
+                          </div>
+                        </div>
+                        <div className="flex flex-row items-center">
+                          - Aportes: {mensaje.aportes}{" "}
+                          {mensaje.aportes < 360
+                            ? `(Recuerde que necesita acumular 360 meses para cumplir los requisitos de su jubilación, le faltan ${
+                                360 - mensaje.aportes
+                              })
+                              `
+                            : ""}
+                        </div>
+                        <div>
+                          - Puede abonar en moratoria: {mensaje.moratoria} meses
+                        </div>
+                      </div>
+                    )}
                   </p>
                 </div>
               </div>

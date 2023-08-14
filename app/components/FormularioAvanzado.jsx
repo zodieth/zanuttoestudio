@@ -365,7 +365,7 @@ const TipoAporte = ({ usuario, setUsuario }) => {
 
   return (
     <div className="mt-2 flex items-center justify-between">
-      Aportes como
+      Tipo de aportes
       <div className="grid grid-cols-2  ">
         <div className="flex items-center mx-2 mt-1 ">
           <input

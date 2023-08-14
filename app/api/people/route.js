@@ -175,43 +175,43 @@ export async function POST(request) {
 
     await person.save();
 
-    sendMsg(
-      person.num,
-      `*${
-        ((person.sexo === "MASCULINO") & (age >= 65)) |
-        ((person.sexo === "FEMENINO") & (age >= 60))
-          ? "USTED YA TIENE LA EDAD JUBILATORIA"
-          : "USTED AÚN NO TIENE LA EDAD JUBILATORIA"
-      }*. ${
-        person.aportes >= 360
-          ? ""
-          : `Actualmente usted registra *${person.aportes}* aportes en posesión,`
-      }${
-        ((age >= 50) & (person.sexo === "FEMENINO")) |
-        ((age >= 55) & (person.sexo === "MASCULINO"))
-          ? `${
-              person.aportes >= 360
-                ? "Tiene la cantidad de aportes necesarios para jubilarse. "
-                : ` y necesita acumular 360 aportes para cumplir los requisitos de su jubilación. Le faltan *${
-                    360 - person.aportes
-                  }* aportes. Usted puede abonar en moratoria *${
-                    person.moratoria > 360 - person.aportes
-                      ? `${360 - person.aportes}* aportes.`
-                      : `${
-                          person.moratoria
-                        } aportes*, pero aún asi no alcanzaría la cantidad necesaria para jubilarse. Le harían falta un total de *${
-                          360 - person.moratoria - person.aportes
-                        }* aportes adicionales.`
-                  }`
-            }`
-          : ""
-      } ${
-        ((person.sexo === "FEMENINO") & (age >= 50)) |
-        ((person.sexo === "MASCULINO") & (age >= 55))
-          ? ` Si está interesado en regularizar si situación previsional y comenzar su trámite, le recomendamos completar el siguiente formulario y un operador se pondrá en contacto con usted para brindarle más información`
-          : ""
-      }`
-    );
+    // sendMsg(
+    //   person.num,
+    //   `*${
+    //     ((person.sexo === "MASCULINO") & (age >= 65)) |
+    //     ((person.sexo === "FEMENINO") & (age >= 60))
+    //       ? "USTED YA TIENE LA EDAD JUBILATORIA"
+    //       : "USTED AÚN NO TIENE LA EDAD JUBILATORIA"
+    //   }*. ${
+    //     person.aportes >= 360
+    //       ? ""
+    //       : `Actualmente usted registra *${person.aportes}* aportes en posesión,`
+    //   }${
+    //     ((age >= 50) & (person.sexo === "FEMENINO")) |
+    //     ((age >= 55) & (person.sexo === "MASCULINO"))
+    //       ? `${
+    //           person.aportes >= 360
+    //             ? "Tiene la cantidad de aportes necesarios para jubilarse. "
+    //             : ` y necesita acumular 360 aportes para cumplir los requisitos de su jubilación. Le faltan *${
+    //                 360 - person.aportes
+    //               }* aportes. Usted puede abonar en moratoria *${
+    //                 person.moratoria > 360 - person.aportes
+    //                   ? `${360 - person.aportes}* aportes.`
+    //                   : `${
+    //                       person.moratoria
+    //                     } aportes*, pero aún asi no alcanzaría la cantidad necesaria para jubilarse. Le harían falta un total de *${
+    //                       360 - person.moratoria - person.aportes
+    //                     }* aportes adicionales.`
+    //               }`
+    //         }`
+    //       : ""
+    //   } ${
+    //     ((person.sexo === "FEMENINO") & (age >= 50)) |
+    //     ((person.sexo === "MASCULINO") & (age >= 55))
+    //       ? ` Si está interesado en regularizar si situación previsional y comenzar su trámite, le recomendamos completar el siguiente formulario y un operador se pondrá en contacto con usted para brindarle más información`
+    //       : ""
+    //   }`
+    // );
 
     return NextResponse.json("creado");
   } catch (error) {
