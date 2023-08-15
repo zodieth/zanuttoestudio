@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPeople } from "../redux/features/peopleSlice";
 import { api } from "../page";
+import { BsWhatsapp } from "react-icons/bs";
+import Link from "next/link";
 
 function Resultados({ mensaje, setResultados }) {
   const data = useSelector((state) => state.people);
@@ -44,47 +46,59 @@ function Resultados({ mensaje, setResultados }) {
                       : mensaje.edadJubilatoria}
                   </h3>
                   <p className=" mx-4 text-1xl text-gray-500">
-                    {equalPerson.length >= 1 ? (
+                    {/* {equalPerson.length >= 1 ? (
                       "Para realizar otra consulta ultilice otro número"
                     ) : filterNumbers.length === 3 ? (
                       "Para realizar otra consulta ultilice otro número"
-                    ) : (
-                      <div>
-                        <div className="flex flex-col items-center justify-center">
-                          <div className="text-xs flex flex-row mt-2">
-                            <h1>
-                              ATENCIÓN (Este cálculo es general y aproximado.
-                              Obtenga su análisis completo haciendo click en
-                              CONTINUAR)
-                            </h1>
-                          </div>
-                        </div>
-                        <div className="flex flex-row items-center">
-                          - Aportes: {mensaje.aportes}{" "}
-                          {mensaje.aportes < 360
-                            ? `(Recuerde que necesita acumular 360 meses para cumplir los requisitos de su jubilación, le faltan ${
-                                360 - mensaje.aportes
-                              })
-                              `
-                            : ""}
-                        </div>
-                        <div>
-                          - Puede abonar en moratoria: {mensaje.moratoria} meses
+                    ) : ( */}
+                    <div>
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="text-xs flex flex-row mt-2">
+                          <h1>
+                            <strong>ATENCIÓN</strong> (Este cálculo es general y
+                            aproximado. Obtenga su análisis completo haciendo
+                            click en <strong>CONTINUAR</strong>)
+                          </h1>
                         </div>
                       </div>
-                    )}
+                      <div className="flex flex-row items-center text-sm mt-2">
+                        <h1>
+                          - Aportes: <strong>{mensaje.aportes} </strong>{" "}
+                          {mensaje.aportes < 360 ? (
+                            <>
+                              (Recuerde que necesita acumular 360 meses para
+                              cumplir los requisitos de su jubilación, le faltan
+                              <strong> {360 - mensaje.aportes}</strong>){" "}
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </h1>
+                      </div>
+                      <div className="flex flex-row items-center text-sm mt-2">
+                        <h1>
+                          {" "}
+                          - Puede abonar en moratoria:{" "}
+                          <strong>{mensaje.moratoria} </strong>meses
+                        </h1>
+                      </div>
+                    </div>
+                    {/* )} */}
                   </p>
                 </div>
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button
-                type="button"
-                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                onClick={() => setResultados(false)}
-              >
-                Continuar
-              </button>
+              <Link href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!">
+                <button
+                  type="button"
+                  className="flex flex-row items-center justify-center gap-2  w-full  rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                  onClick={() => setResultados(false)}
+                >
+                  Continuar
+                  <BsWhatsapp size={15} />
+                </button>
+              </Link>
             </div>
           </div>
         </div>
