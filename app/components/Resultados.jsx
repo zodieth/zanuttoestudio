@@ -52,15 +52,6 @@ function Resultados({ mensaje, setResultados }) {
                       "Para realizar otra consulta ultilice otro número"
                     ) : ( */}
                     <div>
-                      <div className="flex flex-col items-center justify-center">
-                        <div className="text-xs flex flex-row mt-2">
-                          <h1>
-                            <strong>ATENCIÓN</strong> (Este cálculo es general y
-                            aproximado. Obtenga su análisis completo haciendo
-                            click en <strong>CONTINUAR</strong>)
-                          </h1>
-                        </div>
-                      </div>
                       <div className="flex flex-row items-center text-sm mt-2">
                         <h1>
                           - Aportes: <strong>{mensaje.aportes} </strong>{" "}
@@ -80,6 +71,16 @@ function Resultados({ mensaje, setResultados }) {
                           {" "}
                           - Puede abonar en moratoria:{" "}
                           <strong>{mensaje.moratoria} </strong>meses
+                        </h1>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="text-xs flex flex-row mt-2">
+                        <h1>
+                          <strong className="text-red-500">ATENCIÓN</strong>{" "}
+                          (Este cálculo es general y aproximado. Obtenga su
+                          análisis completo haciendo click en{" "}
+                          <strong>CONTINUAR</strong>)
                         </h1>
                       </div>
                     </div>
