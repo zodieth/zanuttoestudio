@@ -48,6 +48,7 @@ function BasicForm({ setForm }) {
           differenceInDays(today, new Date(year + 60, month, day)) / 30 / 2
         )
       : 0;
+
   const diferenciaMesesMoratoria2008 =
     differenceInMonths(fechaMoratoria2008, date) -
     hasta2008 * 12 -
@@ -82,6 +83,7 @@ function BasicForm({ setForm }) {
     desde2009: 0,
     hasta2012: 0,
     desde2012: 0,
+    excesoDeEdad: 0,
   });
 
   // -----------------------tercer cartel resultados---------------------------------
@@ -361,6 +363,7 @@ function BasicForm({ setForm }) {
                               desde2009: desde2009 * 12,
                               hasta2012: hasta2012 * 12,
                               desde2012: desde2012 * 12,
+                              excesoDeEdad: excesoDeEdad,
                             }),
                           ]
                     }
