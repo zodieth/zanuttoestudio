@@ -39,11 +39,11 @@ function BasicForm({ setForm }) {
   const fechaMoratoria2012 = new Date(2012, 3, 31);
 
   const excesoDeEdad =
-    sexo === "MASCULINO" && age > 65
+    sexo === "MASCULINO" && age >= 65
       ? Math.round(
           differenceInDays(today, new Date(year + 65, month, day)) / 30
         ) / 2
-      : sexo === "FEMENINO" && age > 60
+      : sexo === "FEMENINO" && age >= 60
       ? Math.round(
           differenceInDays(today, new Date(year + 60, month, day)) / 30 / 2
         )
@@ -373,7 +373,7 @@ function BasicForm({ setForm }) {
                   <button
                     onClick={() => setForm(false)}
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                   >
                     Cancelar
                   </button>
