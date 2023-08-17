@@ -3,7 +3,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPeople } from "../redux/features/peopleSlice";
 import { api } from "../page";
-import { BsWhatsapp } from "react-icons/bs";
+import { BsWhatsapp, BsDot } from "react-icons/bs";
+import {
+  differenceInMonths,
+  differenceInDays,
+  differenceInYears,
+} from "date-fns";
+
 import Link from "next/link";
 
 function Resultados({ mensaje, setResultados }) {
@@ -19,6 +25,23 @@ function Resultados({ mensaje, setResultados }) {
   const equalPerson = data.people?.filter(
     (e) => (e.fecha === mensaje.fecha) & (e.num === mensaje.numero)
   );
+
+  let dobArray = mensaje.fecha.toString().split("-");
+  let year = Number(dobArray[0]);
+  let month = Number(dobArray[1]);
+  let day = Number(dobArray[2]);
+  let today = new Date();
+
+  const edadJubilatoria =
+    mensaje.sexo === "FEMENINO"
+      ? new Date(year + 60, month, day)
+      : new Date(year + 65, month, day);
+
+  const fechaMoratoria = new Date(2025, 1, 1);
+
+  const pasoDelTiempo =
+    Math.round(differenceInDays(fechaMoratoria, edadJubilatoria) / 30 / 2) -
+    mensaje.excesoDeEdad;
 
   return (
     <div
@@ -45,47 +68,108 @@ function Resultados({ mensaje, setResultados }) {
                       ? "YA HAY 3 USUARIOS REGISTRADOS CON ESTE NÚMERO"
                       : mensaje.edadJubilatoria}
                   </h3>
-                  <p className=" mx-4 text-1xl text-gray-500">
+                  <div className=" mx-4 text-1xl text-gray-500">
                     {/* {equalPerson.length >= 1 ? (
                       "Para realizar otra consulta ultilice otro número"
                     ) : filterNumbers.length === 3 ? (
                       "Para realizar otra consulta ultilice otro número"
                     ) : ( */}
-                    <div>
-                      <div className="flex flex-row items-center text-sm mt-2">
-                        <h1>
-                          - Aportes: <strong>{mensaje.aportes} </strong>{" "}
-                          {mensaje.aportes < 360 ? (
-                            <>
-                              (Recuerde que necesita acumular 360 meses para
-                              cumplir los requisitos de su jubilación, le faltan
-                              <strong> {360 - mensaje.aportes}</strong>){" "}
-                            </>
-                          ) : (
-                            ""
-                          )}
-                        </h1>
+                    <>
+                      <div className="">
+                        <div className="flex flex-row items-center text-sm mt-2 ">
+                          <h1>
+                            • Aportes: <strong>{mensaje.aportes} </strong>{" "}
+                            {mensaje.aportes < 360 ? (
+                              <>
+                                (Recuerde que necesita acumular 360 meses para
+                                cumplir los requisitos de su jubilación, le
+                                faltan
+                                <strong> {360 - mensaje.aportes}</strong>){" "}
+                              </>
+                            ) : (
+                              <h1>
+                                Aportes: <strong>{mensaje.aportes} </strong>,
+                                Tiene la cantidad de aportes necesarios para
+                                jubilarse.
+                              </h1>
+                            )}
+                          </h1>
+                        </div>
+                        {mensaje.aportes >= 360 ? (
+                          ""
+                        ) : (
+                          <div className="flex flex-row items-center text-sm mt-2">
+                            <h1>
+                              • Puede abonar en moratoria:{" "}
+                              {mensaje.moratoria > 360 - mensaje.aportes ? (
+                                <>
+                                  <strong>{360 - mensaje.aportes}</strong> meses
+                                </>
+                              ) : (
+                                <>
+                                  <strong>{mensaje.moratoria}</strong> meses,
+                                  pero aún asi no alcanzaría la cantidad
+                                  necesaria para jubilarse. Le harían falta un
+                                  total de{" "}
+                                  <strong>
+                                    {360 - mensaje.moratoria - mensaje.aportes}
+                                  </strong>{" "}
+                                  meses adicionales.
+                                  <div className="mt-2">
+                                    {mensaje.fecha >= "1965-01-03" ? (
+                                      ""
+                                    ) : (
+                                      <div>
+                                        {pasoDelTiempo * 2 >
+                                        360 -
+                                          mensaje.moratoria -
+                                          mensaje.aportes ? (
+                                          <>
+                                            • La primera opción sería por el
+                                            paso del tiempo: En{" "}
+                                            <strong>
+                                              {pasoDelTiempo}
+                                              {/* poner meses exactos */}
+                                            </strong>{" "}
+                                            meses tendría la opción de acceder a
+                                            su jubilación
+                                          </>
+                                        ) : (
+                                          <>
+                                            {" "}
+                                            • Con el paso del tiempo podrá
+                                            obtener{" "}
+                                            <strong>
+                                              {pasoDelTiempo}
+                                            </strong>{" "}
+                                            meses por el exceso de edad pero no
+                                            llega a la cantidad de aportes
+                                            necesarios
+                                          </>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                </>
+                              )}{" "}
+                            </h1>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex flex-row items-center text-sm mt-2">
-                        <h1>
-                          {" "}
-                          - Puede abonar en moratoria:{" "}
-                          <strong>{mensaje.moratoria} </strong>meses
-                        </h1>
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="text-xs flex flex-row mt-2">
+                          <h1>
+                            <strong className="text-red-500">ATENCIÓN</strong>{" "}
+                            (Este cálculo es general y aproximado. Obtenga su
+                            análisis completo haciendo click en{" "}
+                            <strong className="text-blue-600">CONTINUAR</strong>
+                            )
+                          </h1>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="text-xs flex flex-row mt-2">
-                        <h1>
-                          <strong className="text-red-500">ATENCIÓN</strong>{" "}
-                          (Este cálculo es general y aproximado. Obtenga su
-                          análisis completo haciendo click en{" "}
-                          <strong>CONTINUAR</strong>)
-                        </h1>
-                      </div>
-                    </div>
+                    </>
                     {/* )} */}
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -93,11 +177,11 @@ function Resultados({ mensaje, setResultados }) {
               <Link href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!">
                 <button
                   type="button"
-                  className="flex flex-row items-center justify-center gap-2  w-full  rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                  className="flex flex-row items-center justify-center gap-2  w-full  rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                   onClick={() => setResultados(false)}
                 >
                   Continuar
-                  <BsWhatsapp size={15} />
+                  {/* <BsWhatsapp size={15} /> */}
                 </button>
               </Link>
             </div>
