@@ -3,6 +3,8 @@ import { updateUser } from "../lib/utils";
 import { useDispatch } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
+import Detalle from "../components/DetalleAportes"
+import { tr } from "date-fns/locale";
 
 function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
@@ -49,6 +51,11 @@ function EditUser({ user, setEditUser }) {
           differenceInDays(today, new Date(year + 60, month, day)) / 30 / 2
         )
       : 0;
+
+  const añosAportados = [];
+  for (let index = year+18; index <= currentYear+2; index++) {
+    añosAportados.push(index);
+  }
 
   return (
     <div
@@ -684,6 +691,56 @@ function EditUser({ user, setEditUser }) {
                 Cancelar
               </div>
             </div>
+           
+          </div>
+          {/*-------Tabla x año-------------*/}
+          <div className="flex justify-center h-32">
+            <aside className="w-50% overflow-y-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm w-full">
+                <thead className="ltr:text-left rtl:text-right">
+                  <tr>
+
+                    <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                      Año
+                    </th>
+                    <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                      Meses Aportados
+                    </th>
+                    <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                      Tipo de Aporte
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="ltr:text-left rtl:text-right">
+                    {añosAportados.map(año => (
+                      <tr key={año}>
+                        <th>{año}</th>
+
+                        <th>
+                          <input 
+                          type="number"
+                          id="MesesxAño"
+                          placeholder="Meses Aportados"
+                          defaultValue="0"
+                          className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                          />
+                        </th>
+
+                        <th>
+                          <select name="tipoAporte" id="tipoAporte">
+                              <option value="monotributo">Monotributo</option>
+                              <option value="IPS">IPS</option>
+                              <option value="servicio domestico">Servicio Doméstico</option>
+                              <option value="dependencia">Dependencia</option>
+                          </select>
+                        </th>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </aside>
+                  {/* <Detalle user={usuario}/> */}
           </div>
         </div>
         {/* --------------------------- */}
