@@ -651,7 +651,7 @@ function EditUser({ user, setEditUser }) {
                 {/* -----------------inputs------------------------- */}
               </div>
               {/*-------Tabla x año-------------*/}
-              <div className="flex flex-col justify-center h-[40rem] mx-10">
+              <div className="flex flex-col justify-center h-[40rem] mx-5  w-[45rem]">
                 <aside className="w-50% overflow-y-auto relative transform overflow-hidden rounded-lg bg-white text-left transition-all sm:my-8 sm:w-full sm:max-w-lg">
                   <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm w-full">
                     <thead className="ltr:text-left rtl:text-right">
@@ -684,7 +684,11 @@ function EditUser({ user, setEditUser }) {
                           </th>
 
                           <th>
-                            <select name="tipoAporte" id="tipoAporte">
+                            <select
+                              className="mt-1 mx-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                              name="tipoAporte"
+                              id="tipoAporte"
+                            >
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
