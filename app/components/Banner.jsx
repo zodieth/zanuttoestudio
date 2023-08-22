@@ -19,7 +19,7 @@ function Banner() {
             Averiguá si te podés jubilar{" "}
           </h1>
           <p className="mx-10 text-center font-light text-1xl mt-5 w-[25rem] md:w-[40rem] lg:w-[50rem] md:text-2xl ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime vero
+            Completá este formulario para obtener tus resultados de jubilación{" "}
           </p>
           <button
             onClick={() => setForm(true)}
