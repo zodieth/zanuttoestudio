@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { updateUser } from "../lib/utils";
+import React, { useState, useEffect } from "react";
+import { updateUser, getDetalle, updateDetalle } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
-import Detalle from "../components/DetalleAportes";
 import { tr } from "date-fns/locale";
+
 
 function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
@@ -56,8 +56,56 @@ function EditUser({ user, setEditUser }) {
       : 0;
 
   const añosAportados = [];
-  for (let index = year + 18; index <= currentYear + 2; index++) {
-    añosAportados.push(index);
+  const cantidadDeMeses=[];
+  const tipoDeAporte=[];
+
+  if(usuario.extranjero){
+    for (let index = year; index <= currentYear + 2; index++) {
+      index===2012? añosAportados.push("De Enero a Marzo " + index, "De Abril a Diciembre " + index)
+      : añosAportados.push(""+index);
+
+    }
+  }else{
+    for (let index = year + 18; index <= currentYear + 2; index++) {
+      index===2012? añosAportados.push("De Enero a Marzo " + index, "De Abril a Diciembre " + index)
+      : añosAportados.push(""+index);
+    }
+  }
+
+  while (cantidadDeMeses.length<añosAportados.length) {
+    cantidadDeMeses.push(0);
+    tipoDeAporte.push("sin aportes")
+
+  }
+
+  const [detalle, setDetalle] = useState({
+    año: añosAportados,
+    cantidadMeses: cantidadDeMeses,
+    tipoDeAporte: tipoDeAporte,
+    persona: usuario._id
+  });
+
+
+  const handleChangeMeses =(e, index) => {
+    const nuevoDetalle= detalle.cantidadMeses.map((c, i) => {
+      if(i === index) {
+        return Number(e.target.value);
+      }else {
+        return c;
+      }
+    });
+    setDetalle({...detalle, cantidadMeses: nuevoDetalle})
+  }
+
+  const handleChangeArrayTipos =(e, index) => {
+    const nuevoDetalle= detalle.tipoDeAporte.map((c, i) => {
+      if(i === index) {
+        return e.target.value;
+      }else {
+        return c;
+      }
+    });
+    setDetalle({...detalle, tipoDeAporte: nuevoDetalle})
   }
 
   return (
@@ -670,7 +718,7 @@ function EditUser({ user, setEditUser }) {
 
                     <tbody className="ltr:text-left rtl:text-right">
                       {añosAportados.map((año) => (
-                        <tr key={año}>
+                        <tr key={añosAportados.indexOf(año)}>
                           <th>{año}</th>
 
                           <th>
@@ -680,11 +728,19 @@ function EditUser({ user, setEditUser }) {
                               placeholder="Meses Aportados"
                               defaultValue="0"
                               className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                              onChange={(e) =>
+                              handleChangeMeses(e,añosAportados.indexOf(año))}
                             />
                           </th>
 
                           <th>
-                            <select name="tipoAporte" id="tipoAporte">
+                            <select
+                              name="tipoAporte"
+                              id="tipoAporte"
+                              onChange={(e) =>
+                                handleChangeArrayTipos(e,añosAportados.indexOf(año))}
+                            >
+                              <option default value="sin aportes">Sin Aportes</option>
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
@@ -698,7 +754,7 @@ function EditUser({ user, setEditUser }) {
                     </tbody>
                   </table>
                 </aside>
-                {/* <Detalle user={usuario}/> */}
+
                 {/* ----------------------botones editar cancelar------------------ */}
                 <div className=" px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
@@ -732,8 +788,10 @@ function EditUser({ user, setEditUser }) {
                         usuario.claveAnses,
                         usuario.direccion,
                         usuario.localidad,
-                        usuario.provincia
+                        usuario.provincia,
+                        usuario.detalle
                       ),
+                      await updateDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona),
                       dispatch(editPerson(usuario)),
                       dispatch(changeLoading(false)),
                     ]}
