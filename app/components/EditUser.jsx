@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { updateUser, getDetalle, updateDetalle } from "../lib/utils";
+import { updateUser, updateDetalle } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
 import { tr } from "date-fns/locale";
+import { api } from "../page";
 
 
-function EditUser({ user, setEditUser }) {
+function EditUser({ user, setEditUser, detail}) {
   const [usuario, setUsuario] = useState(user);
+  const [detalles, setDetalles] = useState(detail);
+  const detallePersona = detalles.detail.filter((e) => e.persona === usuario._id)[0];
 
   const people = useSelector((state) => state.people);
 
@@ -28,7 +31,7 @@ function EditUser({ user, setEditUser }) {
       });
     }
   };
-
+console.log(detallePersona);
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -80,8 +83,8 @@ function EditUser({ user, setEditUser }) {
 
   const [detalle, setDetalle] = useState({
     año: añosAportados,
-    cantidadMeses: cantidadDeMeses,
-    tipoDeAporte: tipoDeAporte,
+    cantidadMeses: detallePersona? detallePersona.cantidadMeses : cantidadDeMeses,
+    tipoDeAporte: detallePersona? detallePersona.tipoDeAporte : tipoDeAporte,
     persona: usuario._id
   });
 
@@ -107,7 +110,7 @@ function EditUser({ user, setEditUser }) {
     });
     setDetalle({...detalle, tipoDeAporte: nuevoDetalle})
   }
-
+console.log(detalle);
   return (
     <div
       className="relative z-10 "
@@ -726,7 +729,7 @@ function EditUser({ user, setEditUser }) {
                               type="number"
                               id="MesesxAño"
                               placeholder="Meses Aportados"
-                              defaultValue="0"
+                              defaultValue={detalle.cantidadMeses[añosAportados.indexOf(año)]}
                               className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                               onChange={(e) =>
                               handleChangeMeses(e,añosAportados.indexOf(año))}
@@ -737,10 +740,11 @@ function EditUser({ user, setEditUser }) {
                             <select
                               name="tipoAporte"
                               id="tipoAporte"
+                              defaultValue={detalle.tipoDeAporte[añosAportados.indexOf(año)]}
                               onChange={(e) =>
                                 handleChangeArrayTipos(e,añosAportados.indexOf(año))}
                             >
-                              <option default value="sin aportes">Sin Aportes</option>
+                              <option value="sin aportes">Sin Aportes</option>
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
