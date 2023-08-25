@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { updateUser, updateDetalle } from "../lib/utils";
+import { updateUser, updateDetalle, createDetalle } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
 import { tr } from "date-fns/locale";
 import { api } from "../page";
+import { addDetail, editDetail } from "../redux/features/detailSlice";
 
 
 function EditUser({ user, setEditUser, detail}) {
   const [usuario, setUsuario] = useState(user);
   const [detalles, setDetalles] = useState(detail);
-  const detallePersona = detalles.detail.filter((e) => e.persona === usuario._id)[0];
+  const detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
 
   const people = useSelector((state) => state.people);
 
@@ -31,7 +32,6 @@ function EditUser({ user, setEditUser, detail}) {
       });
     }
   };
-console.log(detallePersona);
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -110,7 +110,17 @@ console.log(detallePersona);
     });
     setDetalle({...detalle, tipoDeAporte: nuevoDetalle})
   }
-console.log(detalle);
+
+  const createOrUpdateDetail = () => {
+    if(detallePersona) {
+      updateDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona);
+      dispatch(editDetail(detalle));
+    }else{
+      createDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona)
+      dispatch(addDetail(detalle))
+    }
+  }
+
   return (
     <div
       className="relative z-10 "
@@ -795,7 +805,7 @@ console.log(detalle);
                         usuario.provincia,
                         usuario.detalle
                       ),
-                      await updateDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona),
+                      createOrUpdateDetail(),
                       dispatch(editPerson(usuario)),
                       dispatch(changeLoading(false)),
                     ]}
