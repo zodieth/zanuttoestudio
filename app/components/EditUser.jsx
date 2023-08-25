@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { updateUser } from "../lib/utils";
+import React, { useState, useEffect } from "react";
+import { updateUser, updateDetalle, createDetalle } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
-import Detalle from "../components/DetalleAportes";
 import { tr } from "date-fns/locale";
+import { api } from "../page";
+import { addDetail, editDetail } from "../redux/features/detailSlice";
 
-function EditUser({ user, setEditUser }) {
+
+function EditUser({ user, setEditUser, detail}) {
   const [usuario, setUsuario] = useState(user);
+  const [detalles, setDetalles] = useState(detail);
+  const detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
 
   const people = useSelector((state) => state.people);
 
@@ -28,7 +32,6 @@ function EditUser({ user, setEditUser }) {
       });
     }
   };
-
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -56,8 +59,66 @@ function EditUser({ user, setEditUser }) {
       : 0;
 
   const añosAportados = [];
-  for (let index = year + 18; index <= currentYear + 2; index++) {
-    añosAportados.push(index);
+  const cantidadDeMeses=[];
+  const tipoDeAporte=[];
+
+  if(usuario.extranjero){
+    for (let index = year; index <= currentYear + 2; index++) {
+      index===2012? añosAportados.push("De Enero a Marzo " + index, "De Abril a Diciembre " + index)
+      : añosAportados.push(""+index);
+
+    }
+  }else{
+    for (let index = year + 18; index <= currentYear + 2; index++) {
+      index===2012? añosAportados.push("De Enero a Marzo " + index, "De Abril a Diciembre " + index)
+      : añosAportados.push(""+index);
+    }
+  }
+
+  while (cantidadDeMeses.length<añosAportados.length) {
+    cantidadDeMeses.push(0);
+    tipoDeAporte.push("sin aportes")
+
+  }
+
+  const [detalle, setDetalle] = useState({
+    año: añosAportados,
+    cantidadMeses: detallePersona? detallePersona.cantidadMeses : cantidadDeMeses,
+    tipoDeAporte: detallePersona? detallePersona.tipoDeAporte : tipoDeAporte,
+    persona: usuario._id
+  });
+
+
+  const handleChangeMeses =(e, index) => {
+    const nuevoDetalle= detalle.cantidadMeses.map((c, i) => {
+      if(i === index) {
+        return Number(e.target.value);
+      }else {
+        return c;
+      }
+    });
+    setDetalle({...detalle, cantidadMeses: nuevoDetalle})
+  }
+
+  const handleChangeArrayTipos =(e, index) => {
+    const nuevoDetalle= detalle.tipoDeAporte.map((c, i) => {
+      if(i === index) {
+        return e.target.value;
+      }else {
+        return c;
+      }
+    });
+    setDetalle({...detalle, tipoDeAporte: nuevoDetalle})
+  }
+
+  const createOrUpdateDetail = () => {
+    if(detallePersona) {
+      updateDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona);
+      dispatch(editDetail(detalle));
+    }else{
+      createDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona)
+      dispatch(addDetail(detalle))
+    }
   }
 
   return (
@@ -670,7 +731,7 @@ function EditUser({ user, setEditUser }) {
 
                     <tbody className="ltr:text-left rtl:text-right">
                       {añosAportados.map((año) => (
-                        <tr key={año}>
+                        <tr key={añosAportados.indexOf(año)}>
                           <th>{año}</th>
 
                           <th>
@@ -678,17 +739,23 @@ function EditUser({ user, setEditUser }) {
                               type="number"
                               id="MesesxAño"
                               placeholder="Meses Aportados"
-                              defaultValue="0"
+                              defaultValue={detalle.cantidadMeses[añosAportados.indexOf(año)]}
                               className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                              onChange={(e) =>
+                              handleChangeMeses(e,añosAportados.indexOf(año))}
                             />
                           </th>
 
                           <th>
                             <select
-                              className="mt-1 mx-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+
                               name="tipoAporte"
                               id="tipoAporte"
+                              defaultValue={detalle.tipoDeAporte[añosAportados.indexOf(año)]}
+                              onChange={(e) =>
+                                handleChangeArrayTipos(e,añosAportados.indexOf(año))}
                             >
+                              <option value="sin aportes">Sin Aportes</option>
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
@@ -702,7 +769,7 @@ function EditUser({ user, setEditUser }) {
                     </tbody>
                   </table>
                 </aside>
-                {/* <Detalle user={usuario}/> */}
+
                 {/* ----------------------botones editar cancelar------------------ */}
                 <div className=" px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
@@ -736,8 +803,10 @@ function EditUser({ user, setEditUser }) {
                         usuario.claveAnses,
                         usuario.direccion,
                         usuario.localidad,
-                        usuario.provincia
+                        usuario.provincia,
+                        usuario.detalle
                       ),
+                      createOrUpdateDetail(),
                       dispatch(editPerson(usuario)),
                       dispatch(changeLoading(false)),
                     ]}

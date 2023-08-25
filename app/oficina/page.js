@@ -10,13 +10,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPeople } from "../redux/features/peopleSlice";
 import { api } from "../page";
 import { RiLoader5Fill } from "react-icons/ri";
+import { addDetail } from "../redux/features/detailSlice";
 
 function Oficina() {
   const people = useSelector((state) => state.people);
+  const detail = useSelector((state) => state.detail);
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
     api.get("people").then((data) => dispatch(addPeople(data.data)));
+    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
+
   }, [dispatch]);
 
   const { data: session, status } = useSession();
@@ -27,7 +32,7 @@ function Oficina() {
         <Header />
         <div className="flex">
           <SideBar session={session} />
-          <Table people={people} />
+          <Table people={people} detail={detail}/>
         </div>
       </div>
     );
