@@ -756,12 +756,6 @@ function EditUser({ user, setEditUser, detail}) {
                                 handleChangeArrayTipos(e,añosAportados.indexOf(año))}
                             >
                               <option value="sin aportes">Sin Aportes</option>
-
-                              className="mt-1 mx-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                              name="tipoAporte"
-                              id="tipoAporte"
-                            >
-
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
