@@ -8,7 +8,7 @@ import SearchBar from "../components/SearchBar";
 import FilterStatusSelect from "../components/FilterStatusSelect";
 import { useDispatch } from "react-redux";
 
-function Table({ people }) {
+function Table({ people, detail }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [peoplePerPage, setPeoplePerPage] = useState(8);
   const lastPersonIndex = currentPage * peoplePerPage;
@@ -53,7 +53,7 @@ function Table({ people }) {
       {deleteUser && (
         <DeleteConfirm user={user} setDeleteUser={setDeleteUser} />
       )}
-      {editUser && <EditUser user={user} setEditUser={setEditUser} />}
+      {editUser && <EditUser user={user} setEditUser={setEditUser} detail={detail}/>}
 
       <div className="flex flex-row items-center justify-between mb-10">
         <div className="flex gap-4">
