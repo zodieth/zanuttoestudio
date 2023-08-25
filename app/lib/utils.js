@@ -190,3 +190,34 @@ export const updateUser = async (
 //     });
 //   }
 // };
+export const createDetalle = async (
+  año,
+  cantidadMeses,
+  tipoDeAporte,
+  persona
+) => {
+  await api.post("detalle", {
+    año,
+    cantidadMeses,
+    tipoDeAporte,
+    persona
+  });
+};
+export const updateDetalle = async (
+  // _id,
+  año,
+  cantidadMeses,
+  tipoDeAporte,
+  persona,
+  idPersona
+) => {
+  await api.put(`detalle/${idPersona}`, {
+    año,
+    cantidadMeses,
+    tipoDeAporte,
+    persona
+  });
+};
+export const getDetalle = async () => {
+  await api.get(`detalle`);
+}
