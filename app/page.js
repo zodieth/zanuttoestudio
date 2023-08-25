@@ -1,5 +1,7 @@
 import Header from "./components/Header";
 import Banner from "./components/Banner";
+import Footer from "./components/Footer";
+import Body from "./components/Body";
 import axios from "axios";
 
 export default function Home() {
@@ -7,6 +9,9 @@ export default function Home() {
     <main className="">
       <Header />
       <Banner />
+      <Body />
+      <Footer />
+      {/* sedfas */}
     </main>
   );
 }
