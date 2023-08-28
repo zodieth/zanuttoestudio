@@ -8,11 +8,12 @@ import { tr } from "date-fns/locale";
 import { api } from "../page";
 import { addDetail, editDetail } from "../redux/features/detailSlice";
 
-
-function EditUser({ user, setEditUser, detail}) {
+function EditUser({ user, setEditUser, detail }) {
   const [usuario, setUsuario] = useState(user);
   const [detalles, setDetalles] = useState(detail);
-  const detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
+  const detallePersona = detalles.detail?.filter(
+    (e) => e.persona === usuario._id
+  )[0];
 
   const people = useSelector((state) => state.people);
 
@@ -59,67 +60,84 @@ function EditUser({ user, setEditUser, detail}) {
       : 0;
 
   const añosAportados = [];
-  const cantidadDeMeses=[];
-  const tipoDeAporte=[];
+  const cantidadDeMeses = [];
+  const tipoDeAporte = [];
 
-  if(usuario.extranjero){
+  if (usuario.extranjero) {
     for (let index = year; index <= currentYear + 2; index++) {
-      index===2012? añosAportados.push("De Enero a Marzo " + index, "De Abril a Diciembre " + index)
-      : añosAportados.push(""+index);
-
+      index === 2012
+        ? añosAportados.push(
+            "De Enero a Marzo " + index,
+            "De Abril a Diciembre " + index
+          )
+        : añosAportados.push("" + index);
     }
-  }else{
+  } else {
     for (let index = year + 18; index <= currentYear + 2; index++) {
-      index===2012? añosAportados.push("De Enero a Marzo " + index, "De Abril a Diciembre " + index)
-      : añosAportados.push(""+index);
+      index === 2012
+        ? añosAportados.push(
+            "De Enero a Marzo " + index,
+            "De Abril a Diciembre " + index
+          )
+        : añosAportados.push("" + index);
     }
   }
 
-  while (cantidadDeMeses.length<añosAportados.length) {
+  while (cantidadDeMeses.length < añosAportados.length) {
     cantidadDeMeses.push(0);
-    tipoDeAporte.push("sin aportes")
-
+    tipoDeAporte.push("sin aportes");
   }
 
   const [detalle, setDetalle] = useState({
     año: añosAportados,
-    cantidadMeses: detallePersona? detallePersona.cantidadMeses : cantidadDeMeses,
-    tipoDeAporte: detallePersona? detallePersona.tipoDeAporte : tipoDeAporte,
-    persona: usuario._id
+    cantidadMeses: detallePersona
+      ? detallePersona.cantidadMeses
+      : cantidadDeMeses,
+    tipoDeAporte: detallePersona ? detallePersona.tipoDeAporte : tipoDeAporte,
+    persona: usuario._id,
   });
 
-
-  const handleChangeMeses =(e, index) => {
-    const nuevoDetalle= detalle.cantidadMeses.map((c, i) => {
-      if(i === index) {
+  const handleChangeMeses = (e, index) => {
+    const nuevoDetalle = detalle.cantidadMeses.map((c, i) => {
+      if (i === index) {
         return Number(e.target.value);
-      }else {
+      } else {
         return c;
       }
     });
-    setDetalle({...detalle, cantidadMeses: nuevoDetalle})
-  }
+    setDetalle({ ...detalle, cantidadMeses: nuevoDetalle });
+  };
 
-  const handleChangeArrayTipos =(e, index) => {
-    const nuevoDetalle= detalle.tipoDeAporte.map((c, i) => {
-      if(i === index) {
+  const handleChangeArrayTipos = (e, index) => {
+    const nuevoDetalle = detalle.tipoDeAporte.map((c, i) => {
+      if (i === index) {
         return e.target.value;
-      }else {
+      } else {
         return c;
       }
     });
-    setDetalle({...detalle, tipoDeAporte: nuevoDetalle})
-  }
+    setDetalle({ ...detalle, tipoDeAporte: nuevoDetalle });
+  };
 
   const createOrUpdateDetail = () => {
-    if(detallePersona) {
-      updateDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona);
+    if (detallePersona) {
+      updateDetalle(
+        detalle.año,
+        detalle.cantidadMeses,
+        detalle.tipoDeAporte,
+        detalle.persona
+      );
       dispatch(editDetail(detalle));
-    }else{
-      createDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona)
-      dispatch(addDetail(detalle))
+    } else {
+      createDetalle(
+        detalle.año,
+        detalle.cantidadMeses,
+        detalle.tipoDeAporte,
+        detalle.persona
+      );
+      dispatch(addDetail(detalle));
     }
-  }
+  };
 
   return (
     <div
@@ -302,10 +320,11 @@ function EditUser({ user, setEditUser, detail}) {
                   ""
                 )}
                 {/* ------------------------------------------------------ */}
-
-                {(usuario.hijos > 0) |
-                (usuario.hijosAdoptados > 0) |
-                (usuario.hijosDiscapacidad > 0) ? (
+                {usuario.sexo === "MASCULINO" ? (
+                  ""
+                ) : (usuario.hijos > 0) |
+                  (usuario.hijosAdoptados > 0) |
+                  (usuario.hijosDiscapacidad > 0) ? (
                   <div className="m-3">
                     <label
                       htmlFor="UserName"
@@ -328,6 +347,7 @@ function EditUser({ user, setEditUser, detail}) {
                 ) : (
                   ""
                 )}
+
                 {/* ---------------------- */}
 
                 <div className="m-3 flex">
@@ -449,15 +469,21 @@ function EditUser({ user, setEditUser, detail}) {
                     disabled
                     className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     defaultValue={
-                      Number(usuario.hasta2008) +
-                      Number(usuario.desde2009) +
-                      Number(usuario.hasta2012) +
-                      Number(usuario.desde2012) +
-                      excesoDeEdad +
-                      usuario.hijos * 12 +
-                      usuario.hijosAdoptados * 24 +
-                      usuario.hijosDiscapacidad * 24 +
-                      usuario.auh * 12
+                      usuario.sexo === "MASCULINO"
+                        ? Number(usuario.hasta2008) +
+                          Number(usuario.desde2009) +
+                          Number(usuario.hasta2012) +
+                          Number(usuario.desde2012) +
+                          excesoDeEdad
+                        : Number(usuario.hasta2008) +
+                          Number(usuario.desde2009) +
+                          Number(usuario.hasta2012) +
+                          Number(usuario.desde2012) +
+                          excesoDeEdad +
+                          usuario.hijos * 12 +
+                          usuario.hijosAdoptados * 24 +
+                          usuario.hijosDiscapacidad * 24 +
+                          usuario.auh * 12
                     }
                   />
                 </div>
@@ -739,21 +765,31 @@ function EditUser({ user, setEditUser, detail}) {
                               type="number"
                               id="MesesxAño"
                               placeholder="Meses Aportados"
-                              defaultValue={detalle.cantidadMeses[añosAportados.indexOf(año)]}
+                              defaultValue={
+                                detalle.cantidadMeses[
+                                  añosAportados.indexOf(año)
+                                ]
+                              }
                               className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                               onChange={(e) =>
-                              handleChangeMeses(e,añosAportados.indexOf(año))}
+                                handleChangeMeses(e, añosAportados.indexOf(año))
+                              }
                             />
                           </th>
 
                           <th>
                             <select
-
                               name="tipoAporte"
                               id="tipoAporte"
-                              defaultValue={detalle.tipoDeAporte[añosAportados.indexOf(año)]}
+                              defaultValue={
+                                detalle.tipoDeAporte[añosAportados.indexOf(año)]
+                              }
                               onChange={(e) =>
-                                handleChangeArrayTipos(e,añosAportados.indexOf(año))}
+                                handleChangeArrayTipos(
+                                  e,
+                                  añosAportados.indexOf(año)
+                                )
+                              }
                             >
                               <option value="sin aportes">Sin Aportes</option>
                               <option value="monotributo">Monotributo</option>
