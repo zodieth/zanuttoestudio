@@ -27,9 +27,9 @@ export async function POST(request) {
       persona,
     });
   
-    detalle.save();
+    const newDetalle = detalle.save();
   
-    return NextResponse.json({ msg: "detalle creado", detalle });
+    return NextResponse.json({ msg: "detalle creado", newDetalle });
   } catch (error) {
     return NextResponse.json({ msg: error }, { status: 404 });
   }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { updateUser, updateDetalle, createDetalle } from "../lib/utils";
+import { updateUser, updateDetalle, createDetalle, getDetalle } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
@@ -9,14 +9,16 @@ import { api } from "../page";
 import { addDetail, editDetail } from "../redux/features/detailSlice";
 
 
-function EditUser({ user, setEditUser, detail}) {
+function EditUser({ user, setEditUser}) {
   const [usuario, setUsuario] = useState(user);
-  const [detalles, setDetalles] = useState(detail);
-  const detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
-
+  const detalles= useSelector((state) => state.detail);
   const people = useSelector((state) => state.people);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
+  }, [dispatch]);
+  const detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
 
   const handleChangeTipoAporte = (e) => {
     const { value, checked } = e.target;
@@ -32,6 +34,7 @@ function EditUser({ user, setEditUser, detail}) {
       });
     }
   };
+  console.log(detalles);
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -82,6 +85,7 @@ function EditUser({ user, setEditUser, detail}) {
   }
 
   const [detalle, setDetalle] = useState({
+    _id: detallePersona? detallePersona._id : "",
     año: añosAportados,
     cantidadMeses: detallePersona? detallePersona.cantidadMeses : cantidadDeMeses,
     tipoDeAporte: detallePersona? detallePersona.tipoDeAporte : tipoDeAporte,
@@ -111,13 +115,14 @@ function EditUser({ user, setEditUser, detail}) {
     setDetalle({...detalle, tipoDeAporte: nuevoDetalle})
   }
 
-  const createOrUpdateDetail = () => {
+  const createOrUpdateDetail = async() => {
     if(detallePersona) {
-      updateDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona);
+      await updateDetalle(detalle._id ,detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona);
       dispatch(editDetail(detalle));
     }else{
-      createDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona)
-      dispatch(addDetail(detalle))
+      const newDetail= await createDetalle(detalle.año, detalle.cantidadMeses, detalle.tipoDeAporte, detalle.persona);
+      console.log("EEEEEEEEEE",newDetail);
+      dispatch(addDetail([...detalles.detail, detalle]))
     }
   }
 
@@ -814,7 +819,7 @@ function EditUser({ user, setEditUser, detail}) {
                     Editar
                   </button>
                   <div
-                    onClick={() => [setEditUser(false)]}
+                    onClick={() => [setEditUser(false),]}
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto cursor-pointer"
                   >
