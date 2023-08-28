@@ -10,12 +10,6 @@ export const detailSlice = createSlice({
   
     reducers: {
       addDetail: (state, action) => {
-        // if(action.payload.length){
-        //   console.log("EEEEEEE")
-        //   state.detail = action.payload;
-        // } else {
-        //   state.detail = ...state.detail,action.payload;
-        // }
         state.detail = action.payload;
         state.detailCopy = action.payload;
         state.isLoading = false;
