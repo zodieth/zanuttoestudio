@@ -1,3 +1,5 @@
+import { id } from "date-fns/locale";
+
 const { api } = require("../page");
 
 export const sendMsg = async (to, body) => {
@@ -204,14 +206,13 @@ export const createDetalle = async (
   });
 };
 export const updateDetalle = async (
-  // _id,
+  _id,
   año,
   cantidadMeses,
   tipoDeAporte,
-  persona,
-  idPersona
+  persona
 ) => {
-  await api.put(`detalle/${idPersona}`, {
+  await api.patch(`detalle/${_id}`, {
     año,
     cantidadMeses,
     tipoDeAporte,

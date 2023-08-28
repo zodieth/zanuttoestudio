@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { updateUser, updateDetalle, createDetalle } from "../lib/utils";
+import { updateUser, updateDetalle, createDetalle, getDetalle } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
@@ -8,16 +8,18 @@ import { tr } from "date-fns/locale";
 import { api } from "../page";
 import { addDetail, editDetail } from "../redux/features/detailSlice";
 
-function EditUser({ user, setEditUser, detail }) {
+
+function EditUser({ user, setEditUser}) {
   const [usuario, setUsuario] = useState(user);
-  const [detalles, setDetalles] = useState(detail);
-  const detallePersona = detalles.detail?.filter(
-    (e) => e.persona === usuario._id
-  )[0];
+  const detalles = useSelector((state) => state.detail);
 
   const people = useSelector((state) => state.people);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
+  }, [dispatch]);
+  const detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
 
   const handleChangeTipoAporte = (e) => {
     const { value, checked } = e.target;
@@ -33,6 +35,7 @@ function EditUser({ user, setEditUser, detail }) {
       });
     }
   };
+  console.log(detalles);
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -89,6 +92,7 @@ function EditUser({ user, setEditUser, detail }) {
   }
 
   const [detalle, setDetalle] = useState({
+    _id: detallePersona? detallePersona._id : "",
     año: añosAportados,
     cantidadMeses: detallePersona
       ? detallePersona.cantidadMeses
@@ -119,9 +123,10 @@ function EditUser({ user, setEditUser, detail }) {
     setDetalle({ ...detalle, tipoDeAporte: nuevoDetalle });
   };
 
-  const createOrUpdateDetail = () => {
-    if (detallePersona) {
-      updateDetalle(
+  const createOrUpdateDetail = async() => {
+    if(detallePersona) {
+      await updateDetalle(
+        detalle._id,
         detalle.año,
         detalle.cantidadMeses,
         detalle.tipoDeAporte,
@@ -129,7 +134,7 @@ function EditUser({ user, setEditUser, detail }) {
       );
       dispatch(editDetail(detalle));
     } else {
-      createDetalle(
+      await createDetalle(
         detalle.año,
         detalle.cantidadMeses,
         detalle.tipoDeAporte,
