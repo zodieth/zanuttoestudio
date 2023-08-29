@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { updateUser, updateDetalle, createDetalle, getDetalle } from "../lib/utils";
+import {
+  updateUser,
+  updateDetalle,
+  createDetalle,
+  getDetalle,
+} from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
@@ -88,7 +93,7 @@ function EditUser({ user, setEditUser, detail}) {
   }
 
   const [detalle, setDetalle] = useState({
-    _id: detallePersona? detallePersona._id : "",
+    _id: detallePersona ? detallePersona._id : "",
     año: añosAportados,
     cantidadMeses: detallePersona
       ? detallePersona.cantidadMeses
