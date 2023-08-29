@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   updateUser,
   updateDetalle,
   createDetalle,
-  getDetalle,
 } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
 import { tr } from "date-fns/locale";
-import { api } from "../page";
 import { addDetail, editDetail } from "../redux/features/detailSlice";
 
 
