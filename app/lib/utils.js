@@ -198,12 +198,13 @@ export const createDetalle = async (
   tipoDeAporte,
   persona
 ) => {
-  await api.post("detalle", {
+  const newDetalle = await api.post("detalle", {
     año,
     cantidadMeses,
     tipoDeAporte,
     persona
-  });
+  }).then(detalleNuevo => {return detalleNuevo});
+  return newDetalle
 };
 export const updateDetalle = async (
   _id,
