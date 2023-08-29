@@ -9,17 +9,14 @@ import { api } from "../page";
 import { addDetail, editDetail } from "../redux/features/detailSlice";
 
 
-function EditUser({ user, setEditUser}) {
+function EditUser({ user, setEditUser, detail}) {
   const [usuario, setUsuario] = useState(user);
-  const detalles = useSelector((state) => state.detail);
+  const [detalles, setDetalles] = useState(detail);
 
   const people = useSelector((state) => state.people);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
-  }, [dispatch]);
-  const detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
+  let detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
 
   const handleChangeTipoAporte = (e) => {
     const { value, checked } = e.target;
@@ -35,7 +32,6 @@ function EditUser({ user, setEditUser}) {
       });
     }
   };
-  console.log(detalles);
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -124,7 +120,7 @@ function EditUser({ user, setEditUser}) {
   };
 
   const createOrUpdateDetail = async() => {
-    if(detallePersona) {
+    if(detalle._id!=="") {
       await updateDetalle(
         detalle._id,
         detalle.año,
@@ -134,13 +130,14 @@ function EditUser({ user, setEditUser}) {
       );
       dispatch(editDetail(detalle));
     } else {
-      await createDetalle(
+      const newDetail = await createDetalle(
         detalle.año,
         detalle.cantidadMeses,
         detalle.tipoDeAporte,
         detalle.persona
       );
-      dispatch(addDetail(detalle));
+      dispatch(addDetail([...detalles.detail, newDetail.data.newDetalle]));
+      setDetalle({...detalle, _id: newDetail.data.newDetalle._id})
     }
   };
 
