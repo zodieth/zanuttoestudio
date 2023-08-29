@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import Detalle from "../../../models/DetalleAportes";
 import dbConnect from "../../../lib/dbConnect";
 
-export async function PUT(request, { params }) {
+export async function PATCH(request, { params }) {
   const {
     //_id,
     año,
@@ -11,13 +11,13 @@ export async function PUT(request, { params }) {
     persona
   } = await request.json();
 
-  const { idPersona } = params;
+  const { _id } = params;
 
   await dbConnect();
 
   try {
-    const detalle = await Detalle.findOneAndUpdate({ persona: idPersona }, {        
-      //_id,
+    const detalle = await Detalle.findOneAndUpdate({ persona: persona }, {        
+      _id,
       año,
       cantidadMeses,
       tipoDeAporte,
