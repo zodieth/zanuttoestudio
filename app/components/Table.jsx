@@ -24,6 +24,7 @@ function Table({ people, detail }) {
     nombr: "",
     sexo: "",
     fecha: "",
+    fechaDeIngreso: "",
     hijos: 0,
     num: 0,
     aportes: 0,
@@ -53,7 +54,9 @@ function Table({ people, detail }) {
       {deleteUser && (
         <DeleteConfirm user={user} setDeleteUser={setDeleteUser} />
       )}
-      {editUser && <EditUser user={user} setEditUser={setEditUser} detail={detail}/>}
+      {editUser && (
+        <EditUser user={user} setEditUser={setEditUser} detail={detail} />
+      )}
 
       <div className="flex flex-row items-center justify-between mb-10">
         <div className="flex gap-4">
