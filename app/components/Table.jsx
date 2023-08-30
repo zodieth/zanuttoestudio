@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiLoader5Fill } from "react-icons/ri";
 import DeleteConfirm from "../components/DeleteConfirm";
 import EditUser from "../components/EditUser";
@@ -10,11 +10,22 @@ import { useDispatch } from "react-redux";
 import * as XLSX from "xlsx";
 
 function Table({ people, detail }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [peoplePerPage, setPeoplePerPage] = useState(8);
-  const lastPersonIndex = currentPage * peoplePerPage;
-  const firstPersonIndex = lastPersonIndex - peoplePerPage;
-  const currentPeople = people.people.slice(firstPersonIndex, lastPersonIndex);
+  const [actualPage, setActualPage] = useState(1);
+  const total_Page = 10;
+  let peoplePagination;
+
+  useEffect(() => {
+    setActualPage(1);
+  }, [people.people]);
+
+  peoplePagination = people.people.slice(
+    (actualPage - 1) * total_Page,
+    actualPage * total_Page - 1
+  );
+
+  const getTotalPages = () => {
+    return Math.ceil(people.people.length / total_Page);
+  };
 
   // ----------------------------
 
@@ -25,6 +36,7 @@ function Table({ people, detail }) {
     nombr: "",
     sexo: "",
     fecha: "",
+    fechaDeIngreso: "",
     hijos: 0,
     num: 0,
     aportes: 0,
@@ -84,7 +96,9 @@ function Table({ people, detail }) {
       {deleteUser && (
         <DeleteConfirm user={user} setDeleteUser={setDeleteUser} />
       )}
-      {editUser && <EditUser user={user} setEditUser={setEditUser} detail={detail}/>}
+      {editUser && (
+        <EditUser user={user} setEditUser={setEditUser} detail={detail} />
+      )}
 
       <div className="flex flex-row items-center justify-between mb-10">
         <div className="flex gap-4">
@@ -153,7 +167,7 @@ function Table({ people, detail }) {
               </thead>
 
               <tbody className="divide-y divide-gray-200">
-                {currentPeople
+                {peoplePagination
                   ?.filter((people) => {
                     return search.toLowerCase() === ""
                       ? people
@@ -248,10 +262,11 @@ function Table({ people, detail }) {
               </tbody>
             </table>
             <Pagination
-              peopleData={people.people?.length}
-              peoplePerPage={peoplePerPage}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
+              page={actualPage}
+              total={getTotalPages()}
+              onChange={(pageChange) => {
+                setActualPage(pageChange);
+              }}
             />
           </div>
         )}

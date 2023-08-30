@@ -1,25 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   updateUser,
   updateDetalle,
   createDetalle,
+  getDetalle,
 } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
 import { tr } from "date-fns/locale";
+import { api } from "../page";
 import { addDetail, editDetail } from "../redux/features/detailSlice";
 
-
-function EditUser({ user, setEditUser, detail}) {
+function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
-  const [detalles, setDetalles] = useState(detail);
+  const detalles = useSelector((state) => state.detail);
 
   const people = useSelector((state) => state.people);
 
   const dispatch = useDispatch();
-  let detallePersona = detalles?.detail.filter((e) => e.persona === usuario._id)[0];
+  useEffect(() => {
+    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
+  }, [dispatch]);
+  const detallePersona = detalles.detail?.filter(
+    (e) => e.persona === usuario._id
+  )[0];
 
   const handleChangeTipoAporte = (e) => {
     const { value, checked } = e.target;
@@ -122,8 +128,8 @@ function EditUser({ user, setEditUser, detail}) {
     setDetalle({ ...detalle, tipoDeAporte: nuevoDetalle });
   };
 
-  const createOrUpdateDetail = async() => {
-    if(detalle._id!=="") {
+  const createOrUpdateDetail = async () => {
+    if (detallePersona) {
       await updateDetalle(
         detalle._id,
         detalle.año,
@@ -133,16 +139,17 @@ function EditUser({ user, setEditUser, detail}) {
       );
       dispatch(editDetail(detalle));
     } else {
-      const newDetail = await createDetalle(
+      await createDetalle(
         detalle.año,
         detalle.cantidadMeses,
         detalle.tipoDeAporte,
         detalle.persona
       );
-      dispatch(addDetail([...detalles.detail, newDetail.data.newDetalle]));
-      setDetalle({...detalle, _id: newDetail.data.newDetalle._id})
+      dispatch(addDetail(detalle));
     }
   };
+
+  console.log(usuario);
 
   return (
     <div
@@ -230,11 +237,7 @@ function EditUser({ user, setEditUser, detail}) {
                     htmlFor="UserFecha"
                     className="block text-xs font-medium text-gray-700"
                   >
-                    {usuario.extranjero ? (
-                      <div>Fecha de ingreso al país</div>
-                    ) : (
-                      <div> Fecha</div>
-                    )}
+                    <div>Fecha de nacimiento</div>
                   </label>
 
                   <input
@@ -247,6 +250,32 @@ function EditUser({ user, setEditUser, detail}) {
                     }
                   />
                 </div>
+
+                {usuario.extranjero ? (
+                  <div className="m-3">
+                    <label
+                      htmlFor="UserFechaIngreso"
+                      className="block text-xs font-medium text-gray-700"
+                    >
+                      <div>Fecha de ingreso al país</div>
+                    </label>
+
+                    <input
+                      type="date"
+                      id="UserName"
+                      className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                      defaultValue={usuario.fechaDeIngreso}
+                      onChange={(e) =>
+                        setUsuario({
+                          ...usuario,
+                          fechaDeIngreso: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
                 {/* ---------------------------------- */}
                 {usuario.sexo === "FEMENINO" ? (
                   <div className="m-3 ">
@@ -578,6 +607,43 @@ function EditUser({ user, setEditUser, detail}) {
                 </div>
                 {/* --------------------- */}
                 <div className="m-3">
+                  <label
+                    htmlFor="UserNum"
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    Pension
+                  </label>
+                  <div className="flex items-center justify-center ">
+                    {["MINIMA", "OTRO MONTO", "NO"].map((e, index) => (
+                      <button
+                        key={index}
+                        className={
+                          (e === "MINIMA") & (usuario.pension === "minima")
+                            ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : (e === "OTRO MONTO") &
+                              (usuario.pension === "otro monto")
+                            ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : (e === "NO") & (usuario.pension === "no")
+                            ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 "
+                        }
+                        onClick={() =>
+                          e === "MINIMA"
+                            ? setUsuario({ ...usuario, pension: "minima" })
+                            : e === "OTRO MONTO"
+                            ? setUsuario({ ...usuario, pension: "otro monto" })
+                            : e === "NO"
+                            ? setUsuario({ ...usuario, pension: "no" })
+                            : ""
+                        }
+                      >
+                        {e}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* --------------------- */}
+                <div className="m-3">
                   <label className="block text-xs font-medium text-gray-700">
                     Tipo de aportes
                   </label>
@@ -769,7 +835,7 @@ function EditUser({ user, setEditUser, detail}) {
                             <input
                               type="number"
                               id="MesesxAño"
-                              placeholder="Meses Aportados"
+                              placeholder={0}
                               defaultValue={
                                 detalle.cantidadMeses[
                                   añosAportados.indexOf(año)
@@ -784,6 +850,7 @@ function EditUser({ user, setEditUser, detail}) {
 
                           <th>
                             <select
+                              className="mx-1 rounded-md text-sm "
                               name="tipoAporte"
                               id="tipoAporte"
                               defaultValue={
@@ -796,13 +863,16 @@ function EditUser({ user, setEditUser, detail}) {
                                 )
                               }
                             >
-                              <option value="sin aportes">Sin Aportes</option>
+                              <option className="" value="sin aportes">
+                                Sin aportes
+                              </option>
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
                                 Servicio Doméstico
                               </option>
                               <option value="dependencia">Dependencia</option>
+                              <option value="otro">Otro</option>
                             </select>
                           </th>
                         </tr>
@@ -824,6 +894,7 @@ function EditUser({ user, setEditUser, detail}) {
                         usuario.nombre,
                         usuario.sexo,
                         usuario.fecha,
+                        usuario.fechaDeIngreso,
                         usuario.hijos,
                         usuario.num,
                         usuario.aportes,
