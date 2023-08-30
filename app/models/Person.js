@@ -3,6 +3,7 @@ const PersonSchema = new mongoose.Schema({
   nombre: { type: String, required: false, default: "" },
   sexo: { type: String, required: [true, "El sexo es requerido"] },
   fecha: { type: String, required: [true, "La fecha es requerida"] },
+  fechaDeIngreso: { type: String, required: false },
   hijos: { type: Number, required: false, default: 0 },
   hijosDiscapacidad: { type: Number, required: false, default: 0 },
   hijosAdoptados: { type: Number, required: false, default: 0 },
