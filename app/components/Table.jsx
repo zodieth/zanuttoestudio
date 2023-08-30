@@ -49,47 +49,29 @@ function Table({ people, detail }) {
   });
   const [search, setSearch] = useState("");
 
-  const data = people.people.map((p)=> {
-    let person = {...p, detale: {} };
+  const dataPerson = people.people
+  const dataDetails = people.people.map((p) => {
     const d = detail.detail
     for(let i=0; i<d.length; i++){
       if(d[i].persona === p._id){
-        person.detale = d[i]
+        return d[i];
       }
     }
-    return person
-  })
-
-  const downloadExcel = (data) => {
+    return {};
+  })  
+  const downloadExcel = (dataPerson, dataDetails) => {
     const workbook = XLSX.utils.book_new();
-    data.forEach(element => {
-      let datosExcel = {}
-      if(element.sexo === "MASCULINO"){
-        datosExcel.nombre = element.nombre;
-        datosExcel.sexo = element.sexo;
-        datosExcel.fecha = element.fecha;
-        datosExcel.dni = element.dni;
-        datosExcel.num = element.num;
-        datosExcel.aportes = element.aportes;
-        datosExcel.claveAnses = element.claveAnses;
-        datosExcel.direccion = element.direccion;
-      }
-      else{
-        datosExcel.nombre = element.nombre;
-        datosExcel.sexo = element.sexo;
-        datosExcel.fecha = element.fecha;
-        datosExcel.dni = element.dni;
-        datosExcel.num = element.num;
-        datosExcel.hijos = element.hijos;
-        datosExcel.hijosAdoptados = element.hijosAdoptados;
-        datosExcel.hijosDiscapacidad = element.hijosDiscapacidad;
-        datosExcel.aportes = element.aportes;
-        datosExcel.claveAnses = element.claveAnses;
-        datosExcel.direccion = element.direccion;        
-      }
+    dataPerson.forEach(element => {
+      const detail = dataDetails[dataPerson.indexOf(element)];
+      const worksheet = XLSX.utils.json_to_sheet([element]);
+      if(detail !== {}){
+        XLSX.utils.sheet_add_aoa(worksheet, [detail.año, detail.cantidadMeses, detail.tipoDeAporte], { origin: 'B4' });  
 
-      const worksheet = XLSX.utils.json_to_sheet([datosExcel]);
+      }
+      //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });  
+
       XLSX.utils.book_append_sheet(workbook, worksheet, element._id);
+      //XLSX.utils.book_append_sheet(workbook, worksheet2, element._id);
     });
     //XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
@@ -111,7 +93,7 @@ function Table({ people, detail }) {
         </div>
 
         <div className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
-          onClick={()=>downloadExcel(data)}
+          onClick={()=>downloadExcel(dataPerson,dataDetails)}
         >
           <h1 className="text-md">Exportar a Excel</h1>
 
