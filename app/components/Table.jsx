@@ -126,9 +126,6 @@ function Table({ people, detail }) {
             />
           </svg>
         </div>
-        <div>
-
-        </div>
       </div>
 
       <div className="flex flex-row items-center justify-center">
