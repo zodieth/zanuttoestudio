@@ -27,9 +27,8 @@ export async function POST(request) {
       persona,
     });
   
-    const newDetalle = detalle.save();
-  console.log(newDetalle);
-    return NextResponse.json({ msg: "detalle creado", newDetalle });
+    const newDetalle = await detalle.save().then(detalleNuevo => {return detalleNuevo});
+    return NextResponse.json({ msg: "detalle creado", newDetalle: newDetalle });
   } catch (error) {
     return NextResponse.json({ msg: error }, { status: 404 });
   }
