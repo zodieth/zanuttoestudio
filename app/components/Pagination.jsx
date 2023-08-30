@@ -1,54 +1,56 @@
-import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
-
-const Pagination = ({
-  peopleData,
-  peoplePerPage,
-  setCurrentPage,
-  currentPage,
-}) => {
-  let pages = [];
-
-  for (let i = 1; i <= Math.ceil(peopleData / peoplePerPage); i++) {
-    pages.push(i);
-  }
-
-  return (
-    <div className="flex items-center justify-center mt-10">
-      <button
-        onClick={() => {
-          setCurrentPage(currentPage === 1 ? currentPage : currentPage - 1);
-        }}
-        className="mx-1 flex items-center justify-center rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer h-8 w-10"
-      >
-        <MdNavigateBefore size={15} />
-      </button>
-      {pages.map((page, index) => {
-        return (
+export default function Pagination(props) {
+  const getPages = () => {
+    const result = [];
+    for (let i = 0; i < props.total; i++) {
+      let page = i + 1;
+      if (i === 0 && props.page > 3) {
+        result.push(
           <button
-            key={index}
-            onClick={() => setCurrentPage(page)}
+            key={i}
+            onClick={() => {
+              props.onChange(page);
+            }}
+          >
+            &laquo;
+          </button>
+        );
+      } else if (i >= props.page - 3 && i <= props.page + 1) {
+        result.push(
+          <button
+            key={i}
             className={
-              page == currentPage
-                ? "mx-1 flex items-center justify-center rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer h-8 w-10"
-                : "mx-1 flex items-center justify-center rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer h-8 w-10"
+              props.page === page
+                ? "mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer h-8 w-10"
+                : "mx-1 flex flex-row items-center justify-center rounded bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-400 cursor-pointer h-8 w-10"
             }
+            onClick={() => {
+              props.onChange(page);
+            }}
           >
             {page}
           </button>
         );
-      })}
-      <button
-        onClick={() => {
-          setCurrentPage(
-            currentPage === pages.length ? currentPage : currentPage + 1
-          );
-        }}
-        className="mx-1 flex items-center justify-center rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer h-8 w-10"
-      >
-        <MdNavigateNext size={20} />
-      </button>
+      }
+      if (i === props.total - 1 && props.page < props.total - 2) {
+        result.push(
+          <button
+            key={i}
+            onClick={() => {
+              props.onChange(page);
+            }}
+          >
+            &raquo;
+          </button>
+        );
+      }
+    }
+    return result;
+  };
+
+  return (
+    <div className="flex items-center justify-center mt-5">
+      <br />
+      {getPages()}
     </div>
   );
-};
-
-export default Pagination;
+}

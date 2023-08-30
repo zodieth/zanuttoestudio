@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiLoader5Fill } from "react-icons/ri";
 import DeleteConfirm from "../components/DeleteConfirm";
 import EditUser from "../components/EditUser";
@@ -9,11 +9,22 @@ import FilterStatusSelect from "../components/FilterStatusSelect";
 import { useDispatch } from "react-redux";
 
 function Table({ people, detail }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [peoplePerPage, setPeoplePerPage] = useState(8);
-  const lastPersonIndex = currentPage * peoplePerPage;
-  const firstPersonIndex = lastPersonIndex - peoplePerPage;
-  const currentPeople = people.people.slice(firstPersonIndex, lastPersonIndex);
+  const [actualPage, setActualPage] = useState(1);
+  const total_Page = 10;
+  let peoplePagination;
+
+  useEffect(() => {
+    setActualPage(1);
+  }, [people.people]);
+
+  peoplePagination = people.people.slice(
+    (actualPage - 1) * total_Page,
+    actualPage * total_Page - 1
+  );
+
+  const getTotalPages = () => {
+    return Math.ceil(people.people.length / total_Page);
+  };
 
   // ----------------------------
 
@@ -63,25 +74,6 @@ function Table({ people, detail }) {
           <SearchBar setSearch={setSearch} />
           <FilterStatusSelect useDispatch={useDispatch} />
         </div>
-
-        {/* <div className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer">
-          <h1 className="text-md">Crear</h1>
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-4 w-4 ml-2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-            />
-          </svg>
-        </div> */}
       </div>
 
       <div className="flex flex-row items-center justify-center">
@@ -120,7 +112,7 @@ function Table({ people, detail }) {
               </thead>
 
               <tbody className="divide-y divide-gray-200">
-                {currentPeople
+                {peoplePagination
                   ?.filter((people) => {
                     return search.toLowerCase() === ""
                       ? people
@@ -215,10 +207,11 @@ function Table({ people, detail }) {
               </tbody>
             </table>
             <Pagination
-              peopleData={people.people?.length}
-              peoplePerPage={peoplePerPage}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
+              page={actualPage}
+              total={getTotalPages()}
+              onChange={(pageChange) => {
+                setActualPage(pageChange);
+              }}
             />
           </div>
         )}
