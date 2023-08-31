@@ -2,10 +2,6 @@ import { signOut } from "next-auth/react";
 import React from "react";
 
 function SideBar({ session }) {
-  const handleLogout = async () => {
-    await signOut();
-  };
-
   return (
     <div className="flex h-screen w-16 flex-col justify-between border-e bg-white">
       <div>
@@ -158,7 +154,7 @@ function SideBar({ session }) {
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2">
         <form>
           <button
-            onClick={() => handleLogout()}
+            onClick={() => signOut()}
             type="submit"
             className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
           >

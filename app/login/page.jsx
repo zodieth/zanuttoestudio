@@ -18,6 +18,12 @@ function SignInPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!user.email || !user.password) {
+      setError("Todos los campos son necesarios");
+      setLoading(false);
+    }
+
     const res = await signIn("credentials", {
       email: user.email,
       password: user.password,
@@ -137,6 +143,8 @@ function SignInPage() {
               </span>
             </div>
           </div>
+
+          <div className="text-black">{error}</div>
 
           <div className="flex items-center justify-end">
             {/* <p className="text-sm text-gray-500">
