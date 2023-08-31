@@ -150,8 +150,6 @@ function EditUser({ user, setEditUser }) {
     }
   };
 
-  console.log(usuario);
-
   return (
     <div
       className="relative z-10 "
