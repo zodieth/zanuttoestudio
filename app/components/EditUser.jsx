@@ -129,7 +129,7 @@ function EditUser({ user, setEditUser }) {
   };
 
   const createOrUpdateDetail = async () => {
-    if (detallePersona) {
+    if (detalle._id) {
       await updateDetalle(
         detalle._id,
         detalle.año,
@@ -139,13 +139,14 @@ function EditUser({ user, setEditUser }) {
       );
       dispatch(editDetail(detalle));
     } else {
-      await createDetalle(
+      const response = await createDetalle(
         detalle.año,
         detalle.cantidadMeses,
         detalle.tipoDeAporte,
         detalle.persona
       );
-      dispatch(addDetail(detalle));
+      setDetalle({...detalle, _id: response.data.newDetalle._id});
+      dispatch(addDetail([detalle]));
     }
   };
 

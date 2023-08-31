@@ -159,6 +159,12 @@ function Table({ people, detail }) {
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     Número
                   </th>
+                  <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    <div className="flex flex-col items-center justify-center">
+                      Seleccionar todos
+                      <input type="checkbox" />
+                    </div>
+                  </th>
                   <th className="px-4 py-2"></th>
                 </tr>
               </thead>
@@ -213,6 +219,9 @@ function Table({ people, detail }) {
                         >
                           {e.num}
                         </a>
+                      </td>
+                      <td className="flex justify-center">
+                          <input type="checkbox" />
                       </td>
                       <td className="whitespace-nowrap px-4 py-2">
                         <div
