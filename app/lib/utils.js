@@ -1,5 +1,3 @@
-import { id } from "date-fns/locale";
-
 const { api } = require("../page");
 
 export const sendMsg = async (to, body) => {
@@ -10,6 +8,7 @@ export const createPerson = async (
   nombre,
   sexo,
   fecha,
+  fechaDeIngreso,
   hijos,
   num,
   aportes,
@@ -31,6 +30,7 @@ export const createPerson = async (
     nombre,
     sexo,
     fecha,
+    fechaDeIngreso,
     hijos,
     num,
     aportes,
@@ -54,6 +54,7 @@ export const updateOrCreatePerson = async (
   nombre,
   sexo,
   fecha,
+  fechaDeIngreso,
   hijos,
   num,
   aportes,
@@ -75,6 +76,7 @@ export const updateOrCreatePerson = async (
     nombre,
     sexo,
     fecha,
+    fechaDeIngreso,
     hijos,
     num,
     aportes,
@@ -99,6 +101,7 @@ export const updateOrCreatePerson = async (
       nombre,
       sexo,
       fecha,
+      fechaDeIngreso,
       hijos,
       num,
       aportes,
@@ -128,6 +131,7 @@ export const updateUser = async (
   nombre,
   sexo,
   fecha,
+  fechaDeIngreso,
   hijos,
   num,
   aportes,
@@ -154,6 +158,7 @@ export const updateUser = async (
     nombre,
     sexo,
     fecha,
+    fechaDeIngreso,
     hijos,
     num,
     aportes,
@@ -198,12 +203,17 @@ export const createDetalle = async (
   tipoDeAporte,
   persona
 ) => {
-  await api.post("detalle", {
-    año,
-    cantidadMeses,
-    tipoDeAporte,
-    persona
-  });
+  const newDetalle = await api
+    .post("detalle", {
+      año,
+      cantidadMeses,
+      tipoDeAporte,
+      persona,
+    })
+    .then((detalleNuevo) => {
+      return detalleNuevo;
+    });
+  return newDetalle;
 };
 export const updateDetalle = async (
   _id,
@@ -216,9 +226,9 @@ export const updateDetalle = async (
     año,
     cantidadMeses,
     tipoDeAporte,
-    persona
+    persona,
   });
 };
 export const getDetalle = async () => {
   await api.get(`detalle`);
-}
+};

@@ -41,7 +41,6 @@ function EditUser({ user, setEditUser }) {
       });
     }
   };
-  console.log(detalles);
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -236,11 +235,7 @@ function EditUser({ user, setEditUser }) {
                     htmlFor="UserFecha"
                     className="block text-xs font-medium text-gray-700"
                   >
-                    {usuario.extranjero ? (
-                      <div>Fecha de ingreso al país</div>
-                    ) : (
-                      <div> Fecha</div>
-                    )}
+                    <div>Fecha de nacimiento</div>
                   </label>
 
                   <input
@@ -253,6 +248,32 @@ function EditUser({ user, setEditUser }) {
                     }
                   />
                 </div>
+
+                {usuario.extranjero ? (
+                  <div className="m-3">
+                    <label
+                      htmlFor="UserFechaIngreso"
+                      className="block text-xs font-medium text-gray-700"
+                    >
+                      <div>Fecha de ingreso al país</div>
+                    </label>
+
+                    <input
+                      type="date"
+                      id="UserName"
+                      className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                      defaultValue={usuario.fechaDeIngreso}
+                      onChange={(e) =>
+                        setUsuario({
+                          ...usuario,
+                          fechaDeIngreso: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
                 {/* ---------------------------------- */}
                 {usuario.sexo === "FEMENINO" ? (
                   <div className="m-3 ">
@@ -584,6 +605,43 @@ function EditUser({ user, setEditUser }) {
                 </div>
                 {/* --------------------- */}
                 <div className="m-3">
+                  <label
+                    htmlFor="UserNum"
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    Pension
+                  </label>
+                  <div className="flex items-center justify-center ">
+                    {["MINIMA", "OTRO MONTO", "NO"].map((e, index) => (
+                      <button
+                        key={index}
+                        className={
+                          (e === "MINIMA") & (usuario.pension === "minima")
+                            ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : (e === "OTRO MONTO") &
+                              (usuario.pension === "otro monto")
+                            ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : (e === "NO") & (usuario.pension === "no")
+                            ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 "
+                        }
+                        onClick={() =>
+                          e === "MINIMA"
+                            ? setUsuario({ ...usuario, pension: "minima" })
+                            : e === "OTRO MONTO"
+                            ? setUsuario({ ...usuario, pension: "otro monto" })
+                            : e === "NO"
+                            ? setUsuario({ ...usuario, pension: "no" })
+                            : ""
+                        }
+                      >
+                        {e}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* --------------------- */}
+                <div className="m-3">
                   <label className="block text-xs font-medium text-gray-700">
                     Tipo de aportes
                   </label>
@@ -775,7 +833,7 @@ function EditUser({ user, setEditUser }) {
                             <input
                               type="number"
                               id="MesesxAño"
-                              placeholder="Meses Aportados"
+                              placeholder={0}
                               defaultValue={
                                 detalle.cantidadMeses[
                                   añosAportados.indexOf(año)
@@ -790,6 +848,7 @@ function EditUser({ user, setEditUser }) {
 
                           <th>
                             <select
+                              className="mx-1 rounded-md text-sm "
                               name="tipoAporte"
                               id="tipoAporte"
                               defaultValue={
@@ -802,13 +861,16 @@ function EditUser({ user, setEditUser }) {
                                 )
                               }
                             >
-                              <option value="sin aportes">Sin Aportes</option>
+                              <option className="" value="sin aportes">
+                                Sin aportes
+                              </option>
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
                                 Servicio Doméstico
                               </option>
                               <option value="dependencia">Dependencia</option>
+                              <option value="otro">Otro</option>
                             </select>
                           </th>
                         </tr>
@@ -830,6 +892,7 @@ function EditUser({ user, setEditUser }) {
                         usuario.nombre,
                         usuario.sexo,
                         usuario.fecha,
+                        usuario.fechaDeIngreso,
                         usuario.hijos,
                         usuario.num,
                         usuario.aportes,
