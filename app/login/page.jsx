@@ -19,9 +19,9 @@ function SignInPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!user.email || !user.password) {
-      setError("Todos los campos son necesarios");
+    if (!user.email | !user.password) {
       setLoading(false);
+      setError("Todos los campos son necesarios");
     }
 
     const res = await signIn("credentials", {
@@ -30,7 +30,8 @@ function SignInPage() {
       redirect: false,
     });
 
-    if (res?.error) setError(res.error);
+    if (res?.error)
+      [setError("Las credenciales no son correctas"), setLoading(false)];
 
     if (res?.ok) return router.push("/oficina");
   };
@@ -144,7 +145,7 @@ function SignInPage() {
             </div>
           </div>
 
-          <div className="text-black">{error}</div>
+          <div className="text-red-500">{error}</div>
 
           <div className="flex items-center justify-end">
             {/* <p className="text-sm text-gray-500">
@@ -163,8 +164,8 @@ function SignInPage() {
               }
               className={
                 loading
-                  ? "flex flex-row items-center justify-center rounded-lg bg-blue-300 px-5 py-3 text-sm font-medium text-white cursor-pointer"
-                  : "flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer"
+                  ? "flex flex-row items-center justify-center rounded-lg bg-[#212a3e] px-5 py-3 text-sm font-medium text-white cursor-pointer"
+                  : "flex flex-row items-center justify-center rounded-lg bg-[#111827] px-5 py-3 text-sm font-medium text-white cursor-pointer"
               }
               onClick={(e) => [handleSubmit(e), setLoading(true)]}
             >

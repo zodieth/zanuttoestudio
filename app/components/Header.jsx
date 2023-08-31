@@ -6,14 +6,14 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <div className="flex items-center justify-between bg-[#006CCF] h-20 px-6">
+    <div className="flex items-center justify-between bg-[#111827] h-20 px-6">
       <Link href="/">
         <Image src={logo} height={50} alt="logo " className="md:mx-10" />
       </Link>
       <div className="hidden md:flex items-center justify-center mx-40">
         {["Home", "Turnos", "Contacto"].map((e, index) => (
           <span
-            className="mx-2 text-bold cursor-pointer text-white hover:underline"
+            className="mx-2 text-bold cursor-pointer text-white hover:text-gray-100"
             key={index}
           >
             <Link href={`/${e.toLowerCase()}`}>{e}</Link>
