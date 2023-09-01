@@ -247,6 +247,48 @@ function Body() {
           </div>
         </div>
       </section>
+      <section>
+        <div class="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8">
+          <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
+            <div class="relative h-[22rem] overflow-hidden rounded-lg sm:h-[22rem] lg:order-last lg:h-full">
+              <img
+                alt="quienessomos"
+                src="https://res.cloudinary.com/dyo8w75kn/image/upload/v1693575247/WhatsApp_Image_2022-02-08_at_14.10.54_xqmaud.jpg"
+                class="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+
+            <div class="lg:py-24">
+              <h2 class="text-3xl font-bold sm:text-4xl">Quienes somos?</h2>
+
+              <p class="mt-4 text-gray-600">
+                Zanutto Abogados fue iniciado por el Dr. Enedy Ángel Zanutto y
+                seguido por sus dos hijos, Dr. Fernando Zanutto y el Dr. Enedy
+                Pablo Zanutto. El estudio presenta un amplio conocimiento en el
+                área previsional, entre los que se destacan los trámites por
+                jubilaciones, pensiones y juicios de reajuste. Ubicados en zona
+                norte, contamos con tres oficinas en Munro, San Isidro y Grand
+                Bourg. Brindando además asesoramiento online con la atención de
+                los mejores profesionales. Nos caracterizamos por mantener un
+                trato personalizado con cada cliente, donde como resultado de la
+                cordialidad y honestidad de sus integrantes, nos aseguramos de
+                brindarle al cliente la seguridad necesaria para sentirse
+                respaldado frente a sus diferentes cuestiones. Estamos
+                convencidos que contamos con las herramientas para responder
+                cualquier tipo de inquietud, garantizando el mejor de los
+                resultados, de la forma más rápida y eficáz posible.
+              </p>
+
+              {/* <a
+                href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
+                class="mt-8 inline-block rounded border border-[#111827] bg-[#111827] px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-[#111827] focus:outline-none focus:ring active:text-[#111827]"
+              >
+                Ponte en contacto
+              </a> */}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
