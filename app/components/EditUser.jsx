@@ -293,7 +293,10 @@ function EditUser({ user, setEditUser }) {
                           className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                           defaultValue={usuario.hijos >= 0 ? usuario.hijos : 0}
                           onChange={(e) =>
-                            setUsuario({ ...usuario, hijos: e.target.value })
+                            setUsuario({
+                              ...usuario,
+                              hijos: e.target.value,
+                            })
                           }
                         />
                       </div>
@@ -888,6 +891,15 @@ function EditUser({ user, setEditUser }) {
                     onClick={async () => [
                       // setEditUser(false),
                       dispatch(changeLoading(true)),
+                      usuario.sexo === "MASCULINO"
+                        ? setUsuario({
+                            ...usuario,
+                            hijos: 0,
+                            hijosDiscapacidad: 0,
+                            hijosAdoptados: 0,
+                            auh: 0,
+                          })
+                        : "",
                       await updateUser(
                         usuario._id,
                         usuario.nombre,
@@ -917,6 +929,7 @@ function EditUser({ user, setEditUser }) {
                         usuario.provincia,
                         usuario.detalle
                       ),
+
                       createOrUpdateDetail(),
                       dispatch(editPerson(usuario)),
                       dispatch(changeLoading(false)),

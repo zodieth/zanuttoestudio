@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default function Home() {
   return (
-    <main className="">
+    <main className="overflow-x-hidden">
       <Header />
       <Banner />
       <Body />
