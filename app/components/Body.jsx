@@ -11,13 +11,12 @@ function Body() {
                 ¿Por qué elegirnos?{" "}
               </h2>
 
-              <p className="mt-4 text-gray-600">
-                Más de 30 años de experiencia en jubilaciones y pensiones.
-                Respuestas rápidas a tus preguntas. Nos apasiona nuestro
-                trabajo. Nuestro equipo de expertos está aquí para ti.
-                Especializados en una variedad de áreas, desde jubilación por
-                ceguera hasta amparos de salud. Tu futuro financiero está seguro
-                con nosotros.
+              <p className="mt-4 text-gray-600 mx-10">
+                En Zanutto Abogados contamos con más de 30 años de experiencia y
+                compromiso con nuestro trabajo. Nuestro equipo de profesionales
+                de primera línea te brindará un asesoramiento personalizado para
+                que obtengas un trámite exitoso. Rápida respuesta a tus
+                consultas con atención virtual las 24 horas del día.
               </p>
             </div>
 
@@ -45,10 +44,10 @@ function Body() {
                   </svg>
                 </span>
 
-                <h2 className="mt-2 font-bold">Respuestas ágiles</h2>
+                <h2 className="mt-2 font-bold">Jubilaciones</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                  Rápida respuesta a sus consultas
+                  Con o sin aportes
                 </p>
               </a>
 
@@ -75,10 +74,10 @@ function Body() {
                   </svg>
                 </span>
 
-                <h2 className="mt-2 font-bold">Compromiso</h2>
+                <h2 className="mt-2 font-bold">Pensiones</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                  Comprometidos con resultados que importan.{" "}
+                  Por fallecimiento o invalidéz
                 </p>
               </a>
 
@@ -105,10 +104,10 @@ function Body() {
                   </svg>
                 </span>
 
-                <h2 className="mt-2 font-bold">Profesionales destacados</h2>
+                <h2 className="mt-2 font-bold">Juicio de reajuste</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                  Nuestro equipo es líder en el campo.{" "}
+                  Para quienes cobren un haber menor al que deberían
                 </p>
               </a>
 
@@ -135,10 +134,10 @@ function Body() {
                   </svg>
                 </span>
 
-                <h2 className="mt-2 font-bold">Especialización integral</h2>
+                <h2 className="mt-2 font-bold">Sucesiones</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                  Expertos en jubilaciones, pensiones y más.
+                  Transmisión de bienes tras el fallecimiento de una persona
                 </p>
               </a>
 
@@ -165,10 +164,10 @@ function Body() {
                   </svg>
                 </span>
 
-                <h2 className="mt-2 font-bold">Garantía de resultados</h2>
+                <h2 className="mt-2 font-bold">PUAM</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                  Historial de éxito y satisfacción.{" "}
+                  Jubilación para aquellos que tienen más de 65 años
                 </p>
               </a>
 
@@ -198,7 +197,7 @@ function Body() {
                 <h2 className="mt-2 font-bold">Reputación y confianza</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                  Nuestra trayectoria habla por sí misma.{" "}
+                  30 años de experiencia en el rubro
                 </p>
               </a>
             </div>
@@ -212,7 +211,7 @@ function Body() {
               <div className="relative h-64 sm:h-80 lg:h-full">
                 <img
                   alt="jubilados"
-                  src="https://img.freepik.com/foto-gratis/matrimonio-senior-usando-laptop-sala-estar_329181-14680.jpg?w=1380&t=st=1692711688~exp=1692712288~hmac=0ad50ddec1169f33fbbd872d82128a7a1f98f2d6cecd855b6f5285a75a0a0628"
+                  src="https://res.cloudinary.com/dyo8w75kn/image/upload/v1693513802/happy-grandparents-using-their-digital-laptop_1_1_yvc6n4.jpg"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
@@ -239,11 +238,53 @@ function Body() {
 
                 <a
                   href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
-                  className="mt-8 inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+                  className="mt-8 inline-block rounded border border-[#111827] bg-[#111827] px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-[#111827] focus:outline-none focus:ring active:text-[#111827]"
                 >
                   Ponte en contacto
                 </a>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8">
+          <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
+            <div class="relative h-[22rem] overflow-hidden rounded-lg sm:h-[22rem] lg:order-last lg:h-full">
+              <img
+                alt="quienessomos"
+                src="https://res.cloudinary.com/dyo8w75kn/image/upload/v1693575247/WhatsApp_Image_2022-02-08_at_14.10.54_xqmaud.jpg"
+                class="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+
+            <div class="lg:py-24">
+              <h2 class="text-3xl font-bold sm:text-4xl">Quienes somos?</h2>
+
+              <p class="mt-4 text-gray-600">
+                Zanutto Abogados fue iniciado por el Dr. Enedy Ángel Zanutto y
+                seguido por sus dos hijos, Dr. Fernando Zanutto y el Dr. Enedy
+                Pablo Zanutto. El estudio presenta un amplio conocimiento en el
+                área previsional, entre los que se destacan los trámites por
+                jubilaciones, pensiones y juicios de reajuste. Ubicados en zona
+                norte, contamos con tres oficinas en Munro, San Isidro y Grand
+                Bourg. Brindando además asesoramiento online con la atención de
+                los mejores profesionales. Nos caracterizamos por mantener un
+                trato personalizado con cada cliente, donde como resultado de la
+                cordialidad y honestidad de sus integrantes, nos aseguramos de
+                brindarle al cliente la seguridad necesaria para sentirse
+                respaldado frente a sus diferentes cuestiones. Estamos
+                convencidos que contamos con las herramientas para responder
+                cualquier tipo de inquietud, garantizando el mejor de los
+                resultados, de la forma más rápida y eficáz posible.
+              </p>
+
+              {/* <a
+                href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
+                class="mt-8 inline-block rounded border border-[#111827] bg-[#111827] px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-[#111827] focus:outline-none focus:ring active:text-[#111827]"
+              >
+                Ponte en contacto
+              </a> */}
             </div>
           </div>
         </div>
