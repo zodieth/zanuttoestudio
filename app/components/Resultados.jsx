@@ -112,14 +112,14 @@ function Resultados({ mensaje, setResultados }) {
                         ) : (
                           <div className="flex flex-row items-center text-sm mt-2">
                             <h1>
-                              • Meses que puede abonar en moratoria:{" "}
+                              •Puede abonar en moratoria:{" "}
                               {mensaje.moratoria > 360 - mensaje.aportes ? (
                                 <>
-                                  <strong>{360 - mensaje.aportes}</strong>
+                                  <strong>{360 - mensaje.aportes} meses</strong>
                                 </>
                               ) : (
                                 <>
-                                  <strong>{mensaje.moratoria}</strong>
+                                  <strong>{mensaje.moratoria} meses</strong>
                                 </>
 
                                 // (
