@@ -61,7 +61,8 @@ export async function PUT(request) {
       auh,
       aportando,
       fiscal,
-      pension
+      pension,
+      comentarios
     );
 
     const find = await Person.find({});
@@ -92,6 +93,7 @@ export async function PUT(request) {
       aportando: person.aportando,
       fiscal: person.fiscal,
       pension: person.pension,
+      comentarios: person.comentarios,
     });
 
     return NextResponse.json(personUpdated), { status: 200 };
@@ -125,6 +127,8 @@ export async function POST(request) {
     aportando,
     fiscal,
     pension,
+    comentarios,
+    persona,
   } = await request.json();
 
   try {
@@ -150,7 +154,8 @@ export async function POST(request) {
       auh,
       aportando,
       fiscal,
-      pension
+      pension,
+      comentarios
     );
 
     let dobArray = person.fecha.split("-");

@@ -9,6 +9,8 @@ function NumberForm({
   setForm,
 }) {
   const [error, setError] = useState(false);
+
+  console.log(mensaje);
   return (
     <div
       className="relative z-10 "
@@ -64,6 +66,22 @@ function NumberForm({
                     ) : (
                       ""
                     )}
+                    <div className="mt-2 flex flex-row items-center justify-start ">
+                      <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                        Comentario adicional (opcional)
+                      </h2>
+
+                      <input
+                        type="text"
+                        onChange={(e) =>
+                          setMensaje({
+                            ...mensaje,
+                            comentarios: e.target.value,
+                          })
+                        }
+                        className="mx-2 w-full  text-black border-2 rounded-md "
+                      />
+                    </div>
                   </div>
                   {/* -------------------------- */}
                 </div>
@@ -91,6 +109,7 @@ function NumberForm({
                           hasta2012: mensaje.hasta2012,
                           desde2012: mensaje.desde2012,
                           moratoria: mensaje.moratoria,
+                          comentarios: mensaje.comentarios,
                         }),
                       ]
                 }
