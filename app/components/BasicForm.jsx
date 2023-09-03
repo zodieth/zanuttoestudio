@@ -8,6 +8,7 @@ function BasicForm({ setForm }) {
   const [sexo, setSexo] = useState("");
   const [fecha, setFecha] = useState("");
   const [hijos, setHijos] = useState(0);
+  const [aportando, setAportando] = useState("");
 
   // ------------Cálculo de edad----------------
 
@@ -320,6 +321,49 @@ function BasicForm({ setForm }) {
                       ) : (
                         ""
                       )}
+                      {/* ---------aportando----------------- */}
+                      <div>
+                        <h2 className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
+                          ¿Está aportando actualmente?
+                        </h2>
+
+                        <div className="mt-2 flex flex-row items-center justify-center w-full">
+                          <button
+                            onClick={() => [
+                              setAportando(true),
+                              setErrors(false),
+                            ]}
+                            className={
+                              aportando === true
+                                ? "m-2 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  "
+                                : "m-2 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 "
+                            }
+                          >
+                            SI
+                          </button>
+
+                          <button
+                            onClick={() => [
+                              setAportando(false),
+                              setErrors(false),
+                            ]}
+                            className={
+                              aportando === false
+                                ? "m-2 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm "
+                                : "m-2 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3  "
+                            }
+                          >
+                            NO
+                          </button>
+                        </div>
+                        {showError && aportando === "" ? (
+                          <h1 className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
+                            Debe seleccionar si o no
+                          </h1>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                       {/* -------------------------- */}
                     </div>
                   </div>
@@ -353,6 +397,7 @@ function BasicForm({ setForm }) {
                                 desde2012 * 12 +
                                 hijos * 12 +
                                 excesoDeEdad,
+                              aportando: aportando,
                               moratoria:
                                 fecha >= "1965-01-03" &&
                                 (sexo === "FEMENINO") |

@@ -21,7 +21,7 @@ const PersonSchema = new mongoose.Schema({
   },
   extranjero: { type: Boolean, default: false },
   auh: { type: Number, default: 0 },
-  aportando: { type: Boolean, default: false },
+  aportando: { type: Boolean, required: true },
   pension: { type: String, required: false },
   tipoAporte: [{ type: String }],
   dni: { type: String, required: false },

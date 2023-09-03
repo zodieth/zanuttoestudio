@@ -27,7 +27,7 @@
     "eslint-config-next": "13.4.5",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.1",
-    "mongodb-client-encryption": "^2.9.0",
+    "mongodb-client-encryption": "6.0.0",
     "mongoose": "^7.3.1",
     "next": "13.4.5",
     "next-auth": "^4.22.1",
