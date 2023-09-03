@@ -36,6 +36,7 @@ export async function PUT(request) {
     aportando,
     fiscal,
     pension,
+    comentarios,
   } = await request.json();
 
   await dbConnect();
@@ -128,7 +129,6 @@ export async function POST(request) {
     fiscal,
     pension,
     comentarios,
-    persona,
   } = await request.json();
 
   try {
