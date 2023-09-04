@@ -46,16 +46,12 @@ function Footer() {
             <h4 className="font-semibold text-gray-100">Contacto</h4>
 
             <div className="mt-3 grid space-y-3">
-              <p className="inline-flex gap-x-2 text-gray-400 text-sm md:text-md">
-                zanauttoabogados@gmail.com
-              </p>
-
               <p>
                 <a
                   className="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
-                  href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
+                  href="https://api.whatsapp.com/send?phone=5491176293141&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
                 >
-                  +54 9 11 3919-37-11{" "}
+                  +5491176293141
                 </a>
               </p>
             </div>
