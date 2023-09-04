@@ -1,12 +1,16 @@
 import Header from "./components/Header";
 import Banner from "./components/Banner";
+import Footer from "./components/Footer";
+import Body from "./components/Body";
 import axios from "axios";
 
 export default function Home() {
   return (
-    <main className="">
+    <main className="overflow-x-hidden">
       <Header />
       <Banner />
+      <Body />
+      <Footer />
     </main>
   );
 }

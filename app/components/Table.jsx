@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiLoader5Fill } from "react-icons/ri";
 import DeleteConfirm from "../components/DeleteConfirm";
 import EditUser from "../components/EditUser";
@@ -7,13 +7,25 @@ import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import FilterStatusSelect from "../components/FilterStatusSelect";
 import { useDispatch } from "react-redux";
+import * as XLSX from "xlsx";
 
-function Table({ people }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [peoplePerPage, setPeoplePerPage] = useState(8);
-  const lastPersonIndex = currentPage * peoplePerPage;
-  const firstPersonIndex = lastPersonIndex - peoplePerPage;
-  const currentPeople = people.people.slice(firstPersonIndex, lastPersonIndex);
+function Table({ people, detail }) {
+  const [actualPage, setActualPage] = useState(1);
+  const total_Page = 10;
+  let peoplePagination;
+
+  useEffect(() => {
+    setActualPage(1);
+  }, [people.people]);
+
+  peoplePagination = people.people.slice(
+    (actualPage - 1) * total_Page,
+    actualPage * total_Page - 1
+  );
+
+  const getTotalPages = () => {
+    return Math.ceil(people.people.length / total_Page);
+  };
 
   // ----------------------------
 
@@ -24,6 +36,7 @@ function Table({ people }) {
     nombr: "",
     sexo: "",
     fecha: "",
+    fechaDeIngreso: "",
     hijos: 0,
     num: 0,
     aportes: 0,
@@ -45,15 +58,51 @@ function Table({ people }) {
     direccion: "",
     localidad: "",
     provincia: "",
+    comentarios: "",
   });
   const [search, setSearch] = useState("");
+
+  const dataPerson = people.people;
+  const dataDetails = people.people.map((p) => {
+    const d = detail.detail;
+    for (let i = 0; i < d.length; i++) {
+      if (d[i].persona === p._id) {
+        return d[i];
+      }
+    }
+    return {};
+  });
+  const downloadExcel = (dataPerson, dataDetails) => {
+    const workbook = XLSX.utils.book_new();
+    dataPerson.forEach((element) => {
+      const detail = dataDetails[dataPerson.indexOf(element)];
+      const worksheet = XLSX.utils.json_to_sheet([element]);
+      if (detail !== {}) {
+        XLSX.utils.sheet_add_aoa(
+          worksheet,
+          [detail.año, detail.cantidadMeses, detail.tipoDeAporte],
+          { origin: "B4" }
+        );
+      }
+      //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, element._id);
+      //XLSX.utils.book_append_sheet(workbook, worksheet2, element._id);
+    });
+    //XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+    //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+    XLSX.writeFile(workbook, "DataSheet.xlsx");
+  };
 
   return (
     <div className="overflow-x-auto mx-10 my-10 w-full flex-col items-start justify-center ">
       {deleteUser && (
         <DeleteConfirm user={user} setDeleteUser={setDeleteUser} />
       )}
-      {editUser && <EditUser user={user} setEditUser={setEditUser} />}
+      {editUser && (
+        <EditUser user={user} setEditUser={setEditUser} detail={detail} />
+      )}
 
       <div className="flex flex-row items-center justify-between mb-10">
         <div className="flex gap-4">
@@ -61,8 +110,11 @@ function Table({ people }) {
           <FilterStatusSelect useDispatch={useDispatch} />
         </div>
 
-        {/* <div className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer">
-          <h1 className="text-md">Crear</h1>
+        <div
+          className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
+          onClick={() => downloadExcel(dataPerson, dataDetails)}
+        >
+          <h1 className="text-md">Exportar a Excel</h1>
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +130,7 @@ function Table({ people }) {
               d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
             />
           </svg>
-        </div> */}
+        </div>
       </div>
 
       <div className="flex flex-row items-center justify-center">
@@ -117,7 +169,7 @@ function Table({ people }) {
               </thead>
 
               <tbody className="divide-y divide-gray-200">
-                {currentPeople
+                {peoplePagination
                   ?.filter((people) => {
                     return search.toLowerCase() === ""
                       ? people
@@ -212,10 +264,11 @@ function Table({ people }) {
               </tbody>
             </table>
             <Pagination
-              peopleData={people.people?.length}
-              peoplePerPage={peoplePerPage}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
+              page={actualPage}
+              total={getTotalPages()}
+              onChange={(pageChange) => {
+                setActualPage(pageChange);
+              }}
             />
           </div>
         )}

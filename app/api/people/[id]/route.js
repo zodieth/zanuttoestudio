@@ -8,6 +8,7 @@ export async function PUT(request, { params }) {
     nombre,
     sexo,
     fecha,
+    fechaDeIngreso,
     hijos,
     num,
     aportes,
@@ -29,6 +30,7 @@ export async function PUT(request, { params }) {
     direccion,
     localidad,
     provincia,
+    comentarios,
   } = await request.json();
 
   const { id } = params;
@@ -47,6 +49,7 @@ export async function PUT(request, { params }) {
       nombre,
       sexo,
       fecha,
+      fechaDeIngreso,
       hijos,
       num,
       aportes,
@@ -68,6 +71,7 @@ export async function PUT(request, { params }) {
       direccion,
       localidad,
       provincia,
+      comentarios,
     });
 
     return NextResponse.json(personUpdated);

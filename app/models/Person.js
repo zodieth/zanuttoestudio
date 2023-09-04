@@ -3,6 +3,7 @@ const PersonSchema = new mongoose.Schema({
   nombre: { type: String, required: false, default: "" },
   sexo: { type: String, required: [true, "El sexo es requerido"] },
   fecha: { type: String, required: [true, "La fecha es requerida"] },
+  fechaDeIngreso: { type: String, required: false },
   hijos: { type: Number, required: false, default: 0 },
   hijosDiscapacidad: { type: Number, required: false, default: 0 },
   hijosAdoptados: { type: Number, required: false, default: 0 },
@@ -20,7 +21,7 @@ const PersonSchema = new mongoose.Schema({
   },
   extranjero: { type: Boolean, default: false },
   auh: { type: Number, default: 0 },
-  aportando: { type: Boolean, default: false },
+  aportando: { type: Boolean, required: true },
   pension: { type: String, required: false },
   tipoAporte: [{ type: String }],
   dni: { type: String, required: false },
@@ -28,6 +29,7 @@ const PersonSchema = new mongoose.Schema({
   direccion: { type: String, required: false },
   localidad: { type: String, required: false },
   provincia: { type: String, required: false },
+  comentarios: { type: String, required: false },
 });
 
 export default mongoose.models.Person || mongoose.model("Person", PersonSchema);

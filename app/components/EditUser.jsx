@@ -1,18 +1,31 @@
-import React, { useState } from "react";
-import { updateUser } from "../lib/utils";
+import React, { useState, useEffect } from "react";
+import {
+  updateUser,
+  updateDetalle,
+  createDetalle,
+  getDetalle,
+} from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoading, editPerson } from "../redux/features/peopleSlice";
 import { differenceInMonths, differenceInDays } from "date-fns";
 import { RiLoader5Fill } from "react-icons/ri";
-import Detalle from "../components/DetalleAportes";
 import { tr } from "date-fns/locale";
+import { api } from "../page";
+import { addDetail, editDetail } from "../redux/features/detailSlice";
 
 function EditUser({ user, setEditUser }) {
   const [usuario, setUsuario] = useState(user);
+  const detalles = useSelector((state) => state.detail);
 
   const people = useSelector((state) => state.people);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
+  }, [dispatch]);
+  const detallePersona = detalles.detail?.filter(
+    (e) => e.persona === usuario._id
+  )[0];
 
   const handleChangeTipoAporte = (e) => {
     const { value, checked } = e.target;
@@ -28,7 +41,6 @@ function EditUser({ user, setEditUser }) {
       });
     }
   };
-
   // ------------Cálculo de edad----------------
 
   let dobArray = usuario.fecha.toString().split("-");
@@ -56,9 +68,86 @@ function EditUser({ user, setEditUser }) {
       : 0;
 
   const añosAportados = [];
-  for (let index = year + 18; index <= currentYear + 2; index++) {
-    añosAportados.push(index);
+  const cantidadDeMeses = [];
+  const tipoDeAporte = [];
+
+  if (usuario.extranjero) {
+    for (let index = year; index <= currentYear + 2; index++) {
+      index === 2012
+        ? añosAportados.push(
+            "De Enero a Marzo " + index,
+            "De Abril a Diciembre " + index
+          )
+        : añosAportados.push("" + index);
+    }
+  } else {
+    for (let index = year + 18; index <= currentYear + 2; index++) {
+      index === 2012
+        ? añosAportados.push(
+            "De Enero a Marzo " + index,
+            "De Abril a Diciembre " + index
+          )
+        : añosAportados.push("" + index);
+    }
   }
+
+  while (cantidadDeMeses.length < añosAportados.length) {
+    cantidadDeMeses.push(0);
+    tipoDeAporte.push("sin aportes");
+  }
+
+  const [detalle, setDetalle] = useState({
+    _id: detallePersona ? detallePersona._id : "",
+    año: añosAportados,
+    cantidadMeses: detallePersona
+      ? detallePersona.cantidadMeses
+      : cantidadDeMeses,
+    tipoDeAporte: detallePersona ? detallePersona.tipoDeAporte : tipoDeAporte,
+    persona: usuario._id,
+  });
+
+  const handleChangeMeses = (e, index) => {
+    const nuevoDetalle = detalle.cantidadMeses.map((c, i) => {
+      if (i === index) {
+        return Number(e.target.value);
+      } else {
+        return c;
+      }
+    });
+    setDetalle({ ...detalle, cantidadMeses: nuevoDetalle });
+  };
+
+  const handleChangeArrayTipos = (e, index) => {
+    const nuevoDetalle = detalle.tipoDeAporte.map((c, i) => {
+      if (i === index) {
+        return e.target.value;
+      } else {
+        return c;
+      }
+    });
+    setDetalle({ ...detalle, tipoDeAporte: nuevoDetalle });
+  };
+
+  const createOrUpdateDetail = async () => {
+    if (detallePersona) {
+      await updateDetalle(
+        detalle._id,
+        detalle.año,
+        detalle.cantidadMeses,
+        detalle.tipoDeAporte,
+        detalle.persona
+      );
+      dispatch(editDetail(detalle));
+    } else {
+      await createDetalle(
+        detalle.año,
+        detalle.cantidadMeses,
+        detalle.tipoDeAporte,
+        detalle.persona
+      );
+      dispatch(addDetail(detalle));
+    }
+  };
 
   return (
     <div
@@ -146,11 +235,7 @@ function EditUser({ user, setEditUser }) {
                     htmlFor="UserFecha"
                     className="block text-xs font-medium text-gray-700"
                   >
-                    {usuario.extranjero ? (
-                      <div>Fecha de ingreso al país</div>
-                    ) : (
-                      <div> Fecha</div>
-                    )}
+                    <div>Fecha de nacimiento</div>
                   </label>
 
                   <input
@@ -163,6 +248,32 @@ function EditUser({ user, setEditUser }) {
                     }
                   />
                 </div>
+
+                {usuario.extranjero ? (
+                  <div className="m-3">
+                    <label
+                      htmlFor="UserFechaIngreso"
+                      className="block text-xs font-medium text-gray-700"
+                    >
+                      <div>Fecha de ingreso al país</div>
+                    </label>
+
+                    <input
+                      type="date"
+                      id="UserName"
+                      className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                      defaultValue={usuario.fechaDeIngreso}
+                      onChange={(e) =>
+                        setUsuario({
+                          ...usuario,
+                          fechaDeIngreso: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
                 {/* ---------------------------------- */}
                 {usuario.sexo === "FEMENINO" ? (
                   <div className="m-3 ">
@@ -181,7 +292,10 @@ function EditUser({ user, setEditUser }) {
                           className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                           defaultValue={usuario.hijos >= 0 ? usuario.hijos : 0}
                           onChange={(e) =>
-                            setUsuario({ ...usuario, hijos: e.target.value })
+                            setUsuario({
+                              ...usuario,
+                              hijos: e.target.value,
+                            })
                           }
                         />
                       </div>
@@ -241,10 +355,11 @@ function EditUser({ user, setEditUser }) {
                   ""
                 )}
                 {/* ------------------------------------------------------ */}
-
-                {(usuario.hijos > 0) |
-                (usuario.hijosAdoptados > 0) |
-                (usuario.hijosDiscapacidad > 0) ? (
+                {usuario.sexo === "MASCULINO" ? (
+                  ""
+                ) : (usuario.hijos > 0) |
+                  (usuario.hijosAdoptados > 0) |
+                  (usuario.hijosDiscapacidad > 0) ? (
                   <div className="m-3">
                     <label
                       htmlFor="UserName"
@@ -267,6 +382,7 @@ function EditUser({ user, setEditUser }) {
                 ) : (
                   ""
                 )}
+
                 {/* ---------------------- */}
 
                 <div className="m-3 flex">
@@ -388,15 +504,21 @@ function EditUser({ user, setEditUser }) {
                     disabled
                     className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     defaultValue={
-                      Number(usuario.hasta2008) +
-                      Number(usuario.desde2009) +
-                      Number(usuario.hasta2012) +
-                      Number(usuario.desde2012) +
-                      excesoDeEdad +
-                      usuario.hijos * 12 +
-                      usuario.hijosAdoptados * 24 +
-                      usuario.hijosDiscapacidad * 24 +
-                      usuario.auh * 12
+                      usuario.sexo === "MASCULINO"
+                        ? Number(usuario.hasta2008) +
+                          Number(usuario.desde2009) +
+                          Number(usuario.hasta2012) +
+                          Number(usuario.desde2012) +
+                          excesoDeEdad
+                        : Number(usuario.hasta2008) +
+                          Number(usuario.desde2009) +
+                          Number(usuario.hasta2012) +
+                          Number(usuario.desde2012) +
+                          excesoDeEdad +
+                          usuario.hijos * 12 +
+                          usuario.hijosAdoptados * 24 +
+                          usuario.hijosDiscapacidad * 24 +
+                          usuario.auh * 12
                     }
                   />
                 </div>
@@ -477,6 +599,43 @@ function EditUser({ user, setEditUser }) {
                             : e === "CARPETA"
                             ? setUsuario({ ...usuario, status: "carpeta" })
                             : setUsuario({ ...usuario, status: "derivado" })
+                        }
+                      >
+                        {e}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* --------------------- */}
+                <div className="m-3">
+                  <label
+                    htmlFor="UserNum"
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    Pension
+                  </label>
+                  <div className="flex items-center justify-center ">
+                    {["MINIMA", "OTRO MONTO", "NO"].map((e, index) => (
+                      <button
+                        key={index}
+                        className={
+                          (e === "MINIMA") & (usuario.pension === "minima")
+                            ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : (e === "OTRO MONTO") &
+                              (usuario.pension === "otro monto")
+                            ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : (e === "NO") & (usuario.pension === "no")
+                            ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm"
+                            : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 "
+                        }
+                        onClick={() =>
+                          e === "MINIMA"
+                            ? setUsuario({ ...usuario, pension: "minima" })
+                            : e === "OTRO MONTO"
+                            ? setUsuario({ ...usuario, pension: "otro monto" })
+                            : e === "NO"
+                            ? setUsuario({ ...usuario, pension: "no" })
+                            : ""
                         }
                       >
                         {e}
@@ -647,6 +806,27 @@ function EditUser({ user, setEditUser }) {
                     }
                   />
                 </div>
+                {/* ---------------------- */}
+
+                <div className="m-3">
+                  <label
+                    htmlFor="UserName"
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    Comentarios
+                  </label>
+
+                  <input
+                    type="text"
+                    id="provincia"
+                    placeholder="Comentarios"
+                    defaultValue={usuario.comentarios}
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    onChange={(e) =>
+                      setUsuario({ ...usuario, comentarios: e.target.value })
+                    }
+                  />
+                </div>
 
                 {/* -----------------inputs------------------------- */}
               </div>
@@ -670,31 +850,51 @@ function EditUser({ user, setEditUser }) {
 
                     <tbody className="ltr:text-left rtl:text-right">
                       {añosAportados.map((año) => (
-                        <tr key={año}>
+                        <tr key={añosAportados.indexOf(año)}>
                           <th>{año}</th>
 
                           <th>
                             <input
                               type="number"
                               id="MesesxAño"
-                              placeholder="Meses Aportados"
-                              defaultValue="0"
+                              placeholder={0}
+                              defaultValue={
+                                detalle.cantidadMeses[
+                                  añosAportados.indexOf(año)
+                                ]
+                              }
                               className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                              onChange={(e) =>
+                                handleChangeMeses(e, añosAportados.indexOf(año))
+                              }
                             />
                           </th>
 
                           <th>
                             <select
-                              className="mt-1 mx-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                              className="mx-1 rounded-md text-sm "
                               name="tipoAporte"
                               id="tipoAporte"
+                              defaultValue={
+                                detalle.tipoDeAporte[añosAportados.indexOf(año)]
+                              }
+                              onChange={(e) =>
+                                handleChangeArrayTipos(
+                                  e,
+                                  añosAportados.indexOf(año)
+                                )
+                              }
                             >
+                              <option className="" value="sin aportes">
+                                Sin aportes
+                              </option>
                               <option value="monotributo">Monotributo</option>
                               <option value="IPS">IPS</option>
                               <option value="servicio domestico">
                                 Servicio Doméstico
                               </option>
                               <option value="dependencia">Dependencia</option>
+                              <option value="otro">Otro</option>
                             </select>
                           </th>
                         </tr>
@@ -702,7 +902,7 @@ function EditUser({ user, setEditUser }) {
                     </tbody>
                   </table>
                 </aside>
-                {/* <Detalle user={usuario}/> */}
+
                 {/* ----------------------botones editar cancelar------------------ */}
                 <div className=" px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
@@ -711,11 +911,21 @@ function EditUser({ user, setEditUser }) {
                     onClick={async () => [
                       // setEditUser(false),
                       dispatch(changeLoading(true)),
+                      usuario.sexo === "MASCULINO"
+                        ? setUsuario({
+                            ...usuario,
+                            hijos: 0,
+                            hijosDiscapacidad: 0,
+                            hijosAdoptados: 0,
+                            auh: 0,
+                          })
+                        : "",
                       await updateUser(
                         usuario._id,
                         usuario.nombre,
                         usuario.sexo,
                         usuario.fecha,
+                        usuario.fechaDeIngreso,
                         usuario.hijos,
                         usuario.num,
                         usuario.aportes,
@@ -736,8 +946,12 @@ function EditUser({ user, setEditUser }) {
                         usuario.claveAnses,
                         usuario.direccion,
                         usuario.localidad,
-                        usuario.provincia
+                        usuario.provincia,
+                        usuario.comentarios,
+                        usuario.detalle
                       ),
+
+                      createOrUpdateDetail(),
                       dispatch(editPerson(usuario)),
                       dispatch(changeLoading(false)),
                     ]}

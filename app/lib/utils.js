@@ -8,6 +8,7 @@ export const createPerson = async (
   nombre,
   sexo,
   fecha,
+  fechaDeIngreso,
   hijos,
   num,
   aportes,
@@ -23,12 +24,14 @@ export const createPerson = async (
   auh,
   aportando,
   tipoAporte,
-  pension
+  pension,
+  comentarios
 ) => {
   await api.post("people", {
     nombre,
     sexo,
     fecha,
+    fechaDeIngreso,
     hijos,
     num,
     aportes,
@@ -45,6 +48,7 @@ export const createPerson = async (
     aportando,
     tipoAporte,
     pension,
+    comentarios,
   });
 };
 
@@ -52,6 +56,7 @@ export const updateOrCreatePerson = async (
   nombre,
   sexo,
   fecha,
+  fechaDeIngreso,
   hijos,
   num,
   aportes,
@@ -67,12 +72,14 @@ export const updateOrCreatePerson = async (
   auh,
   aportando,
   tipoAporte,
-  pension
+  pension,
+  comentarios
 ) => {
   const update = await api.put("people", {
     nombre,
     sexo,
     fecha,
+    fechaDeIngreso,
     hijos,
     num,
     aportes,
@@ -89,6 +96,7 @@ export const updateOrCreatePerson = async (
     aportando,
     tipoAporte,
     pension,
+    comentarios,
   });
 
   if (update.length) return;
@@ -97,6 +105,7 @@ export const updateOrCreatePerson = async (
       nombre,
       sexo,
       fecha,
+      fechaDeIngreso,
       hijos,
       num,
       aportes,
@@ -113,6 +122,7 @@ export const updateOrCreatePerson = async (
       aportando,
       tipoAporte,
       pension,
+      comentarios,
     });
   }
 };
@@ -126,6 +136,7 @@ export const updateUser = async (
   nombre,
   sexo,
   fecha,
+  fechaDeIngreso,
   hijos,
   num,
   aportes,
@@ -146,12 +157,14 @@ export const updateUser = async (
   claveAnses,
   direccion,
   localidad,
-  provincia
+  provincia,
+  comentarios
 ) => {
   await api.put(`people/${_id}`, {
     nombre,
     sexo,
     fecha,
+    fechaDeIngreso,
     hijos,
     num,
     aportes,
@@ -173,6 +186,7 @@ export const updateUser = async (
     direccion,
     localidad,
     provincia,
+    comentarios,
   });
 };
 
@@ -190,3 +204,38 @@ export const updateUser = async (
 //     });
 //   }
 // };
+export const createDetalle = async (
+  año,
+  cantidadMeses,
+  tipoDeAporte,
+  persona
+) => {
+  const newDetalle = await api
+    .post("detalle", {
+      año,
+      cantidadMeses,
+      tipoDeAporte,
+      persona,
+    })
+    .then((detalleNuevo) => {
+      return detalleNuevo;
+    });
+  return newDetalle;
+};
+export const updateDetalle = async (
+  _id,
+  año,
+  cantidadMeses,
+  tipoDeAporte,
+  persona
+) => {
+  await api.patch(`detalle/${_id}`, {
+    año,
+    cantidadMeses,
+    tipoDeAporte,
+    persona,
+  });
+};
+export const getDetalle = async () => {
+  await api.get(`detalle`);
+};
