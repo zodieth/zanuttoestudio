@@ -172,6 +172,8 @@ function BasicForm({ setForm }) {
                           <input
                             onChange={(e) => setFecha(e.target.value)}
                             type="date"
+                            min="1940-01-01"
+                            max="2030-01-01"
                             className="mx-2 w-full text-black border-2 rounded-md "
                           />
                         </div>
