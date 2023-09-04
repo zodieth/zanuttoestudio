@@ -76,7 +76,7 @@ function Resultados({ mensaje, setResultados }) {
                     ) : ( */}
                     <>
                       <div className="">
-                        <div className="flex flex-row items-center text-sm mt-2 ">
+                        <div className="flex flex-row items-center text-sm mt-2  ">
                           <h1>
                             • Total de aportes:{" "}
                             <strong>{mensaje.aportes} </strong>{" "}
@@ -112,14 +112,14 @@ function Resultados({ mensaje, setResultados }) {
                         ) : (
                           <div className="flex flex-row items-center text-sm mt-2">
                             <h1>
-                              • Meses que puede abonar en moratoria:{" "}
+                              • Puede abonar moratoria:{" "}
                               {mensaje.moratoria > 360 - mensaje.aportes ? (
                                 <>
-                                  <strong>{360 - mensaje.aportes}</strong>
+                                  <strong>{360 - mensaje.aportes} meses</strong>
                                 </>
                               ) : (
                                 <>
-                                  <strong>{mensaje.moratoria}</strong>
+                                  <strong>{mensaje.moratoria} meses</strong>
                                 </>
 
                                 // (
@@ -175,7 +175,7 @@ function Resultados({ mensaje, setResultados }) {
                       </div>
                       <div className="flex flex-col items-center justify-center">
                         <div className="text-xs flex flex-row mt-2">
-                          <h1>
+                          <div>
                             {mensaje.aportes >= 360 ? (
                               <h1>
                                 {mensaje.edadJubilatoria ===
@@ -198,7 +198,7 @@ function Resultados({ mensaje, setResultados }) {
                                   : "Aún adhiriéndose a la moratoria usted no llegaría a su edad jubilatoria con los suficientes aportes. Es importante que hable con un asesor para ver las alternativas que hay para regularizar su situación y jubilarse lo antes posible."}
                               </h1>
                             )}
-                          </h1>
+                          </div>
                         </div>
                         <div className="text-xs flex flex-row mt-2">
                           <h1>
@@ -206,7 +206,7 @@ function Resultados({ mensaje, setResultados }) {
                             {mensaje.edadJubilatoria ===
                             "USTED YA TIENE LA EDAD JUBILATORIA"
                               ? '"Para recibir un análisis completo y recibir un asesoramiento personalizado haga "click" en '
-                              : "Para recibir un análisis completo y la solución más efectiva para su situación previsional haga “click” en"}
+                              : "Para recibir un análisis completo y la solución más efectiva para su situación previsional haga “click” en "}
                             <strong className="text-blue-600">CONTINUAR</strong>
                           </h1>
                         </div>

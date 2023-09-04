@@ -80,6 +80,35 @@ function Body() {
                   Por fallecimiento o invalidéz
                 </p>
               </a>
+              <a
+                className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
+                href="/accountant"
+              >
+                <span className="inline-block rounded-lg bg-gray-50 p-3">
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                    ></path>
+                  </svg>
+                </span>
+
+                <h2 className="mt-2 font-bold">PUAM</h2>
+
+                <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
+                  Jubilación para aquellos que tienen más de 65 años
+                </p>
+              </a>
 
               <a
                 className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
@@ -104,7 +133,7 @@ function Body() {
                   </svg>
                 </span>
 
-                <h2 className="mt-2 font-bold">Juicio de reajuste</h2>
+                <h2 className="mt-2 font-bold">Reajuste de haberes</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
                   Para quienes cobren un haber menor al que deberían
@@ -164,36 +193,6 @@ function Body() {
                   </svg>
                 </span>
 
-                <h2 className="mt-2 font-bold">PUAM</h2>
-
-                <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                  Jubilación para aquellos que tienen más de 65 años
-                </p>
-              </a>
-
-              <a
-                className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
-              >
-                <span className="inline-block rounded-lg bg-gray-50 p-3">
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                    ></path>
-                  </svg>
-                </span>
-
                 <h2 className="mt-2 font-bold">Reputación y confianza</h2>
 
                 <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
@@ -205,7 +204,7 @@ function Body() {
         </div>
       </section>
       <section>
-        <div className="mx-auto max-w-screen-2xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 py-16 sm:px-6 lg:px-8 ">
           <div className="grid grid-cols-1 lg:h-screen lg:grid-cols-2">
             <div className="relative z-10 lg:py-16">
               <div className="relative h-64 sm:h-80 lg:h-full">
@@ -217,21 +216,21 @@ function Body() {
               </div>
             </div>
 
-            <div className="relative flex items-center bg-gray-100">
+            <div className="relative  flex items-center bg-gray-100">
               <span className="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 lg:bg-gray-100"></span>
 
               <div className="p-8 sm:p-16 lg:p-24">
                 <h2 className="text-2xl font-bold sm:text-3xl">
-                  Por qué es importante una planificación previsional?
+                  ¿Por qué es importante una planificación previsional?
                 </h2>
 
                 <p className="mt-4 text-gray-600">
-                  Si te quedan 5 años o menos para jubilarte, es esencial
+                  Si te quedan 10 años o menos para jubilarte, es esencial
                   realizar una planificación previsonal sólida. Esto te
                   permitirá asegurarte de que tus aportes estén en orden y
                   obtener la mejor jubilación posible, evitando trámites y
-                  verificaciones de última hora. Además, si descubres que no
-                  tienes suficientes aportes para jubilarte, podrás tomar
+                  verificaciones de última hora. Además, si descubrís que no
+                  tenés suficientes aportes para jubilarte, vas a poder tomar
                   medidas anticipadas para completar los requisitos necesarios y
                   lograr una jubilación segura.
                 </p>
@@ -248,20 +247,22 @@ function Body() {
         </div>
       </section>
       <section>
-        <div class="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8">
-          <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
-            <div class="relative h-[22rem] overflow-hidden rounded-lg sm:h-[22rem] lg:order-last lg:h-full">
+        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
+            <div className="relative h-[22rem] overflow-hidden rounded-lg sm:h-[22rem] lg:order-last lg:h-full">
               <img
                 alt="quienessomos"
                 src="https://res.cloudinary.com/dyo8w75kn/image/upload/v1693575247/WhatsApp_Image_2022-02-08_at_14.10.54_xqmaud.jpg"
-                class="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
 
-            <div class="lg:py-24">
-              <h2 class="text-3xl font-bold sm:text-4xl">Quienes somos?</h2>
+            <div className="lg:py-24">
+              <h2 className="text-3xl font-bold sm:text-4xl">
+                ¿Quienes somos?
+              </h2>
 
-              <p class="mt-4 text-gray-600">
+              <p className="mt-4 text-gray-600">
                 Zanutto Abogados fue iniciado por el Dr. Enedy Ángel Zanutto y
                 seguido por sus dos hijos, Dr. Fernando Zanutto y el Dr. Enedy
                 Pablo Zanutto. El estudio presenta un amplio conocimiento en el
