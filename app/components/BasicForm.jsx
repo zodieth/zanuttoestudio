@@ -24,7 +24,6 @@ function BasicForm({ setForm }) {
   if (currentMonth < month || (currentMonth == month && currentDay < day)) {
     age--;
   }
-  // probando
 
   // ------------aportes----------------
 
@@ -168,7 +167,7 @@ function BasicForm({ setForm }) {
                       <div>
                         <div className="mt-2 flex flex-row items-center justify-start ">
                           <h2 className="w-full mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-gray-900">
-                            Fecha de naciemiento
+                            Fecha de nacimiento
                           </h2>
                           <input
                             onChange={(e) => setFecha(e.target.value)}
