@@ -807,6 +807,27 @@ function EditUser({ user, setEditUser }) {
                     }
                   />
                 </div>
+                {/* ---------------------- */}
+
+                <div className="m-3">
+                  <label
+                    htmlFor="UserName"
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    Comentarios
+                  </label>
+
+                  <input
+                    type="text"
+                    id="provincia"
+                    placeholder="Comentarios"
+                    defaultValue={usuario.comentarios}
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    onChange={(e) =>
+                      setUsuario({ ...usuario, comentarios: e.target.value })
+                    }
+                  />
+                </div>
 
                 {/* -----------------inputs------------------------- */}
               </div>
@@ -927,6 +948,7 @@ function EditUser({ user, setEditUser }) {
                         usuario.direccion,
                         usuario.localidad,
                         usuario.provincia,
+                        usuario.comentarios,
                         usuario.detalle
                       ),
 

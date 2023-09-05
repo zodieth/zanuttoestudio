@@ -86,6 +86,7 @@ function Table({ people, detail }) {
     direccion: "",
     localidad: "",
     provincia: "",
+    comentarios: "",
   });
   const [search, setSearch] = useState("");
 
@@ -109,17 +110,20 @@ function Table({ people, detail }) {
       }
     }
     return {};
-  })  
+  });
   const downloadExcel = (dataPerson, dataDetails) => {
     const workbook = XLSX.utils.book_new();
-    dataPerson.forEach(element => {
+    dataPerson.forEach((element) => {
       const detail = dataDetails[dataPerson.indexOf(element)];
       const worksheet = XLSX.utils.json_to_sheet([element]);
-      if(detail !== {}){
-        XLSX.utils.sheet_add_aoa(worksheet, [detail.año, detail.cantidadMeses, detail.tipoDeAporte], { origin: 'B4' });  
-
+      if (detail !== {}) {
+        XLSX.utils.sheet_add_aoa(
+          worksheet,
+          [detail.año, detail.cantidadMeses, detail.tipoDeAporte],
+          { origin: "B4" }
+        );
       }
-      //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });  
+      //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });
 
       XLSX.utils.book_append_sheet(workbook, worksheet, element._id);
       //XLSX.utils.book_append_sheet(workbook, worksheet2, element._id);
@@ -128,7 +132,7 @@ function Table({ people, detail }) {
     //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
     //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
     XLSX.writeFile(workbook, "DataSheet.xlsx");
-  }
+  };
 
   return (
     <div className="overflow-x-auto mx-10 my-10 w-full flex-col items-start justify-center ">
@@ -145,8 +149,9 @@ function Table({ people, detail }) {
           <FilterStatusSelect useDispatch={useDispatch} />
         </div>
 
-        <div className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
-          onClick={()=>downloadExcel(dataPerson,dataDetails)}
+        <div
+          className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
+          onClick={() => downloadExcel(dataPerson, dataDetails)}
         >
           <h1 className="text-md">Exportar a Excel</h1>
 

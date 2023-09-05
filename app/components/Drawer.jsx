@@ -114,7 +114,11 @@ export default function PersistentDrawerLeft() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inicio", "Turnos", "Contacto"].map((text, index) => (
+          {[
+            "Inicio",
+            // "Turnos",
+            "Contacto",
+          ].map((text, index) => (
             <ListItem key={index} disablePadding>
               <Link
                 href={
@@ -123,7 +127,7 @@ export default function PersistentDrawerLeft() {
                     : text === "Turnos"
                     ? "/turnos"
                     : text === "Contacto"
-                    ? "https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
+                    ? "https://api.whatsapp.com/send?phone=5491176293141&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
                     : ""
                 }
               >

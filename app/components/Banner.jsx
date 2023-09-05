@@ -8,7 +8,7 @@ function Banner() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-[40rem]  text-white bg-center bg-cover bg-blend-overlay bg-fixed md:items-start "
+      className="flex flex-col items-center justify-center min-h-[40rem] text-white bg-center bg-cover bg-blend-overlay bg-fixed md:items-start "
       style={{
         backgroundImage:
           "url('https://res.cloudinary.com/dyo8w75kn/image/upload/v1693500690/Hello_March_Spring_Flowers_Bloom_Quote_Blog_Banner_5_xwr1ol.jpg')",
