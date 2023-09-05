@@ -12,6 +12,17 @@ const handle = app.getRequestHandler();
 app.prepare().then(() => {
   createServer(async (req, res) => {
     try {
+      // Set CORS headers
+      res.setHeader(
+        "Access-Control-Allow-Origin",
+        "https://www.estudiozanutto.com.ar"
+      ); // Replace with your allowed origin
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS"); // Specify allowed methods
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      ); // Specify allowed headers
+
       // Be sure to pass `true` as the second argument to `url.parse`.
       // This tells it to parse the query portion of the URL.
       const parsedUrl = parse(req.url, true);
