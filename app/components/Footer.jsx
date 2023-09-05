@@ -43,7 +43,7 @@ function Footer() {
           </div>
 
           <div className="col-span-1">
-            <h4 className="font-semibold text-gray-100">Contacto</h4>
+            <h4 className="font-semibold text-gray-100">Asistencia virtual</h4>
 
             <div className="mt-3 grid space-y-3">
               <p>
