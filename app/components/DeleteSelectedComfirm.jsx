@@ -3,7 +3,7 @@ import { deleteUser, deleteDetail } from "../lib/utils";
 import { changeLoading, deletePerson } from "../redux/features/peopleSlice";
 import { useDispatch } from "react-redux";
 
-function DeleteConfirm({ dataPerson, setDeleteSelected, dataDetails}) {
+function DeleteSelectedConfirm({ dataPerson, setDeleteSelected, dataDetails}) {
   const dispatch = useDispatch();
 
   const handleDeleteSelected = (dataPerson, dataDetails) => {
@@ -72,4 +72,4 @@ console.log(dataDetails[index]._id);
   );
 }
 
-export default DeleteConfirm;
+export default DeleteSelectedConfirm;
