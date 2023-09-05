@@ -23,7 +23,7 @@ function Body() {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               <a
                 className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
+                href="#"
               >
                 <span className="inline-block rounded-lg bg-gray-50 p-3">
                   <svg
@@ -53,7 +53,7 @@ function Body() {
 
               <a
                 className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
+                href="#"
               >
                 <span className="inline-block rounded-lg bg-gray-50 p-3">
                   <svg
@@ -112,7 +112,7 @@ function Body() {
 
               <a
                 className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
+                href="#"
               >
                 <span className="inline-block rounded-lg bg-gray-50 p-3">
                   <svg
@@ -142,7 +142,7 @@ function Body() {
 
               <a
                 className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
+                href="#"
               >
                 <span className="inline-block rounded-lg bg-gray-50 p-3">
                   <svg
@@ -172,7 +172,7 @@ function Body() {
 
               <a
                 className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
+                href="#"
               >
                 <span className="inline-block rounded-lg bg-gray-50 p-3">
                   <svg
@@ -236,7 +236,7 @@ function Body() {
                 </p>
 
                 <a
-                  href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
+                  href="https://api.whatsapp.com/send?phone=5491176293141&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
                   className="mt-8 inline-block rounded border border-[#111827] bg-[#111827] px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-[#111827] focus:outline-none focus:ring active:text-[#111827]"
                 >
                   Ponte en contacto
@@ -279,13 +279,6 @@ function Body() {
                 cualquier tipo de inquietud, garantizando el mejor de los
                 resultados, de la forma más rápida y eficáz posible.
               </p>
-
-              {/* <a
-                href="https://api.whatsapp.com/send?phone=541139193711&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
-                class="mt-8 inline-block rounded border border-[#111827] bg-[#111827] px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-[#111827] focus:outline-none focus:ring active:text-[#111827]"
-              >
-                Ponte en contacto
-              </a> */}
             </div>
           </div>
         </div>

@@ -20,7 +20,17 @@ function Header() {
             className="mx-2 text-bold cursor-pointer text-white hover:text-gray-100"
             key={index}
           >
-            <Link href={`/${e.toLowerCase()}`}>{e}</Link>
+            <Link
+              href={
+                e === "Inicio"
+                  ? "/"
+                  : e === "Contacto"
+                  ? "https://api.whatsapp.com/send?phone=5491176293141&text=Hola%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20informaci%C3%B3n!"
+                  : ""
+              }
+            >
+              {e}
+            </Link>
           </span>
         ))}
       </div>
