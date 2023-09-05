@@ -44,8 +44,8 @@ function Table({ people, detail }) {
     const allCheckedArr = checkedState.map(() => true)
     updatedCheckedState === allCheckedArr ? setAllCheckedState(true) : setAllCheckedState(false)
     setCheckedState(updatedCheckedState);
-  console.log(updatedCheckedState);
-  console.log(allCheckedArr);
+  // console.log(updatedCheckedState);
+  // console.log(allCheckedArr);
   //   checkedState === allChecked ? true : false;
   }
   const handleSelectAll = (e) => {
@@ -96,6 +96,7 @@ function Table({ people, detail }) {
         dataPersonArr.push(item)
       }
     });
+    //console.log(dataPersonArr)
     return dataPersonArr;
   }
   const dataPerson = dataSelected(peoplePagination, checkedState)
@@ -132,7 +133,7 @@ function Table({ people, detail }) {
   return (
     <div className="overflow-x-auto mx-10 my-10 w-full flex-col items-start justify-center ">
       {deleteUser && (
-        <DeleteConfirm user={user} setDeleteUser={setDeleteUser} />
+        <DeleteConfirm user={user} setDeleteUser={setDeleteUser} detail ={detail} />
       )}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />

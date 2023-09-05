@@ -1,10 +1,16 @@
 import React from "react";
-import { deleteUser } from "../lib/utils";
+import { deleteUser, deleteDetail } from "../lib/utils";
 import { changeLoading, deletePerson } from "../redux/features/peopleSlice";
+//import { deleteDetail } from "../redux/features/detailSlice";
 import { useDispatch } from "react-redux";
 
-function DeleteConfirm({ user, setDeleteUser }) {
+function DeleteConfirm({ user, setDeleteUser, detail}) {
   const dispatch = useDispatch();
+  const detallePersona = detail.detail?.filter(
+    (e) => e.persona === user._id
+  )[0];
+  console.log(detallePersona);
+
   return (
     <div
       className="relative z-10 "
@@ -37,6 +43,8 @@ function DeleteConfirm({ user, setDeleteUser }) {
                 onClick={async () => [
                   dispatch(changeLoading(true)),
                   await deleteUser(user._id),
+                  detallePersona !== undefined ? await deleteDetail(detallePersona._id) : "",
+                  //dispatch(deleteDetail(detallePersona._id)),
                   dispatch(deletePerson(user._id)),
                   setDeleteUser(false),
                   dispatch(changeLoading(false)),
