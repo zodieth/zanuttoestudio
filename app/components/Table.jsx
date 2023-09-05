@@ -6,6 +6,7 @@ import EditUser from "../components/EditUser";
 import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import FilterStatusSelect from "../components/FilterStatusSelect";
+import DeleteSelectedConfirm from "../components/DeleteSelectedComfirm"
 import { useDispatch } from "react-redux";
 import * as XLSX from "xlsx";
 
@@ -31,6 +32,7 @@ function Table({ people, detail }) {
 
   const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
+  const [deleteSelected, setDeleteSelected] = useState(false);
 
   const [checkedState, setCheckedState] = useState(
     new Array(peoplePagination.length).fill(false)
@@ -142,6 +144,9 @@ function Table({ people, detail }) {
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}
+      {deleteSelected && (
+        <DeleteSelectedConfirm dataPerson={dataPerson} setDeleteSelected={setDeleteSelected} dataDetails={dataDetails} />
+      )}
 
       <div className="flex flex-row items-center justify-between mb-10">
         <div className="flex gap-4">
@@ -171,8 +176,7 @@ function Table({ people, detail }) {
           </svg>
         </div>
         <div className="mx-1 flex flex-row items-center justify-center rounded bg-red-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
-          //onClick={()=>downloadExcel(dataPerson,dataDetails)}
-        >
+              onClick={() => [setDeleteSelected(true)]}        >
           <h1 className="text-md">Borrar Seleccionados</h1>
              <svg
               xmlns="http://www.w3.org/2000/svg"

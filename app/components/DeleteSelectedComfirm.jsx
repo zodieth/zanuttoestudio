@@ -3,12 +3,20 @@ import { deleteUser, deleteDetail } from "../lib/utils";
 import { changeLoading, deletePerson } from "../redux/features/peopleSlice";
 import { useDispatch } from "react-redux";
 
-function DeleteConfirm({ user, setDeleteUser, detail}) {
+function DeleteConfirm({ dataPerson, setDeleteSelected, dataDetails}) {
   const dispatch = useDispatch();
-  const detallePersona = detail.detail?.filter(
-    (e) => e.persona === user._id
-  )[0];
-  console.log(detallePersona);
+
+  const handleDeleteSelected = (dataPerson, dataDetails) => {
+    dataPerson.map(async(element, index) => {
+        console.log(dataDetails[index]);
+        if(dataDetails[index]._id !== undefined) {
+console.log(dataDetails[index]._id);
+            await deleteDetail(dataDetails[index]._id)
+        }
+        await deleteUser(element._id)
+        dispatch(deletePerson(element._id))
+    });
+  }
 
   return (
     <div
@@ -29,7 +37,7 @@ function DeleteConfirm({ user, setDeleteUser, detail}) {
                     className="mb-1 text-center flex flex-col items-center justify-center text-base font-semibold leading-6 text-gray-900"
                     id="modal-title"
                   >
-                    Estás seguro que querés eliminar este usuario?
+                    Estás seguro que querés eliminar los usuarios seleccionados?
                   </h3>
                   <p className=" mx-4 text-1xl text-gray-500"></p>
                 </div>
@@ -39,20 +47,17 @@ function DeleteConfirm({ user, setDeleteUser, detail}) {
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                onClick={async () => [
-                  dispatch(changeLoading(true)),
-                  await deleteUser(user._id),
-                  detallePersona !== undefined ? await deleteDetail(detallePersona._id) : "",
-                  //dispatch(deleteDetail(detallePersona._id)),
-                  dispatch(deletePerson(user._id)),
-                  setDeleteUser(false),
-                  dispatch(changeLoading(false)),
+                onClick={() => [
+                   dispatch(changeLoading(true)),
+                   handleDeleteSelected(dataPerson,dataDetails),
+                   setDeleteSelected(false),
+                   dispatch(changeLoading(false)),
                 ]}
               >
                 Eliminar
               </button>
               <button
-                onClick={() => [setDeleteUser(false)]}
+                onClick={() => [setDeleteSelected(false)]}
                 type="button"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
