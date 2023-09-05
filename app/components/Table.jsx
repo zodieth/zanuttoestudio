@@ -6,7 +6,7 @@ import EditUser from "../components/EditUser";
 import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import FilterStatusSelect from "../components/FilterStatusSelect";
-import DeleteSelectedConfirm from "../components/DeleteSelectedComfirm"
+import DeleteSelectedConfirm from "../components/DeleteSelectedConfirm"
 import { useDispatch } from "react-redux";
 import * as XLSX from "xlsx";
 
