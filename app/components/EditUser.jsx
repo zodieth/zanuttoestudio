@@ -145,7 +145,7 @@ function EditUser({ user, setEditUser }) {
         detalle.tipoDeAporte,
         detalle.persona
       );
-      setDetalle({...detalle, _id: response.data.newDetalle._id});
+      setDetalle({ ...detalle, _id: response.data.newDetalle._id });
       dispatch(addDetail([detalle]));
     }
   };
