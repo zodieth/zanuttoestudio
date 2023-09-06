@@ -260,7 +260,10 @@ function Table({ people, detail }) {
                       ? people
                       : people.nombre
                           .toLowerCase()
-                          .includes(search.toLocaleLowerCase());
+                          .includes(search.toLocaleLowerCase()) |
+                          people.num
+                            .toLowerCase()
+                            .includes(search.toLocaleLowerCase());
                   })
                   .map((e, index) => (
                     <tr key={index} className="">
