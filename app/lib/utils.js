@@ -239,3 +239,6 @@ export const updateDetalle = async (
 export const getDetalle = async () => {
   await api.get(`detalle`);
 };
+export const deleteDetail = async (id) => {
+  await api.delete(`detalle/${id}`);
+};
