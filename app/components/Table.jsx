@@ -30,7 +30,7 @@ function Table({ people, detail }) {
 
   // ----------------------------
 
- // const [deleteUser, setDeleteUser] = useState(false);
+  // const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [deleteSelected, setDeleteSelected] = useState(false);
 
@@ -38,28 +38,27 @@ function Table({ people, detail }) {
 
   const [allCheckedState, setAllCheckedState] = useState(false);
   const handleSelectOne = (_id) => {
-    if(checkedState.includes(_id)){
-      const updatedCheckedState = checkedState.filter((item) =>  item !== _id );
-      setCheckedState(updatedCheckedState)
-    }else {
-      setCheckedState([...checkedState, _id])
+    if (checkedState.includes(_id)) {
+      const updatedCheckedState = checkedState.filter((item) => item !== _id);
+      setCheckedState(updatedCheckedState);
+    } else {
+      setCheckedState([...checkedState, _id]);
     }
   };
   const handleSelectAll = (e) => {
     let newState = [...checkedState];
     if (e === true) {
-      const allSelected = peoplePagination.map(item => item._id);
-      for(let i=0; i<allSelected.length; i++){
-        if(!newState.includes(allSelected[i])){
+      const allSelected = peoplePagination.map((item) => item._id);
+      for (let i = 0; i < allSelected.length; i++) {
+        if (!newState.includes(allSelected[i])) {
           newState.push(allSelected[i]);
         }
       }
       setAllCheckedState(true);
     } else {
-      const allSelected = peoplePagination.map(item => item._id);
+      const allSelected = peoplePagination.map((item) => item._id);
       for (let i = 0; i < allSelected.length; i++) {
-        newState = newState.filter(item => item !== allSelected[i])
-        
+        newState = newState.filter((item) => item !== allSelected[i]);
       }
 
       setAllCheckedState(false);
@@ -98,13 +97,15 @@ function Table({ people, detail }) {
   const [search, setSearch] = useState("");
   useEffect(() => {
     const allChecked = peoplePagination.map(() => true);
-    const allPeople = peoplePagination.map((item)=> checkedState.includes(item._id));
+    const allPeople = peoplePagination.map((item) =>
+      checkedState.includes(item._id)
+    );
     if (allPeople.toString() === allChecked.toString()) {
       setAllCheckedState(true);
-    }else{
+    } else {
       setAllCheckedState(false);
     }
-  },[checkedState])
+  }, [checkedState]);
 
   const dataSelected = (people, checkedState) => {
     const dataPersonArr = [];
@@ -126,8 +127,8 @@ function Table({ people, detail }) {
     return {};
   });
   const downloadExcel = (dataPerson, dataDetails) => {
-    if(dataPerson.toString() === [].toString()){
-      return alert("Ningun usuario seleccionado")
+    if (dataPerson.toString() === [].toString()) {
+      return alert("Ningun usuario seleccionado");
     }
     const workbook = XLSX.utils.book_new();
     dataPerson.forEach((element) => {
@@ -314,7 +315,7 @@ function Table({ people, detail }) {
 
                       <td>
                         <a
-                          href={`https://wa.me/${e.num}`}
+                          href={`https://wa.me/+54${e.num}`}
                           className="whitespace-nowrap px-4 py-2 text-gray-700 hover:underline"
                         >
                           {e.num}
@@ -378,7 +379,7 @@ function Table({ people, detail }) {
               total={getTotalPages()}
               onChange={(pageChange) => {
                 setActualPage(pageChange);
-                setAllCheckedState(false)
+                setAllCheckedState(false);
               }}
             />
           </div>
