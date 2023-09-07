@@ -713,7 +713,7 @@ function EditUser({ user, setEditUser }) {
                   </label>
 
                   <input
-                    type="number"
+                    type="text"
                     id="dni"
                     placeholder="DNI"
                     defaultValue={usuario.dni}
