@@ -777,8 +777,8 @@ function EditUser({ user, setEditUser }) {
 
                   <input
                     type="text"
-                    id="direccion"
-                    placeholder="Dirección"
+                    id="localidad"
+                    placeholder="Localidad"
                     defaultValue={usuario.localidad}
                     className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     onChange={(e) =>
