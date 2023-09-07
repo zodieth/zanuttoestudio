@@ -30,6 +30,6 @@ const PersonSchema = new mongoose.Schema({
   localidad: { type: String, required: false },
   provincia: { type: String, required: false },
   comentarios: { type: String, required: false },
-});
-
+  idInc: { type: Number, required:false },
+}, {timestamps: true});
 export default mongoose.models.Person || mongoose.model("Person", PersonSchema);

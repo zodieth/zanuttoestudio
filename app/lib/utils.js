@@ -5,50 +5,10 @@ export const sendMsg = async (to, body) => {
 };
 
 export const createPerson = async (
-  nombre,
-  sexo,
-  fecha,
-  fechaDeIngreso,
-  hijos,
-  num,
-  aportes,
-  hasta2008,
-  desde2009,
-  hasta2012,
-  desde2012,
-  moratoria,
-  hijosDiscapacidad,
-  hijosAdoptados,
-  status,
-  extranjero,
-  auh,
-  aportando,
-  tipoAporte,
-  pension,
-  comentarios
-) => {
+   persona
+  ) => {
   await api.post("people", {
-    nombre,
-    sexo,
-    fecha,
-    fechaDeIngreso,
-    hijos,
-    num,
-    aportes,
-    hasta2008,
-    desde2009,
-    hasta2012,
-    desde2012,
-    moratoria,
-    hijosDiscapacidad,
-    hijosAdoptados,
-    status,
-    extranjero,
-    auh,
-    aportando,
-    tipoAporte,
-    pension,
-    comentarios,
+    persona
   });
 };
 
@@ -73,7 +33,8 @@ export const updateOrCreatePerson = async (
   aportando,
   tipoAporte,
   pension,
-  comentarios
+  comentarios,
+  //idInc
 ) => {
   const update = await api.put("people", {
     nombre,
@@ -97,6 +58,7 @@ export const updateOrCreatePerson = async (
     tipoAporte,
     pension,
     comentarios,
+    idInc,
   });
 
   if (update.length) return;
@@ -123,6 +85,7 @@ export const updateOrCreatePerson = async (
       tipoAporte,
       pension,
       comentarios,
+      idInc,
     });
   }
 };
@@ -158,8 +121,9 @@ export const updateUser = async (
   direccion,
   localidad,
   provincia,
-  comentarios
-) => {
+  comentarios,
+  idInc,
+  ) => {
   await api.put(`people/${_id}`, {
     nombre,
     sexo,
@@ -187,6 +151,7 @@ export const updateUser = async (
     localidad,
     provincia,
     comentarios,
+    idInc,
   });
 };
 
