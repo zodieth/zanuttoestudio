@@ -6,7 +6,7 @@ const SearchBar = ({ setSearch }) => {
       <input
         type="text"
         id="Search"
-        placeholder="Buscar por nombre..."
+        placeholder="Buscar ..."
         className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
         onChange={(e) => setSearch(e.target.value)}
       />
