@@ -137,7 +137,6 @@ export async function POST(request) {
     // idInc
   } = await request.json();
 
-  console.log(persona);
   try {
     await dbConnect();
     const idSeq = await Counter.findOneAndUpdate(
@@ -146,7 +145,6 @@ export async function POST(request) {
       {upsert:true},
       {new:true}
     ).then(data => data!==null ? data.seq : 0)
-    console.log("Counter",idSeq);
     const id = idSeq+1;
 
     const person = await new Person({
