@@ -30,38 +30,41 @@ function Table({ people, detail }) {
 
   // ----------------------------
 
-  const [deleteUser, setDeleteUser] = useState(false);
+ // const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [deleteSelected, setDeleteSelected] = useState(false);
 
-  const [checkedState, setCheckedState] = useState(
-    new Array(peoplePagination.length).fill(false)
-  );
+  const [checkedState, setCheckedState] = useState([]);
 
   const [allCheckedState, setAllCheckedState] = useState(false);
-  const handleSelectOne = (position) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
-    );
-    const allCheckedArr = checkedState.map(() => true);
-    updatedCheckedState === allCheckedArr
-      ? setAllCheckedState(true)
-      : setAllCheckedState(false);
-    setCheckedState(updatedCheckedState);
-    // console.log(updatedCheckedState);
-    // console.log(allCheckedArr);
-    //   checkedState === allChecked ? true : false;
+  const handleSelectOne = (_id) => {
+    if(checkedState.includes(_id)){
+      const updatedCheckedState = checkedState.filter((item) =>  item !== _id );
+      setCheckedState(updatedCheckedState)
+    }else {
+      setCheckedState([...checkedState, _id])
+    }
   };
   const handleSelectAll = (e) => {
-    if (e.target.checked === true) {
-      const allSelected = new Array(peoplePagination.length).fill(true);
-      setCheckedState(allSelected);
+    let newState = [...checkedState];
+    if (e === true) {
+      const allSelected = peoplePagination.map(item => item._id);
+      for(let i=0; i<allSelected.length; i++){
+        if(!newState.includes(allSelected[i])){
+          newState.push(allSelected[i]);
+        }
+      }
       setAllCheckedState(true);
     } else {
-      const noneSelected = new Array(peoplePagination.length).fill(false);
-      setCheckedState(noneSelected);
+      const allSelected = peoplePagination.map(item => item._id);
+      for (let i = 0; i < allSelected.length; i++) {
+        newState = newState.filter(item => item !== allSelected[i])
+        
+      }
+
       setAllCheckedState(false);
     }
+    setCheckedState(newState);
   };
 
   const [user, setUser] = useState({
@@ -93,19 +96,26 @@ function Table({ people, detail }) {
     comentarios: "",
   });
   const [search, setSearch] = useState("");
+  useEffect(() => {
+    const allChecked = peoplePagination.map(() => true);
+    const allPeople = peoplePagination.map((item)=> checkedState.includes(item._id));
+    if (allPeople.toString() === allChecked.toString()) {
+      setAllCheckedState(true);
+    }else{
+      setAllCheckedState(false);
+    }
+  },[checkedState])
 
   const dataSelected = (people, checkedState) => {
     const dataPersonArr = [];
-    people.map((item, index) => {
-      if (checkedState[index]) {
+    people.map((item) => {
+      if (checkedState.includes(item._id)) {
         dataPersonArr.push(item);
       }
     });
-    //console.log(dataPersonArr)
     return dataPersonArr;
   };
-  const dataPerson = dataSelected(peoplePagination, checkedState);
-  //const dataPerson = people.people
+  const dataPerson = dataSelected(people.people, checkedState);
   const dataDetails = dataPerson.map((p) => {
     const d = detail.detail;
     for (let i = 0; i < d.length; i++) {
@@ -116,6 +126,9 @@ function Table({ people, detail }) {
     return {};
   });
   const downloadExcel = (dataPerson, dataDetails) => {
+    if(dataPerson.toString() === [].toString()){
+      return alert("Ningun usuario seleccionado")
+    }
     const workbook = XLSX.utils.book_new();
     dataPerson.forEach((element) => {
       const detail = dataDetails[dataPerson.indexOf(element)];
@@ -140,13 +153,13 @@ function Table({ people, detail }) {
 
   return (
     <div className="overflow-x-auto mx-10 my-10 w-full flex-col items-start justify-center ">
-      {deleteUser && (
+      {/* {deleteUser && (
         <DeleteConfirm
           user={user}
           setDeleteUser={setDeleteUser}
           detail={detail}
         />
-      )}
+      )} */}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}
@@ -246,7 +259,7 @@ function Table({ people, detail }) {
                       className="rounded-sm"
                       //defaultChecked={allCheckedState}
                       checked={allCheckedState}
-                      onChange={(e) => handleSelectAll(e)}
+                      onChange={(e) => handleSelectAll(e.target.checked)}
                     />
                   </th>
                   <th className="px-4 py-2"></th>
@@ -311,8 +324,9 @@ function Table({ people, detail }) {
                         <input
                           className="rounded-sm"
                           type="checkbox"
-                          checked={checkedState[index]}
-                          onChange={() => handleSelectOne(index)}
+                          key={e._id}
+                          checked={checkedState.includes(e._id)}
+                          onChange={() => handleSelectOne(e._id)}
                         />
                       </td>
                       <td className="whitespace-nowrap px-4 py-2">
@@ -335,7 +349,7 @@ function Table({ people, detail }) {
                             />
                           </svg>
                         </div>
-                        <div
+                        {/* <div
                           onClick={() => [setDeleteUser(true), setUser(e)]}
                           className="mx-1 inline-block rounded bg-red-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-500 cursor-pointer"
                         >
@@ -353,7 +367,7 @@ function Table({ people, detail }) {
                               d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
                             />
                           </svg>
-                        </div>
+                        </div> */}
                       </td>
                     </tr>
                   ))}
@@ -364,6 +378,7 @@ function Table({ people, detail }) {
               total={getTotalPages()}
               onChange={(pageChange) => {
                 setActualPage(pageChange);
+                setAllCheckedState(false)
               }}
             />
           </div>
