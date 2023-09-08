@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Person from "../../models/Person";
+import Counter from "../../models/Counter";
 import { sendMsg } from "../../lib/utils";
 import dbConnect from "../../lib/dbConnect";
 
@@ -37,6 +38,7 @@ export async function PUT(request) {
     fiscal,
     pension,
     comentarios,
+    //id,
   } = await request.json();
 
   await dbConnect();
@@ -63,7 +65,8 @@ export async function PUT(request) {
       aportando,
       fiscal,
       pension,
-      comentarios
+      comentarios,
+      //id
     );
 
     const find = await Person.find({});
@@ -95,6 +98,7 @@ export async function PUT(request) {
       fiscal: person.fiscal,
       pension: person.pension,
       comentarios: person.comentarios,
+      //id: person.id
     });
 
     return NextResponse.json(personUpdated), { status: 200 };
@@ -108,56 +112,66 @@ export async function PUT(request) {
 
 export async function POST(request) {
   const {
-    nombre,
-    sexo,
-    fecha,
-    fechaDeIngreso,
-    hijos,
-    num,
-    aportes,
-    hasta2008,
-    desde2009,
-    hasta2012,
-    desde2012,
-    moratoria,
-    hijosDiscapacidad,
-    hijosAdoptados,
-    status,
-    extranjero,
-    auh,
-    aportando,
-    fiscal,
-    pension,
-    comentarios,
+    persona
+    // nombre,
+    // sexo,
+    // fecha,
+    // fechaDeIngreso,
+    // hijos,
+    // num,
+    // aportes,
+    // hasta2008,
+    // desde2009,
+    // hasta2012,
+    // desde2012,
+    // moratoria,
+    // hijosDiscapacidad,
+    // hijosAdoptados,
+    // status,
+    // extranjero,
+    // auh,
+    // aportando,
+    // fiscal,
+    // pension,
+    // comentarios,
+    // idInc
   } = await request.json();
 
   try {
     await dbConnect();
+    const idSeq = await Counter.findOneAndUpdate(
+      {id:"autoval"},
+      {"$inc":{"seq":1}},
+      {upsert:true},
+      {new:true}
+    ).then(data => data!==null ? data.seq : 0)
+    const id = idSeq+1;
 
-    const person = await new Person(
-      nombre,
-      sexo,
-      fecha,
-      fechaDeIngreso,
-      hijos,
-      num,
-      aportes,
-      hasta2008,
-      desde2009,
-      hasta2012,
-      desde2012,
-      moratoria,
-      hijosDiscapacidad,
-      hijosAdoptados,
-      status,
-      extranjero,
-      auh,
-      aportando,
-      fiscal,
-      pension,
-      comentarios
+    const person = await new Person({
+      nombre: persona.nombre,
+      sexo: persona.sexo,
+      fecha: persona.fecha,
+      fechaDeIngreso: persona.fechaDeIngreso,
+      hijos: persona.hijos,
+      num: persona.num,
+      aportes: persona.aportes,
+      hasta2008: persona.hasta2008,
+      desde2009: persona.desde2009,
+      hasta2012: persona.hasta2012,
+      desde2012: persona.desde2012,
+      moratoria: persona.moratoria,
+      hijosDiscapacidad: persona.hijosDiscapacidad,
+      hijosAdoptados: persona.hijosAdoptados,
+      status: persona.status,
+      extranjero: persona.extranjero,
+      auh: persona.auh,
+      aportando: persona.aportando,
+      tipoAporte: persona.tipoAporte,
+      pension: persona.pension,
+      comentarios: persona.comentarios,
+      idInc: id
+    }
     );
-
     let dobArray = person.fecha.split("-");
     let year = Number(dobArray[0]);
     let month = Number(dobArray[1]);
@@ -225,6 +239,7 @@ export async function POST(request) {
 
     return NextResponse.json("creado");
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ msg: error }, { status: 500 });
   }
 }
