@@ -86,6 +86,7 @@ function BasicForm({ setForm }) {
     desde2012: 0,
     excesoDeEdad: 0,
     comentarios: "",
+    idInc:0
   });
 
   // -----------------------tercer cartel resultados---------------------------------
@@ -413,6 +414,7 @@ function BasicForm({ setForm }) {
                               desde2012: desde2012 * 12,
                               excesoDeEdad: excesoDeEdad,
                               comentarios: "",
+                              idInc: 0
                             }),
                           ]
                     }
