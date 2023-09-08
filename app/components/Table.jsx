@@ -277,16 +277,14 @@ function Table({ people, detail }) {
                     console.log(search);
                     return search.toLowerCase() === ""
                       ? people
-                      : //  people.nombre
-                        //     .toLowerCase()
-                        //     .includes(search.toLocaleLowerCase()) |
-                        //     people.num
-                        //       .toLowerCase()
-                        //       .includes(search.toLocaleLowerCase()) |
-                        // people.idInc
-                        // ?
-                        people?.idInc.includes(search);
-                    // : people._id.includes(search.toLocaleLowerCase());
+                      : people.nombre
+                          .toLowerCase()
+                          .includes(search.toLocaleLowerCase()) ||
+                          people.num
+                            .toLowerCase()
+                            .includes(search.toLocaleLowerCase()) ||
+                          people.idInc?.toString().includes(search) ||
+                          people._id?.toString().includes(search);
                   })
                   .map((e, index) => {
                     const dateString = e.createdAt;
