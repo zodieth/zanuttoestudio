@@ -236,7 +236,7 @@ function Table({ people, detail }) {
               <thead className="ltr:text-left rtl:text-right">
                 <tr>
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Id
+                    Carpeta
                   </th>
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     Estado
@@ -273,14 +273,20 @@ function Table({ people, detail }) {
               <tbody className="divide-y divide-gray-200">
                 {peoplePagination
                   ?.filter((people) => {
+                    console.log(people);
+                    console.log(search);
                     return search.toLowerCase() === ""
                       ? people
-                      : people.nombre
-                          .toLowerCase()
-                          .includes(search.toLocaleLowerCase()) |
-                          people.num
-                            .toLowerCase()
-                            .includes(search.toLocaleLowerCase());
+                      : //  people.nombre
+                        //     .toLowerCase()
+                        //     .includes(search.toLocaleLowerCase()) |
+                        //     people.num
+                        //       .toLowerCase()
+                        //       .includes(search.toLocaleLowerCase()) |
+                        // people.idInc
+                        // ?
+                        people?.idInc.includes(search);
+                    // : people._id.includes(search.toLocaleLowerCase());
                   })
                   .map((e, index) => {
                     const dateString = e.createdAt;
@@ -299,11 +305,12 @@ function Table({ people, detail }) {
                       <tr key={index} className="">
                         <td className="whitespace-nowrap px-4 py-2 text-blue-600">
                           <h1 className="hover:underline cursor-pointer">
-                            {e._id
-                              // .split("")                                 REVERSE STRING
-                              // .reduce((acc, char) => char + acc, "")
-                              .substring(0, 6)}
-                            ...
+                            {!e.idInc
+                              ? e._id
+                                  // .split("")                                 REVERSE STRING
+                                  // .reduce((acc, char) => char + acc, "")
+                                  .substring(0, 6) + "..."
+                              : e.idInc}
                           </h1>
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 ">
