@@ -279,10 +279,10 @@ function Table({ people, detail }) {
                       ? people
                       : people.nombre
                           .toLowerCase()
-                          .includes(search.toLocaleLowerCase()) ||
+                          .includes(search.toLowerCase()) ||
                           people.num
                             .toLowerCase()
-                            .includes(search.toLocaleLowerCase()) ||
+                            .includes(search.toLowerCase()) ||
                           people.idInc?.toString().includes(search) ||
                           people._id?.toString().includes(search);
                   })
