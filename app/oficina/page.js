@@ -6,23 +6,23 @@ import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import SignInPage from "../login/page";
 import { useSession } from "next-auth/react";
-import { useDispatch, useSelector } from "react-redux";
-import { addPeople } from "../redux/features/peopleSlice";
+//import { useDispatch, useSelector } from "react-redux";
+// import { addPeople } from "../redux/features/peopleSlice";
 import { api } from "../page";
 import { RiLoader5Fill } from "react-icons/ri";
-import { addDetail } from "../redux/features/detailSlice";
+// import { addDetail } from "../redux/features/detailSlice";
 
 function Oficina() {
-  const people = useSelector((state) => state.people);
-  const detail = useSelector((state) => state.detail);
-  const dispatch = useDispatch();
+  // const people = useSelector((state) => state.people);
+  //const detail = useSelector((state) => state.detail);
+  // const dispatch = useDispatch();
   
 
-  useEffect(() => {
-    api.get("people").then((data) => dispatch(addPeople(data.data)));
-    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
+  // useEffect(() => {
+  //   api.get("people").then((data) => dispatch(addPeople(data.data)));
+  //   api.get("detalle").then((data) => dispatch(addDetail(data.data)));
 
-  }, [dispatch]);
+  // }, [dispatch]);
 
   const { data: session, status } = useSession();
 
@@ -32,7 +32,7 @@ function Oficina() {
         <Header />
         <div className="flex">
           <SideBar session={session} />
-          <Table people={people} detail={detail}/>
+          <Table />
         </div>
       </div>
     );
