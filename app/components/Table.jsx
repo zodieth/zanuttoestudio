@@ -7,12 +7,51 @@ import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import FilterStatusSelect from "../components/FilterStatusSelect";
 import DeleteSelectedConfirm from "../components/DeleteSelectedConfirm";
-import { useDispatch } from "react-redux";
+import { addPeople } from "../redux/features/peopleSlice";
+import { addDetail } from "../redux/features/detailSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { api } from "../page";
 import * as XLSX from "xlsx";
 
-function Table({ people, detail }) {
+function Table() {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 10;
+  
+  const people = useSelector((state) => state.people);
+  const detail = useSelector((state) => state.detail);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    api.get("people")
+    .then((datos) =>
+      datos.data.sort((a, b) => {
+        const idA = a.idInc || a._id;
+        const idB = b.idInc || b._id;
+
+        // Si idA es número y idB es string, a debe aparecer primero
+        if (typeof idA === "number" && typeof idB === "string") {
+          return -1;
+        }
+
+        // Si idA es string y idB es número, b debe aparecer primero
+        if (typeof idA === "string" && typeof idB === "number") {
+          return 1;
+        }
+
+        // Si ambos son números, ordenar de manera descendente
+        if (typeof idA === "number" && typeof idB === "number") {
+          return idB - idA;
+        }
+
+        // Si ambos son strings, se pueden comparar lexicográficamente (esto mantendrá el orden basado en el componente temporal de los ObjectIDs de MongoDB)
+        return idA.localeCompare(idB);
+      })
+    )
+    .then((data) => dispatch(addPeople(data)));
+    api.get("detalle").then((data) => dispatch(addDetail(data.data)));
+
+  }, [dispatch]);
+
   let peoplePagination;
 
   useEffect(() => {
@@ -108,12 +147,13 @@ function Table({ people, detail }) {
   }, [checkedState]);
 
   const dataSelected = (people, checkedState) => {
+    console.log(people);
     const dataPersonArr = [];
-    people.map((item) => {
+    people.toString() !== [{}].toString()? people.map((item) => {
       if (checkedState.includes(item._id)) {
         dataPersonArr.push(item);
       }
-    });
+    }): "";
     return dataPersonArr;
   };
   const dataPerson = dataSelected(people.people, checkedState);
@@ -134,13 +174,11 @@ function Table({ people, detail }) {
     dataPerson.forEach((element) => {
       const detail = dataDetails[dataPerson.indexOf(element)];
       const worksheet = XLSX.utils.json_to_sheet([element]);
-      if (detail !== {}) {
         XLSX.utils.sheet_add_aoa(
           worksheet,
           [detail.año, detail.cantidadMeses, detail.tipoDeAporte],
           { origin: "B4" }
         );
-      }
       //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });
 
       XLSX.utils.book_append_sheet(workbook, worksheet, element._id);
