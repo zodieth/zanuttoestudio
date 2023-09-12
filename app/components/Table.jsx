@@ -249,7 +249,7 @@ function Table() {
               <thead className="ltr:text-left rtl:text-right">
                 <tr>
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Id
+                    Carpeta
                   </th>
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     Estado
@@ -268,6 +268,9 @@ function Table() {
                     Número
                   </th>
                   <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    Fecha de consulta
+                  </th>
+                  <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     <input
                       type="checkbox"
                       className="rounded-sm"
@@ -283,87 +286,108 @@ function Table() {
               <tbody className="divide-y divide-gray-200">
                 {peoplePagination
                   ?.filter((people) => {
+                    console.log(people);
+                    console.log(search);
                     return search.toLowerCase() === ""
                       ? people
                       : people.nombre
                           .toLowerCase()
-                          .includes(search.toLocaleLowerCase()) |
+                          .includes(search.toLowerCase()) ||
                           people.num
                             .toLowerCase()
-                            .includes(search.toLocaleLowerCase());
+                            .includes(search.toLowerCase()) ||
+                          people.idInc?.toString().includes(search) ||
+                          people._id?.toString().includes(search);
                   })
-                  .map((e, index) => (
-                    <tr key={index} className="">
-                      <td className="whitespace-nowrap px-4 py-2 text-blue-600">
-                        <h1 className="hover:underline cursor-pointer">
-                          {e._id
-                            // .split("")                                 REVERSE STRING
-                            // .reduce((acc, char) => char + acc, "")
-                            .substring(0, 6)}
-                          ...
-                        </h1>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 ">
-                        <span
-                          className={
-                            e.status === "consulta"
-                              ? "whitespace-nowrap rounded-full bg-green-100 px-2.5 py-0.5 text-sm text-green-700"
-                              : e.status === "carpeta"
-                              ? "whitespace-nowrap rounded-full bg-blue-100 px-2.5 py-0.5 text-sm text-blue-700"
-                              : "whitespace-nowrap rounded-full bg-red-100 px-2.5 py-0.5 text-sm text-red-700 "
-                          }
-                        >
-                          {e.status}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                        {e.nombre}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        {e.fecha}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        {e.sexo}
-                      </td>
+                  .map((e, index) => {
+                    const dateString = e.createdAt;
+                    const dateObj = new Date(dateString);
 
-                      <td>
-                        <a
-                          href={`https://wa.me/+54${e.num}`}
-                          className="whitespace-nowrap px-4 py-2 text-gray-700 hover:underline"
-                        >
-                          {e.num}
-                        </a>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        <input
-                          className="rounded-sm"
-                          type="checkbox"
-                          key={e._id}
-                          checked={checkedState.includes(e._id)}
-                          onChange={() => handleSelectOne(e._id)}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2">
-                        <div
-                          onClick={() => [setUser(e), setEditUser(true)]}
-                          className="mx-1 inline-block rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="h-4 w-4"
+                    const year = dateObj.getUTCFullYear();
+                    const month = String(dateObj.getUTCMonth() + 1).padStart(
+                      2,
+                      "0"
+                    );
+                    const day = String(dateObj.getUTCDate()).padStart(2, "0");
+
+                    const formattedDate = `${day}/${month}/${year}`;
+
+                    return (
+                      <tr key={index} className="">
+                        <td className="whitespace-nowrap px-4 py-2 text-blue-600">
+                          <h1 className="hover:underline cursor-pointer">
+                            {!e.idInc
+                              ? e._id
+                                  // .split("")                                 REVERSE STRING
+                                  // .reduce((acc, char) => char + acc, "")
+                                  .substring(0, 6) + "..."
+                              : e.idInc}
+                          </h1>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 ">
+                          <span
+                            className={
+                              e.status === "consulta"
+                                ? "whitespace-nowrap rounded-full bg-green-100 px-2.5 py-0.5 text-sm text-green-700"
+                                : e.status === "carpeta"
+                                ? "whitespace-nowrap rounded-full bg-blue-100 px-2.5 py-0.5 text-sm text-blue-700"
+                                : "whitespace-nowrap rounded-full bg-red-100 px-2.5 py-0.5 text-sm text-red-700 "
+                            }
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                            />
-                          </svg>
-                        </div>
-                        {/* <div
+                            {e.status}
+                          </span>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                          {e.nombre}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {e.fecha}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {e.sexo}
+                        </td>
+
+                        <td>
+                          <a
+                            href={`https://wa.me/+54${e.num}`}
+                            className="whitespace-nowrap px-4 py-2 text-gray-700 hover:underline"
+                          >
+                            {e.num}
+                          </a>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {formattedDate === "NaN/NaN/NaN" ? "" : formattedDate}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          <input
+                            className="rounded-sm"
+                            type="checkbox"
+                            key={e._id}
+                            checked={checkedState.includes(e._id)}
+                            onChange={() => handleSelectOne(e._id)}
+                          />
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2">
+                          <div
+                            onClick={() => [setUser(e), setEditUser(true)]}
+                            className="mx-1 inline-block rounded bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="h-4 w-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                              />
+                            </svg>
+                          </div>
+                          {/* <div
                           onClick={() => [setDeleteUser(true), setUser(e)]}
                           className="mx-1 inline-block rounded bg-red-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-500 cursor-pointer"
                         >
@@ -382,9 +406,10 @@ function Table() {
                             />
                           </svg>
                         </div> */}
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
             <Pagination
