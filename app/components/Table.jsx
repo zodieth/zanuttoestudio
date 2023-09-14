@@ -147,13 +147,13 @@ function Table() {
   }, [checkedState]);
 
   const dataSelected = (people, checkedState) => {
-    console.log(people);
+    //console.log(people);
     const dataPersonArr = [];
-    people.toString() !== [{}].toString()? people.map((item) => {
+    people.map((item) => {
       if (checkedState.includes(item._id)) {
         dataPersonArr.push(item);
       }
-    }): "";
+    });
     return dataPersonArr;
   };
   const dataPerson = dataSelected(people.people, checkedState);
@@ -171,22 +171,21 @@ function Table() {
       return alert("Ningun usuario seleccionado");
     }
     const workbook = XLSX.utils.book_new();
-    dataPerson.forEach((element) => {
-      const detail = dataDetails[dataPerson.indexOf(element)];
-      const worksheet = XLSX.utils.json_to_sheet([element]);
-        XLSX.utils.sheet_add_aoa(
-          worksheet,
-          [detail.año, detail.cantidadMeses, detail.tipoDeAporte],
-          { origin: "B4" }
-        );
-      //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });
+    const worksheet = XLSX.utils.aoa_to_sheet([]);
+    
+    dataPerson.forEach((person) => {
+      const detail = dataDetails[dataPerson.indexOf(person)];
+      XLSX.utils.sheet_add_json(worksheet, [person], {origin: -1})
 
-      XLSX.utils.book_append_sheet(workbook, worksheet, element._id);
-      //XLSX.utils.book_append_sheet(workbook, worksheet2, element._id);
-    });
-    //XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
-    //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+      const aoa = 
+      [
+        ["Año","Meses Aportados", "Tipo aporte"]
+      ]
+      detail.año?.map((e) => aoa.push([e, detail.cantidadMeses[detail.año.indexOf(e)], detail.tipoDeAporte[detail.año.indexOf(e)] ]))
+//console.log(aoa);
+      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r:-1, c:25}})
+    })
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja 1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
   };
 
@@ -311,8 +310,8 @@ function Table() {
               <tbody className="divide-y divide-gray-200">
                 {peoplePagination
                   ?.filter((people) => {
-                    console.log(people);
-                    console.log(search);
+                    //console.log(people);
+                    //console.log(search);
                     return search.toLowerCase() === ""
                       ? people
                       : people.nombre
