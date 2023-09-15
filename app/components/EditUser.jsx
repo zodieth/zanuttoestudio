@@ -140,24 +140,14 @@ function EditUser({ user, setEditUser }) {
       }
     });
     for (let i = 0; i < nuevoDetalle.length; i++) {
-      //const element = nuevoDetalle[i];
       if(i <= detalle.año.indexOf(corteAño)){
         sumaHasta += nuevoDetalle[i];
       } else {
         sumaDesde += nuevoDetalle[i]; 
       }
     }
-    // nuevoDetalle.map((c,i) => {
-    //   suma += c;
-    //   if(detalle.año[i] === corteAño){
-    //     setSumaAportes({...sumaAportes, hasta: suma});
-    //     suma = 0;
-    //   }
-    // })
     setSumaAportes({hasta: sumaHasta, desde: sumaDesde})
     setDetalle({ ...detalle, cantidadMeses: nuevoDetalle });
-
-    console.log(sumaAportes);
   };
 
   const handleChangeArrayTipos = (e, index) => {

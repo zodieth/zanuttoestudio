@@ -175,15 +175,34 @@ function Table() {
     
     dataPerson.forEach((person) => {
       const detail = dataDetails[dataPerson.indexOf(person)];
-      XLSX.utils.sheet_add_json(worksheet, [person], {origin: -1})
+      XLSX.utils.sheet_add_json(worksheet, [{
+        Carpeta:person.idInc,
+        Nombre: person.nombre,
+        Sexo: person.sexo,
+        Fecha: person.fecha,
+        Hijos: person.hijos,
+        HijosAdoptados: person.hijosAdoptados,
+        Numero: person.num,
+        Aportes: person.aportes,
+        Hasta2008: person.hasta2008,
+        Desde2009: person.desde2009,
+        Hasta2012: person.hasta2012,
+        Desde2012: person.desde2012,
+        Moratoria: person.moratoria,
+        Status: person.status,
+        Extranjero: person.extranjero,
+        Auh: person.auh,
+        Aportando: person.aportando,
+        Comentarios: person.comentarios,
+        FechaDeConsulta: person.createdAt,
+      }], {origin: -1})
 
       const aoa = 
       [
         ["Año","Meses Aportados", "Tipo aporte"]
       ]
       detail.año?.map((e) => aoa.push([e, detail.cantidadMeses[detail.año.indexOf(e)], detail.tipoDeAporte[detail.año.indexOf(e)] ]))
-//console.log(aoa);
-      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r:-1, c:25}})
+      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r:-1, c:21}})
     })
     XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja 1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
