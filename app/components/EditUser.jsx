@@ -482,7 +482,7 @@ function EditUser({ user, setEditUser }) {
                         })
                       }
                     />
-                      <label className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
+                      <label className="block text-xs font-medium text-red-600">
                         Meses verificados: {sumaAportes.hasta}
                       </label>
                   </div>
@@ -534,7 +534,7 @@ function EditUser({ user, setEditUser }) {
                         })
                       }
                     />
-                    <label className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
+                    <label className="block text-xs font-medium text-red-600">
                       Meses verificados: {sumaAportes.desde}
                     </label>
                   </div>
