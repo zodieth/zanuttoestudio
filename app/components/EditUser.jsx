@@ -71,25 +71,48 @@ function EditUser({ user, setEditUser }) {
   const cantidadDeMeses = [];
   const tipoDeAporte = [];
 
-  if (usuario.extranjero) {
-    for (let index = year; index <= currentYear + 2; index++) {
-      index === 2012
-        ? añosAportados.push(
-            "De Enero a Marzo " + index,
-            "De Abril a Diciembre " + index
-          )
-        : añosAportados.push("" + index);
+  const cortePorEdad = (usuario) =>{ 
+    if((usuario.fecha<="1960-03-03"&&usuario.sexo==="MASCULINO") || (usuario.fecha<="1965-02-28"&&usuario.sexo==="FEMENINO")){
+      if (usuario.extranjero) {
+        for (let index = year; index <= currentYear + 2; index++) {
+          añosAportados.push("" + index);
+        }
+      } else {
+        for (let index = year + 18; index <= currentYear + 2; index++) {
+          añosAportados.push("" + index);
+        }
+      }
+      return "2008";
     }
-  } else {
-    for (let index = year + 18; index <= currentYear + 2; index++) {
-      index === 2012
-        ? añosAportados.push(
-            "De Enero a Marzo " + index,
-            "De Abril a Diciembre " + index
-          )
-        : añosAportados.push("" + index);
+    if((usuario.fecha>="1960-02-28"&&usuario.sexo==="MASCULINO") || (usuario.fecha>="1965-01-03"&&usuario.sexo==="FEMENINO")){
+      if (usuario.extranjero) {
+        for (let index = year; index <= currentYear + 2; index++) {
+          index === 2012
+            ? añosAportados.push(
+                "De Enero a Marzo " + index,
+                "De Abril a Diciembre " + index
+              )
+            : añosAportados.push("" + index);
+        }
+      } else {
+        for (let index = year + 18; index <= currentYear + 2; index++) {
+          index === 2012
+            ? añosAportados.push(
+                "De Enero a Marzo " + index,
+                "De Abril a Diciembre " + index
+              )
+            : añosAportados.push("" + index);
+        }
+      }
+      return "De Enero a Marzo 2012";
     }
   }
+  const corteAño = cortePorEdad(usuario)
+  
+  const [sumaAportes, setSumaAportes] = useState({
+    hasta: 0,
+    desde: 0
+  })
 
   while (cantidadDeMeses.length < añosAportados.length) {
     cantidadDeMeses.push(0);
@@ -107,6 +130,8 @@ function EditUser({ user, setEditUser }) {
   });
 
   const handleChangeMeses = (e, index) => {
+    let sumaHasta = 0;
+    let sumaDesde = 0;
     const nuevoDetalle = detalle.cantidadMeses.map((c, i) => {
       if (i === index) {
         return Number(e.target.value);
@@ -114,7 +139,25 @@ function EditUser({ user, setEditUser }) {
         return c;
       }
     });
+    for (let i = 0; i < nuevoDetalle.length; i++) {
+      //const element = nuevoDetalle[i];
+      if(i <= detalle.año.indexOf(corteAño)){
+        sumaHasta += nuevoDetalle[i];
+      } else {
+        sumaDesde += nuevoDetalle[i]; 
+      }
+    }
+    // nuevoDetalle.map((c,i) => {
+    //   suma += c;
+    //   if(detalle.año[i] === corteAño){
+    //     setSumaAportes({...sumaAportes, hasta: suma});
+    //     suma = 0;
+    //   }
+    // })
+    setSumaAportes({hasta: sumaHasta, desde: sumaDesde})
     setDetalle({ ...detalle, cantidadMeses: nuevoDetalle });
+
+    console.log(sumaAportes);
   };
 
   const handleChangeArrayTipos = (e, index) => {
@@ -439,6 +482,9 @@ function EditUser({ user, setEditUser }) {
                         })
                       }
                     />
+                      <label className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
+                        Meses verificados: {sumaAportes.hasta}
+                      </label>
                   </div>
                   <div className="mx-1">
                     <label
@@ -488,6 +534,9 @@ function EditUser({ user, setEditUser }) {
                         })
                       }
                     />
+                    <label className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
+                      Meses verificados: {sumaAportes.desde}
+                    </label>
                   </div>
                 </div>
                 {/* --------------------- */}
