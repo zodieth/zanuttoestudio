@@ -3,20 +3,20 @@ import { deleteUser, deleteDetail } from "../lib/utils";
 import { changeLoading, deletePerson } from "../redux/features/peopleSlice";
 import { useDispatch } from "react-redux";
 
-function DeleteSelectedConfirm({ dataPerson, setDeleteSelected, dataDetails}) {
+function DeleteSelectedConfirm({ dataPerson, setDeleteSelected, dataDetails }) {
   const dispatch = useDispatch();
 
   const handleDeleteSelected = (dataPerson, dataDetails) => {
-    dataPerson.map(async(element, index) => {
-        console.log(dataDetails[index]);
-        if(dataDetails[index]._id !== undefined) {
-console.log(dataDetails[index]._id);
-            await deleteDetail(dataDetails[index]._id)
-        }
-        await deleteUser(element._id)
-        dispatch(deletePerson(element._id))
+    dataPerson.map(async (element, index) => {
+      console.log(dataDetails[index]);
+      if (dataDetails[index]._id !== undefined) {
+        console.log(dataDetails[index]._id);
+        await deleteDetail(dataDetails[index]._id);
+      }
+      await deleteUser(element._id);
+      dispatch(deletePerson(element._id));
     });
-  }
+  };
 
   return (
     <div
@@ -48,10 +48,10 @@ console.log(dataDetails[index]._id);
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                 onClick={() => [
-                   dispatch(changeLoading(true)),
-                   handleDeleteSelected(dataPerson,dataDetails),
-                   setDeleteSelected(false),
-                   dispatch(changeLoading(false)),
+                  dispatch(changeLoading(true)),
+                  handleDeleteSelected(dataPerson, dataDetails),
+                  setDeleteSelected(false),
+                  dispatch(changeLoading(false)),
                 ]}
               >
                 Eliminar
@@ -66,7 +66,6 @@ console.log(dataDetails[index]._id);
             </div>
           </div>
         </div>
-        {/* --------------------------- */}
       </div>
     </div>
   );
