@@ -192,8 +192,10 @@ export async function POST(request) {
     const equalPerson = await Person.find({}).then((data) =>
       data.filter((e) => (e.fecha === person.fecha) & (e.num === person.num))
     );
-
-    if ((peopleFound.length === 3) | (equalPerson.length >= 1)) {
+    if((equalPerson.length >= 1)){
+      return NextResponse.json({ msg: "Person already exists" }, { status: 409 });
+    }
+    if ((peopleFound.length === 3)) {
       return NextResponse.json({ msg: "Num already exists" }, { status: 409 });
     }
 
@@ -239,7 +241,6 @@ export async function POST(request) {
 
     return NextResponse.json("creado");
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ msg: error }, { status: 500 });
   }
 }
