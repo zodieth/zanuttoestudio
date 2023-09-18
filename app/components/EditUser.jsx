@@ -71,8 +71,11 @@ function EditUser({ user, setEditUser }) {
   const cantidadDeMeses = [];
   const tipoDeAporte = [];
 
-  const cortePorEdad = (usuario) =>{ 
-    if((usuario.fecha<="1960-03-03"&&usuario.sexo==="MASCULINO") || (usuario.fecha<="1965-02-28"&&usuario.sexo==="FEMENINO")){
+  const cortePorEdad = (usuario) => {
+    if (
+      (usuario.fecha <= "1960-03-03" && usuario.sexo === "MASCULINO") ||
+      (usuario.fecha <= "1965-02-28" && usuario.sexo === "FEMENINO")
+    ) {
       if (usuario.extranjero) {
         for (let index = year; index <= currentYear + 2; index++) {
           añosAportados.push("" + index);
@@ -84,7 +87,10 @@ function EditUser({ user, setEditUser }) {
       }
       return "2008";
     }
-    if((usuario.fecha>="1960-02-28"&&usuario.sexo==="MASCULINO") || (usuario.fecha>="1965-01-03"&&usuario.sexo==="FEMENINO")){
+    if (
+      (usuario.fecha >= "1960-02-28" && usuario.sexo === "MASCULINO") ||
+      (usuario.fecha >= "1965-01-03" && usuario.sexo === "FEMENINO")
+    ) {
       if (usuario.extranjero) {
         for (let index = year; index <= currentYear + 2; index++) {
           index === 2012
@@ -106,13 +112,13 @@ function EditUser({ user, setEditUser }) {
       }
       return "De Enero a Marzo 2012";
     }
-  }
-  const corteAño = cortePorEdad(usuario)
-  
+  };
+  const corteAño = cortePorEdad(usuario);
+
   const [sumaAportes, setSumaAportes] = useState({
     hasta: 0,
-    desde: 0
-  })
+    desde: 0,
+  });
 
   while (cantidadDeMeses.length < añosAportados.length) {
     cantidadDeMeses.push(0);
@@ -140,13 +146,13 @@ function EditUser({ user, setEditUser }) {
       }
     });
     for (let i = 0; i < nuevoDetalle.length; i++) {
-      if(i <= detalle.año.indexOf(corteAño)){
+      if (i <= detalle.año.indexOf(corteAño)) {
         sumaHasta += nuevoDetalle[i];
       } else {
-        sumaDesde += nuevoDetalle[i]; 
+        sumaDesde += nuevoDetalle[i];
       }
     }
-    setSumaAportes({hasta: sumaHasta, desde: sumaDesde})
+    setSumaAportes({ hasta: sumaHasta, desde: sumaDesde });
     setDetalle({ ...detalle, cantidadMeses: nuevoDetalle });
   };
 
@@ -472,9 +478,9 @@ function EditUser({ user, setEditUser }) {
                         })
                       }
                     />
-                      <label className="block text-xs font-medium text-red-600">
-                        Meses verificados: {sumaAportes.hasta}
-                      </label>
+                    <label className="block text-xs font-medium text-green-600 mt-1">
+                      Meses verificados: {sumaAportes.hasta}
+                    </label>
                   </div>
                   <div className="mx-1">
                     <label
@@ -524,7 +530,7 @@ function EditUser({ user, setEditUser }) {
                         })
                       }
                     />
-                    <label className="block text-xs font-medium text-red-600">
+                    <label className="block text-xs font-medium text-green-600 mt-1">
                       Meses verificados: {sumaAportes.desde}
                     </label>
                   </div>
@@ -897,6 +903,8 @@ function EditUser({ user, setEditUser }) {
                             <input
                               type="number"
                               id="MesesxAño"
+                              min={0}
+                              max={12}
                               placeholder={0}
                               defaultValue={
                                 detalle.cantidadMeses[
