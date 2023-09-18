@@ -9,7 +9,6 @@ function NumberForm({
   setForm,
 }) {
   const [error, setError] = useState(false);
-  const [postError, setPostError] =useState('')
 
   return (
     <div
@@ -63,16 +62,9 @@ function NumberForm({
                         Debe agregar un número de teléfono que contenga al menos
                         10 caracteres
                       </h1>
-                    ) : postError === "Num already exists"? (
-                      <h1 className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
-                        YA HAY 3 USUARIOS REGISTRADOS CON ESTE NÚMERO
-                      </h1>
-                    ) :postError === "Person already exists"? (
-                      <h1 className="mt-2 mx-2 flex items-center justify-start  font-semibold leading-6 text-1xl text-red-600">
-                        YA HAY UN USUARIO REGISTRADO CON SU NÚMERO Y FECHA DE NACIMIENTO
-                      </h1>
-                    ) : ""
-                  }
+                    ) : (
+                      ""
+                    )}
                     <div className="mt-2 flex flex-row items-center justify-start ">
                       <h2 className="w-full mt-2 mx-2 flex items-center justify-start font-semibold leading-6 text-1xl text-gray-900">
                         Comentario adicional
@@ -98,47 +90,28 @@ function NumberForm({
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                onClick={async() => {
+                onClick={() =>
                   !mensaje.numero.length | (mensaje.numero.length < 10)
                     ? setError(true)
-                    : await createPerson({
-                      nombre: "",
-                      sexo: mensaje.sexo,
-                      fecha: mensaje.fecha,
-                      hijos: mensaje.hijos,
-                      num: mensaje.numero,
-                      aportes: mensaje.aportes,
-                      hasta2008: mensaje.hasta2008,
-                      desde2009: mensaje.desde2009,
-                      hasta2012: mensaje.hasta2012,
-                      desde2012: mensaje.desde2012,
-                      aportando: mensaje.aportando,
-                      moratoria: mensaje.moratoria,
-                      comentarios: mensaje.comentarios,
-                    }).then(data => data.status) === 409? 
-                    [setPostError(await createPerson({
-                        nombre: "",
-                        sexo: mensaje.sexo,
-                        fecha: mensaje.fecha,
-                        hijos: mensaje.hijos,
-                        num: mensaje.numero,
-                        aportes: mensaje.aportes,
-                        hasta2008: mensaje.hasta2008,
-                        desde2009: mensaje.desde2009,
-                        hasta2012: mensaje.hasta2012,
-                        desde2012: mensaje.desde2012,
-                        aportando: mensaje.aportando,
-                        moratoria: mensaje.moratoria,
-                        comentarios: mensaje.comentarios,
-                      }).then(data=>data.msg)),
-                    setError(true),
-                    console.log(postError) ]:                  
-                    [
-                      setNumForm(false),
-                      setResultados(true),
-                      setPostError('')
-                    ]
-                  }
+                    : [
+                        setNumForm(false),
+                        setResultados(true),
+                        createPerson({
+                          nombre: "",
+                          sexo: mensaje.sexo,
+                          fecha: mensaje.fecha,
+                          hijos: mensaje.hijos,
+                          num: mensaje.numero,
+                          aportes: mensaje.aportes,
+                          hasta2008: mensaje.hasta2008,
+                          desde2009: mensaje.desde2009,
+                          hasta2012: mensaje.hasta2012,
+                          desde2012: mensaje.desde2012,
+                          aportando: mensaje.aportando,
+                          moratoria: mensaje.moratoria,
+                          comentarios: mensaje.comentarios,
+                        }),
+                      ]
                 }
               >
                 Continuar

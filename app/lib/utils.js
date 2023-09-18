@@ -4,16 +4,12 @@ export const sendMsg = async (to, body) => {
   await api.post("wpp", { to, body });
 };
 
-export const createPerson = async (persona) => {
-  try {
-    await api.post("people", {
-      persona
-    });
-    return {msg:"creado", status: 201};
-  } catch (error) {
-    return { msg: error.response.data.msg , status: 409 };
-  }
-
+export const createPerson = async (
+   persona
+  ) => {
+  await api.post("people", {
+    persona
+  });
 };
 
 export const updateOrCreatePerson = async (

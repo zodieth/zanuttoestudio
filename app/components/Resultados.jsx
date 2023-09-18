@@ -13,18 +13,18 @@ import {
 import Link from "next/link";
 
 function Resultados({ mensaje, setResultados }) {
-  // const data = useSelector((state) => state.people);
-  // const dispatch = useDispatch();
+  const data = useSelector((state) => state.people);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   api.get("people").then((data) => dispatch(addPeople(data.data)));
-  // }, [dispatch]);
+  useEffect(() => {
+    api.get("people").then((data) => dispatch(addPeople(data.data)));
+  }, [dispatch]);
 
-  // const filterNumbers = data.people?.filter((e) => mensaje.numero === e.num);
+  const filterNumbers = data.people?.filter((e) => mensaje.numero === e.num);
 
-  // const equalPerson = data.people?.filter(
-  //   (e) => (e.fecha === mensaje.fecha) & (e.num === mensaje.numero)
-  // );
+  const equalPerson = data.people?.filter(
+    (e) => (e.fecha === mensaje.fecha) & (e.num === mensaje.numero)
+  );
 
   let dobArray = mensaje.fecha.toString().split("-");
   let year = Number(dobArray[0]);
@@ -69,19 +69,19 @@ function Resultados({ mensaje, setResultados }) {
                     className="mb-1 text-center flex flex-col items-center justify-center text-base font-semibold leading-6 text-gray-900"
                     id="modal-title"
                   >
-                    {/* {equalPerson.length >= 1
+                    {equalPerson.length >= 1
                       ? "YA HAY UN USUARIO REGISTRADO CON SU NÚMERO Y FECHA DE NACIMIENTO"
                       : filterNumbers.length === 3
                       ? "YA HAY 3 USUARIOS REGISTRADOS CON ESTE NÚMERO"
-                      : mensaje.edadJubilatoria} */}
+                      : mensaje.edadJubilatoria}
                   </h3>
                   <div className=" mx-4 text-1xl text-gray-500 text-center">
-                    {/* {equalPerson.length >= 1 ? (
+                    {equalPerson.length >= 1 ? (
                       "Para realizar otra consulta ultilice otro número"
                     ) : filterNumbers.length === 3 ? (
                       "Para realizar otra consulta ultilice otro número"
-                    ) : ( */}
-                      
+                    ) : (
+                      <>
                         <div className="">
                           <div className="flex flex-row items-center text-md mt-2  ">
                             <h1>
@@ -222,8 +222,8 @@ function Resultados({ mensaje, setResultados }) {
                             </h1>
                           </div>
                         </div>
-                      
-                    
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
