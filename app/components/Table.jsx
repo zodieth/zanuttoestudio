@@ -150,7 +150,6 @@ function Table() {
   }, [checkedState]);
 
   const dataSelected = (people, checkedState) => {
-    //console.log(people);
     const dataPersonArr = [];
     people.map((item) => {
       if (checkedState.includes(item._id)) {
@@ -336,8 +335,6 @@ function Table() {
               <tbody className="divide-y divide-gray-200">
                 {peoplePagination
                   ?.filter((people) => {
-                    //console.log(people);
-                    //console.log(search);
                     return search.toLowerCase() === ""
                       ? people
                       : people.nombre

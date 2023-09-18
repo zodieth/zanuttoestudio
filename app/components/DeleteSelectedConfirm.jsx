@@ -8,9 +8,7 @@ function DeleteSelectedConfirm({ dataPerson, setDeleteSelected, dataDetails }) {
 
   const handleDeleteSelected = (dataPerson, dataDetails) => {
     dataPerson.map(async (element, index) => {
-      console.log(dataDetails[index]);
       if (dataDetails[index]._id !== undefined) {
-        console.log(dataDetails[index]._id);
         await deleteDetail(dataDetails[index]._id);
       }
       await deleteUser(element._id);
