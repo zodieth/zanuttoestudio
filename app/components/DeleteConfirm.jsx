@@ -8,7 +8,6 @@ function DeleteConfirm({ user, setDeleteUser, detail}) {
   const detallePersona = detail.detail?.filter(
     (e) => e.persona === user._id
   )[0];
-  console.log(detallePersona);
 
   return (
     <div
