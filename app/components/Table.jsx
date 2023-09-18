@@ -178,21 +178,22 @@ function Table() {
       XLSX.utils.sheet_add_json(worksheet, [{
         Carpeta:person.idInc,
         Nombre: person.nombre,
+        Documento:person.dni,
         Sexo: person.sexo,
         Fecha: person.fecha,
         Hijos: person.hijos,
         HijosAdoptados: person.hijosAdoptados,
+        HijosDiscapacidad: person.hijosDiscapacidad,
         Numero: person.num,
-        Aportes: person.aportes,
-        Hasta2008: person.hasta2008,
-        Desde2009: person.desde2009,
-        Hasta2012: person.hasta2012,
-        Desde2012: person.desde2012,
-        Moratoria: person.moratoria,
         Status: person.status,
         Extranjero: person.extranjero,
         Auh: person.auh,
+        claveAnses: person.claveAnses,
+        Pension: person.pension,
         Aportando: person.aportando,
+        Dirección: person.direccion,
+        Localidad: person.localidad,
+        Provincia: person.provincia,
         Comentarios: person.comentarios,
         FechaDeConsulta: person.createdAt,
       }], {origin: -1})
@@ -202,7 +203,7 @@ function Table() {
         ["Año","Meses Aportados", "Tipo aporte"]
       ]
       detail.año?.map((e) => aoa.push([e, detail.cantidadMeses[detail.año.indexOf(e)], detail.tipoDeAporte[detail.año.indexOf(e)] ]))
-      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r:-1, c:21}})
+      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r: -1, c: 20}})
     })
     XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja 1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
