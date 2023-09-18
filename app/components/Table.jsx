@@ -134,13 +134,11 @@ function Table({ people, detail }) {
     dataPerson.forEach((element) => {
       const detail = dataDetails[dataPerson.indexOf(element)];
       const worksheet = XLSX.utils.json_to_sheet([element]);
-      if (detail !== {}) {
         XLSX.utils.sheet_add_aoa(
           worksheet,
           [detail.año, detail.cantidadMeses, detail.tipoDeAporte],
           { origin: "B4" }
         );
-      }
       //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });
 
       XLSX.utils.book_append_sheet(workbook, worksheet, element._id);
