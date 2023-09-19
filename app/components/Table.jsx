@@ -108,6 +108,7 @@ function Table({ people, detail }) {
   }, [checkedState]);
 
   const dataSelected = (people, checkedState) => {
+    //console.log(people);
     const dataPersonArr = [];
     people.map((item) => {
       if (checkedState.includes(item._id)) {
@@ -131,22 +132,41 @@ function Table({ people, detail }) {
       return alert("Ningun usuario seleccionado");
     }
     const workbook = XLSX.utils.book_new();
-    dataPerson.forEach((element) => {
-      const detail = dataDetails[dataPerson.indexOf(element)];
-      const worksheet = XLSX.utils.json_to_sheet([element]);
-        XLSX.utils.sheet_add_aoa(
-          worksheet,
-          [detail.año, detail.cantidadMeses, detail.tipoDeAporte],
-          { origin: "B4" }
-        );
-      //XLSX.utils.sheet_add_json(worksheet, [dataDetails.año], { origin: 'B4' });
+    const worksheet = XLSX.utils.aoa_to_sheet([]);
+    
+    dataPerson.forEach((person) => {
+      const detail = dataDetails[dataPerson.indexOf(person)];
+      XLSX.utils.sheet_add_json(worksheet, [{
+        Carpeta:person.idInc,
+        Nombre: person.nombre,
+        Documento:person.dni,
+        Sexo: person.sexo,
+        Fecha: person.fecha,
+        Hijos: person.hijos,
+        HijosAdoptados: person.hijosAdoptados,
+        HijosDiscapacidad: person.hijosDiscapacidad,
+        Numero: person.num,
+        Status: person.status,
+        Extranjero: person.extranjero,
+        Auh: person.auh,
+        claveAnses: person.claveAnses,
+        Pension: person.pension,
+        Aportando: person.aportando,
+        Dirección: person.direccion,
+        Localidad: person.localidad,
+        Provincia: person.provincia,
+        Comentarios: person.comentarios,
+        FechaDeConsulta: person.createdAt,
+      }], {origin: -1})
 
-      XLSX.utils.book_append_sheet(workbook, worksheet, element._id);
-      //XLSX.utils.book_append_sheet(workbook, worksheet2, element._id);
-    });
-    //XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
-    //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+      const aoa = 
+      [
+        ["Año","Meses Aportados", "Tipo aporte"]
+      ]
+      detail.año?.map((e) => aoa.push([e, detail.cantidadMeses[detail.año.indexOf(e)], detail.tipoDeAporte[detail.año.indexOf(e)] ]))
+      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r: -1, c: 20}})
+    })
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja 1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
   };
 
@@ -271,8 +291,6 @@ function Table({ people, detail }) {
               <tbody className="divide-y divide-gray-200">
                 {peoplePagination
                   ?.filter((people) => {
-                    console.log(people);
-                    console.log(search);
                     return search.toLowerCase() === ""
                       ? people
                       : people.nombre
