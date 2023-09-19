@@ -7,14 +7,12 @@ function DeleteSelectedConfirm({ dataPerson, setDeleteSelected, dataDetails}) {
   const dispatch = useDispatch();
 
   const handleDeleteSelected = (dataPerson, dataDetails) => {
-    dataPerson.map(async(element, index) => {
-        console.log(dataDetails[index]);
-        if(dataDetails[index]._id !== undefined) {
-console.log(dataDetails[index]._id);
-            await deleteDetail(dataDetails[index]._id)
-        }
-        await deleteUser(element._id)
-        dispatch(deletePerson(element._id))
+    dataPerson.map(async (element, index) => {
+      if (dataDetails[index]._id !== undefined) {
+        await deleteDetail(dataDetails[index]._id);
+      }
+      await deleteUser(element._id);
+      dispatch(deletePerson(element._id));
     });
   }
 
