@@ -31,21 +31,11 @@ function CalculateUser({ user, setCalculateUser }) {
       : 0;
 
   const diferenciaMesesMoratoria2008 = Math.floor(
-    differenceInMonths(fechaMoratoria2008, date) -
-      user.hasta2008 -
-      user.desde2009 -
-      user.hasta2012 -
-      user.desde2012 -
-      excesoDeEdad
+    differenceInMonths(fechaMoratoria2008, date)
   );
 
   const diferenciaMesesMoratoria2012 = Math.floor(
-    differenceInMonths(fechaMoratoria2012, date) -
-      user.hasta2008 -
-      user.desde2009 -
-      user.hasta2012 -
-      user.desde2012 -
-      excesoDeEdad
+    differenceInMonths(fechaMoratoria2012, date)
   );
 
   const moratoria =
@@ -166,13 +156,49 @@ function CalculateUser({ user, setCalculateUser }) {
                               {""}
                             </td>
                           </tr>
+                          <tr class="odd:bg-gray-50">
+                            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                              Le faltan{" "}
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                              {Number(user.hasta2008) +
+                                Number(user.desde2009) +
+                                Number(user.hasta2012) +
+                                Number(user.desde2012) +
+                                user.hijos * 12 +
+                                user.hijosAdoptados * 24 +
+                                user.hijosDiscapacidad * 24 +
+                                user.auh * 1 +
+                                excesoDeEdad >=
+                              360
+                                ? 0
+                                : 360 -
+                                  (Number(user.hasta2008) +
+                                    Number(user.desde2009) +
+                                    Number(user.hasta2012) +
+                                    Number(user.desde2012) +
+                                    user.hijos * 12 +
+                                    user.hijosAdoptados * 24 +
+                                    user.hijosDiscapacidad * 24 +
+                                    user.auh * 1 +
+                                    excesoDeEdad)}
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                              {""}
+                            </td>
+                          </tr>
 
                           <tr class="odd:bg-gray-50">
                             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                              Puede abonar en moratoria
+                              Moratoria{" "}
                             </td>
                             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                              {moratoria < 0 ? 0 : moratoria}
+                              {moratoria - user.hasta2008 - user.hasta2012 < 0
+                                ? 0
+                                : moratoria - user.hasta2008 - user.hasta2012 >=
+                                  360
+                                ? 360
+                                : moratoria - user.hasta2008 - user.hasta2012}
                             </td>
                             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
                               {""}

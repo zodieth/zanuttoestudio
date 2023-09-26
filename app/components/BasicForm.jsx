@@ -51,20 +51,9 @@ function BasicForm({ setForm }) {
       : 0;
 
   const diferenciaMesesMoratoria2008 =
-    differenceInMonths(fechaMoratoria2008, date) -
-    hasta2008 * 12 -
-    desde2009 * 12 -
-    hasta2012 * 12 -
-    desde2012 * 12 -
-    excesoDeEdad;
-
+    differenceInMonths(fechaMoratoria2008, date) - hasta2008 * 12;
   const diferenciaMesesMoratoria2012 =
-    differenceInMonths(fechaMoratoria2012, date) -
-    hasta2008 * 12 -
-    desde2009 * 12 -
-    hasta2012 * 12 -
-    desde2012 * 12 -
-    excesoDeEdad;
+    differenceInMonths(fechaMoratoria2012, date) - hasta2012 * 12;
 
   // ------------errores----------------
   const [errors, setErrors] = useState(true);
@@ -86,7 +75,7 @@ function BasicForm({ setForm }) {
     desde2012: 0,
     excesoDeEdad: 0,
     comentarios: "",
-    idInc:0
+    idInc: 0,
   });
 
   // -----------------------tercer cartel resultados---------------------------------
@@ -414,7 +403,7 @@ function BasicForm({ setForm }) {
                               desde2012: desde2012 * 12,
                               excesoDeEdad: excesoDeEdad,
                               comentarios: "",
-                              idInc: 0
+                              idInc: 0,
                             }),
                           ]
                     }
