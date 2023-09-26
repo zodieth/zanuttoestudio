@@ -12,46 +12,47 @@ import { addDetail } from "../redux/features/detailSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { api } from "../page";
 import * as XLSX from "xlsx";
-import { BsFillCalculatorFill } from "react-icons/bs";
+import { BsFillCalculatorFill, BsFillPersonPlusFill } from "react-icons/bs";
 import CalculateUser from "../components/CalculateUser";
+import CreatePerson from "../components/CreatePerson";
 
 function Table() {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 10;
-  
+
   const people = useSelector((state) => state.people);
   const detail = useSelector((state) => state.detail);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    api.get("people")
-    .then((datos) =>
-      datos.data.sort((a, b) => {
-        const idA = a.idInc || a._id;
-        const idB = b.idInc || b._id;
+    api
+      .get("people")
+      .then((datos) =>
+        datos.data.sort((a, b) => {
+          const idA = a.idInc || a._id;
+          const idB = b.idInc || b._id;
 
-        // Si idA es número y idB es string, a debe aparecer primero
-        if (typeof idA === "number" && typeof idB === "string") {
-          return -1;
-        }
+          // Si idA es número y idB es string, a debe aparecer primero
+          if (typeof idA === "number" && typeof idB === "string") {
+            return -1;
+          }
 
-        // Si idA es string y idB es número, b debe aparecer primero
-        if (typeof idA === "string" && typeof idB === "number") {
-          return 1;
-        }
+          // Si idA es string y idB es número, b debe aparecer primero
+          if (typeof idA === "string" && typeof idB === "number") {
+            return 1;
+          }
 
-        // Si ambos son números, ordenar de manera descendente
-        if (typeof idA === "number" && typeof idB === "number") {
-          return idB - idA;
-        }
+          // Si ambos son números, ordenar de manera descendente
+          if (typeof idA === "number" && typeof idB === "number") {
+            return idB - idA;
+          }
 
-        // Si ambos son strings, se pueden comparar lexicográficamente (esto mantendrá el orden basado en el componente temporal de los ObjectIDs de MongoDB)
-        return idA.localeCompare(idB);
-      })
-    )
-    .then((data) => dispatch(addPeople(data)));
+          // Si ambos son strings, se pueden comparar lexicográficamente (esto mantendrá el orden basado en el componente temporal de los ObjectIDs de MongoDB)
+          return idA.localeCompare(idB);
+        })
+      )
+      .then((data) => dispatch(addPeople(data)));
     api.get("detalle").then((data) => dispatch(addDetail(data.data)));
-
   }, [dispatch]);
 
   let peoplePagination;
@@ -75,6 +76,7 @@ function Table() {
   const [editUser, setEditUser] = useState(false);
   const [deleteSelected, setDeleteSelected] = useState(false);
   const [calculateUser, setCalculateUser] = useState(false);
+  const [createUser, setCreateUser] = useState(false);
 
   const [checkedState, setCheckedState] = useState([]);
 
@@ -175,39 +177,48 @@ function Table() {
     }
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.aoa_to_sheet([]);
-    
+
     dataPerson.forEach((person) => {
       const detail = dataDetails[dataPerson.indexOf(person)];
-      XLSX.utils.sheet_add_json(worksheet, [{
-        Carpeta:person.idInc,
-        Nombre: person.nombre,
-        Documento:person.dni,
-        Sexo: person.sexo,
-        Fecha: person.fecha,
-        Hijos: person.hijos,
-        HijosAdoptados: person.hijosAdoptados,
-        HijosDiscapacidad: person.hijosDiscapacidad,
-        Numero: person.num,
-        Status: person.status,
-        Extranjero: person.extranjero,
-        Auh: person.auh,
-        claveAnses: person.claveAnses,
-        Pension: person.pension,
-        Aportando: person.aportando,
-        Dirección: person.direccion,
-        Localidad: person.localidad,
-        Provincia: person.provincia,
-        Comentarios: person.comentarios,
-        FechaDeConsulta: person.createdAt,
-      }], {origin: -1})
+      XLSX.utils.sheet_add_json(
+        worksheet,
+        [
+          {
+            Carpeta: person.idInc,
+            Nombre: person.nombre,
+            Documento: person.dni,
+            Sexo: person.sexo,
+            Fecha: person.fecha,
+            Hijos: person.hijos,
+            HijosAdoptados: person.hijosAdoptados,
+            HijosDiscapacidad: person.hijosDiscapacidad,
+            Numero: person.num,
+            Status: person.status,
+            Extranjero: person.extranjero,
+            Auh: person.auh,
+            claveAnses: person.claveAnses,
+            Pension: person.pension,
+            Aportando: person.aportando,
+            Dirección: person.direccion,
+            Localidad: person.localidad,
+            Provincia: person.provincia,
+            Comentarios: person.comentarios,
+            FechaDeConsulta: person.createdAt,
+          },
+        ],
+        { origin: -1 }
+      );
 
-      const aoa = 
-      [
-        ["Año","Meses Aportados", "Tipo aporte"]
-      ]
-      detail.año?.map((e) => aoa.push([e, detail.cantidadMeses[detail.año.indexOf(e)], detail.tipoDeAporte[detail.año.indexOf(e)] ]))
-      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r: -1, c: 20}})
-    })
+      const aoa = [["Año", "Meses Aportados", "Tipo aporte"]];
+      detail.año?.map((e) =>
+        aoa.push([
+          e,
+          detail.cantidadMeses[detail.año.indexOf(e)],
+          detail.tipoDeAporte[detail.año.indexOf(e)],
+        ])
+      );
+      XLSX.utils.sheet_add_aoa(worksheet, aoa, { origin: { r: -1, c: 20 } });
+    });
     XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja 1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
   };
@@ -221,6 +232,8 @@ function Table() {
           detail={detail}
         />
       )} */}
+
+      {createUser && <CreatePerson setCreateUser={setCreateUser} />}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}
@@ -235,7 +248,7 @@ function Table() {
         />
       )}
 
-      <div className="flex flex-row items-center justify-between mb-10">
+      <div className="flex flex-row items-center justify-between mb-10 mx-">
         <div className="flex gap-4">
           <SearchBar setSearch={setSearch} />
           <FilterStatusSelect useDispatch={useDispatch} />
@@ -243,7 +256,7 @@ function Table() {
 
         <div className="flex">
           <div
-            className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
+            className="mx-1 flex flex-row items-center justify-center rounded bg-gray-300 px-4 py-3 text-xs font-medium text-white hover:bg-gray-200 cursor-pointer"
             onClick={() => downloadExcel(dataPerson, dataDetails)}
           >
             <h1 className="text-md">Exportar</h1>
@@ -267,7 +280,7 @@ function Table() {
             className="mx-1 flex flex-row items-center justify-center rounded bg-red-600 px-4 py-3 text-xs font-medium text-white hover:bg-red-500 cursor-pointer"
             onClick={() => [setDeleteSelected(true)]}
           >
-            <h1 className="text-md">Borrar </h1>
+            {/* <h1 className="text-md">Borrar </h1> */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -282,6 +295,12 @@ function Table() {
                 d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
               />
             </svg>
+          </div>
+          <div
+            className="mx-1 flex flex-row items-center justify-center rounded bg-blue-600 px-4 py-3 text-xs font-medium text-white hover:bg-blue-500 cursor-pointer"
+            onClick={() => [setCreateUser(true)]}
+          >
+            <BsFillPersonPlusFill className="h-4 w-4" />
           </div>
         </div>
       </div>

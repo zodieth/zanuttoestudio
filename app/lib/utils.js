@@ -4,11 +4,9 @@ export const sendMsg = async (to, body) => {
   await api.post("wpp", { to, body });
 };
 
-export const createPerson = async (
-   persona
-  ) => {
+export const createPerson = async (persona) => {
   await api.post("people", {
-    persona
+    persona,
   });
 };
 
@@ -33,7 +31,7 @@ export const updateOrCreatePerson = async (
   aportando,
   tipoAporte,
   pension,
-  comentarios,
+  comentarios
   //idInc
 ) => {
   const update = await api.put("people", {
@@ -58,7 +56,7 @@ export const updateOrCreatePerson = async (
     tipoAporte,
     pension,
     comentarios,
-    idInc,
+    // idInc,
   });
 
   if (update.length) return;
@@ -122,8 +120,8 @@ export const updateUser = async (
   localidad,
   provincia,
   comentarios,
-  idInc,
-  ) => {
+  idInc
+) => {
   await api.put(`people/${_id}`, {
     nombre,
     sexo,
