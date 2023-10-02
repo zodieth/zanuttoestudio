@@ -13,7 +13,7 @@ function Banner() {
       style={{
         backgroundImage:
           "url('https://res.cloudinary.com/dyo8w75kn/image/upload/v1693500690/Hello_March_Spring_Flowers_Bloom_Quote_Blog_Banner_5_xwr1ol.jpg')",
-        backgroundAttachment: scroll,
+        backgroundAttachment: "scroll",
       }}
     >
       <div className="flex items-center justify-center md:mx-40 lg:mx-[20rem] mb-5">
