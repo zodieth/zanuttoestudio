@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Table from "../components/Table";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
@@ -8,21 +8,21 @@ import SignInPage from "../login/page";
 import { useSession } from "next-auth/react";
 //import { useDispatch, useSelector } from "react-redux";
 // import { addPeople } from "../redux/features/peopleSlice";
-import { api } from "../page";
 import { RiLoader5Fill } from "react-icons/ri";
 // import { addDetail } from "../redux/features/detailSlice";
 
 function Oficina() {
 
   const { data: session, status } = useSession();
+  const [whatsappSession, setWhatsappSession] = useState(false)
 
   if (session && session.user) {
     return (
       <div>
         <Header />
         <div className="flex">
-          <SideBar session={session} />
-          <Table />
+          <SideBar session={session} setWhatsappSession={setWhatsappSession}/>
+          <Table whatsappSession={whatsappSession} setWhatsappSession={setWhatsappSession}/>
         </div>
       </div>
     );

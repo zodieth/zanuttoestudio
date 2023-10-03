@@ -14,8 +14,9 @@ import { api } from "../page";
 import * as XLSX from "xlsx";
 import { BsFillCalculatorFill } from "react-icons/bs";
 import CalculateUser from "../components/CalculateUser";
+import WhatsAppComponent from "./whatsapp/whatsappPruebas";
 
-function Table() {
+function Table({whatsappSession, setWhatsappSession}) {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 10;
   
@@ -164,10 +165,20 @@ function Table() {
     const d = detail.detail;
     for (let i = 0; i < d.length; i++) {
       if (d[i].persona === p._id) {
-        return d[i];
+        let arrayDetalles = [];
+        d[i].año.forEach((a,z) => {
+          if(d[i].cantidadMeses[z] !== 0) {
+            arrayDetalles.push({
+              año: a, 
+              mes: d[i].cantidadMeses[z],
+              tipo: d[i].tipoDeAporte[z]
+            })
+          }
+        })
+        return arrayDetalles;
       }
     }
-    return {};
+    return [];
   });
   const downloadExcel = (dataPerson, dataDetails) => {
     if (dataPerson.toString() === [].toString()) {
@@ -178,6 +189,8 @@ function Table() {
     
     dataPerson.forEach((person) => {
       const detail = dataDetails[dataPerson.indexOf(person)];
+      let detailString = "[" + detail.map((e) => JSON.stringify(e)).join(",").replace(/["]+/g,"") + "]";
+      console.log(detailString);
       XLSX.utils.sheet_add_json(worksheet, [{
         Carpeta:person.idInc,
         Nombre: person.nombre,
@@ -199,14 +212,8 @@ function Table() {
         Provincia: person.provincia,
         Comentarios: person.comentarios,
         FechaDeConsulta: person.createdAt,
+        "Año|Mes|Tipo": detailString!=="[]"? detailString : ""
       }], {origin: -1})
-
-      const aoa = 
-      [
-        ["Año","Meses Aportados", "Tipo aporte"]
-      ]
-      detail.año?.map((e) => aoa.push([e, detail.cantidadMeses[detail.año.indexOf(e)], detail.tipoDeAporte[detail.año.indexOf(e)] ]))
-      XLSX.utils.sheet_add_aoa(worksheet, aoa, {origin: {r: -1, c: 20}})
     })
     XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja 1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
@@ -221,6 +228,9 @@ function Table() {
           detail={detail}
         />
       )} */}
+      {whatsappSession && (
+        <WhatsAppComponent setWhatsappSession={setWhatsappSession} />
+      )}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}
