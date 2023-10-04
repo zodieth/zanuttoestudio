@@ -1,7 +1,7 @@
 import { signOut } from "next-auth/react";
 import React from "react";
 
-function SideBar({ session }) {
+function SideBar({ session, setWhatsappSession }) {
   return (
     <div className="flex h-screen w-16 flex-col justify-between border-e bg-white">
       <div>
@@ -71,7 +71,7 @@ function SideBar({ session }) {
 
               <li>
                 <a
-                  href=""
+                  onClick={()=>setWhatsappSession(true)}
                   className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                 >
                   <svg
@@ -90,7 +90,7 @@ function SideBar({ session }) {
                   </svg>
 
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
-                    Billing
+                    Whatsapp
                   </span>
                 </a>
               </li>

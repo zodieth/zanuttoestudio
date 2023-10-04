@@ -1,6 +1,8 @@
 const { createServer } = require("http");
 const { parse } = require("url");
+const { Client, LocalAuth, LegacySessionAuth } =require('whatsapp-web.js');
 const next = require("next");
+const qrcode = require('qrcode-terminal')
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -49,3 +51,39 @@ app.prepare().then(() => {
       console.log(`> Ready on http://${hostname}:${port}`);
     });
 });
+
+const client = new Client({
+  puppeteer:{
+    args:['--no-sandbox'],
+    headless:true,
+  },
+  authStrategy: new LocalAuth({
+    clientId: "ID_CLIENTE"
+  })
+});
+
+async function getAllChats( client ) {
+  try {
+    const chats = await client.getChats();
+    return chats;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+client.on('qr', qr => {
+  console.log("QR Received", qr);
+  qrcode.generate(qr, {small:true});
+});
+
+client.on('ready',() => {
+  console.log('Client is ready!');
+  const chats = getAllChats(client);
+  
+});
+
+client.on('message', message => {
+	console.log(message);
+});
+
+client.initialize();
