@@ -153,7 +153,6 @@ function Table({whatsappSession, setWhatsappSession}) {
   }, [checkedState]);
 
   const dataSelected = (people, checkedState) => {
-    //console.log(people);
     const dataPersonArr = [];
     people.map((item) => {
       if (checkedState.includes(item._id)) {
@@ -192,7 +191,6 @@ function Table({whatsappSession, setWhatsappSession}) {
     dataPerson.forEach((person) => {
       const detail = dataDetails[dataPerson.indexOf(person)];
       let detailString = "[" + detail.map((e) => JSON.stringify(e)).join(",").replace(/["]+/g,"") + "]";
-      console.log(detailString);
       XLSX.utils.sheet_add_json(worksheet, [{
         Carpeta:person.idInc,
         Nombre: person.nombre,
@@ -356,8 +354,6 @@ function Table({whatsappSession, setWhatsappSession}) {
               <tbody className="divide-y divide-gray-200">
                 {peoplePagination
                   ?.filter((people) => {
-                    //console.log(people);
-                    //console.log(search);
                     return search.toLowerCase() === ""
                       ? people
                       : people.nombre

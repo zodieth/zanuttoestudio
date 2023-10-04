@@ -62,6 +62,15 @@ const client = new Client({
   })
 });
 
+async function getAllChats( client ) {
+  try {
+    const chats = await client.getChats();
+    return chats;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 client.on('qr', qr => {
   console.log("QR Received", qr);
   qrcode.generate(qr, {small:true});
@@ -69,20 +78,12 @@ client.on('qr', qr => {
 
 client.on('ready',() => {
   console.log('Client is ready!');
+  const chats = getAllChats(client);
+  
 });
 
-async function getAllChats( client ) {
-  try {
-    const chats = await client.getChats();
-console.log(chats)
-  } catch (e) {
-    console.error(e)
-  }
-}
-
 client.on('message', message => {
-  getAllChats(client)
-	//console.log(message);
+	console.log(message);
 });
 
 client.initialize();
