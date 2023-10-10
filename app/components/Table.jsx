@@ -25,6 +25,9 @@ function Table({whatsappSession, setWhatsappSession}) {
   const detail = useSelector((state) => state.detail);
   const dispatch = useDispatch();
 
+  const [whatsappId, setWhatsappId] = useState("");
+
+
   useEffect(() => {
     api
       .get("people")
@@ -230,9 +233,9 @@ function Table({whatsappSession, setWhatsappSession}) {
       )} */}
 
       {createUser && <CreatePerson setCreateUser={setCreateUser} />}
-      {whatsappSession && (
-        <WhatsAppComponent setWhatsappSession={setWhatsappSession} />
-      )}
+      {/* {whatsappSession && (
+        <WhatsAppComponent setWhatsappSession={setWhatsappSession} whatsappId={whatsappId}/>
+      )} */}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}
