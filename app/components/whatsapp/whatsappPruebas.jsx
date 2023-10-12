@@ -1,9 +1,25 @@
 import { useEffect, useState } from "react";
-import { api } from "../../page"; 
+//import QRCode from "react-qr-code";
+//import pusherJs from "pusher-js";
 
-import QRCode from "react-qr-code";
+function WhatsAppComponent({setWhatsappSession, whatsappId}) {
 
-function WhatsAppComponent({setWhatsappSession}) {
+    /*const [qr, setQr] =useState("");
+    const [chats, setChats] =useState("");
+
+    const pusher = new pusherJs('7acca289806231ac0a9b', {
+        cluster: 'sa1'
+    })
+    const channel = pusher.subscribe('my-channel');
+    //whatsappId!== ""? 
+    useEffect(() => {
+        channel.bind('qr', function(data) {
+          setQr(data.qr);
+        });
+        channel.bind('message', function(data) {
+            setChats(data.message);
+          });
+    }, [])*/
 
     return (
         <div 
@@ -17,7 +33,7 @@ function WhatsAppComponent({setWhatsappSession}) {
                         <div>
                             <h1>Inicio de sesion</h1>
                             <h2>Codigo QR:</h2>
-                            <QRCode value="2@01hN9Z9UpHTwmNOxhZ9QgGvoR/7a+hV9ai4Hq7ywSDkiX9PJhaLr9zRtkZ/1ABMHfaLxd7W011krEg==,mFJmrklaMKrWS10IsvtpU9rrkdcTJCnGDnXJqeqVAlw=,e4txnQ/ChwfKHvQ4/X6kZnEp5W1rJkTotes6Eorphl8=,gTI2TqFMrneINp4p1aVqGmzqbXCL0amYiaIukXujFNc=,1"/>
+                            {/*<QRCode value={qr}/>*/}
                         </div>
                         <div>
                             <button onClick={()=> setWhatsappSession(false)}>

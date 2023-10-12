@@ -17,13 +17,16 @@ import CalculateUser from "../components/CalculateUser";
 import CreatePerson from "../components/CreatePerson";
 import WhatsAppComponent from "./whatsapp/whatsappPruebas";
 
-function Table({whatsappSession, setWhatsappSession}) {
+function Table() {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 10;
 
   const people = useSelector((state) => state.people);
   const detail = useSelector((state) => state.detail);
   const dispatch = useDispatch();
+
+  const [whatsappId, setWhatsappId] = useState("");
+
 
   useEffect(() => {
     api
@@ -230,9 +233,9 @@ function Table({whatsappSession, setWhatsappSession}) {
       )} */}
 
       {createUser && <CreatePerson setCreateUser={setCreateUser} />}
-      {whatsappSession && (
-        <WhatsAppComponent setWhatsappSession={setWhatsappSession} />
-      )}
+      {/* {whatsappSession && (
+        <WhatsAppComponent setWhatsappSession={setWhatsappSession} whatsappId={whatsappId}/>
+      )} */}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}
