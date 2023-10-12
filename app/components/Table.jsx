@@ -15,6 +15,7 @@ import * as XLSX from "xlsx";
 import { BsFillCalculatorFill, BsFillPersonPlusFill } from "react-icons/bs";
 import CalculateUser from "../components/CalculateUser";
 import CreatePerson from "../components/CreatePerson";
+import WhatsAppComponent from "./whatsapp/whatsappPruebas";
 
 function Table() {
   const [actualPage, setActualPage] = useState(1);
@@ -23,6 +24,9 @@ function Table() {
   const people = useSelector((state) => state.people);
   const detail = useSelector((state) => state.detail);
   const dispatch = useDispatch();
+
+  const [whatsappId, setWhatsappId] = useState("");
+
 
   useEffect(() => {
     api
@@ -152,7 +156,6 @@ function Table() {
   }, [checkedState]);
 
   const dataSelected = (people, checkedState) => {
-    //console.log(people);
     const dataPersonArr = [];
     people.map((item) => {
       if (checkedState.includes(item._id)) {
@@ -166,10 +169,20 @@ function Table() {
     const d = detail.detail;
     for (let i = 0; i < d.length; i++) {
       if (d[i].persona === p._id) {
-        return d[i];
+        let arrayDetalles = [];
+        d[i].año.forEach((a,z) => {
+          if(d[i].cantidadMeses[z] !== 0) {
+            arrayDetalles.push({
+              año: a, 
+              mes: d[i].cantidadMeses[z],
+              tipo: d[i].tipoDeAporte[z]
+            })
+          }
+        })
+        return arrayDetalles;
       }
     }
-    return {};
+    return [];
   });
   const downloadExcel = (dataPerson, dataDetails) => {
     if (dataPerson.toString() === [].toString()) {
@@ -180,45 +193,31 @@ function Table() {
 
     dataPerson.forEach((person) => {
       const detail = dataDetails[dataPerson.indexOf(person)];
-      XLSX.utils.sheet_add_json(
-        worksheet,
-        [
-          {
-            Carpeta: person.idInc,
-            Nombre: person.nombre,
-            Documento: person.dni,
-            Sexo: person.sexo,
-            Fecha: person.fecha,
-            Hijos: person.hijos,
-            HijosAdoptados: person.hijosAdoptados,
-            HijosDiscapacidad: person.hijosDiscapacidad,
-            Numero: person.num,
-            Status: person.status,
-            Extranjero: person.extranjero,
-            Auh: person.auh,
-            claveAnses: person.claveAnses,
-            Pension: person.pension,
-            Aportando: person.aportando,
-            Dirección: person.direccion,
-            Localidad: person.localidad,
-            Provincia: person.provincia,
-            Comentarios: person.comentarios,
-            FechaDeConsulta: person.createdAt,
-          },
-        ],
-        { origin: -1 }
-      );
-
-      const aoa = [["Año", "Meses Aportados", "Tipo aporte"]];
-      detail.año?.map((e) =>
-        aoa.push([
-          e,
-          detail.cantidadMeses[detail.año.indexOf(e)],
-          detail.tipoDeAporte[detail.año.indexOf(e)],
-        ])
-      );
-      XLSX.utils.sheet_add_aoa(worksheet, aoa, { origin: { r: -1, c: 20 } });
-    });
+      let detailString = "[" + detail.map((e) => JSON.stringify(e)).join(",").replace(/["]+/g,"") + "]";
+      XLSX.utils.sheet_add_json(worksheet, [{
+        Carpeta:person.idInc,
+        Nombre: person.nombre,
+        Documento:person.dni,
+        Sexo: person.sexo,
+        Fecha: person.fecha,
+        Hijos: person.hijos,
+        HijosAdoptados: person.hijosAdoptados,
+        HijosDiscapacidad: person.hijosDiscapacidad,
+        Numero: person.num,
+        Status: person.status,
+        Extranjero: person.extranjero,
+        Auh: person.auh,
+        claveAnses: person.claveAnses,
+        Pension: person.pension,
+        Aportando: person.aportando,
+        Dirección: person.direccion,
+        Localidad: person.localidad,
+        Provincia: person.provincia,
+        Comentarios: person.comentarios,
+        FechaDeConsulta: person.createdAt,
+        "Año|Mes|Tipo": detailString!=="[]"? detailString : ""
+      }], {origin: -1})
+    })
     XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja 1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
   };
@@ -234,6 +233,9 @@ function Table() {
       )} */}
 
       {createUser && <CreatePerson setCreateUser={setCreateUser} />}
+      {/* {whatsappSession && (
+        <WhatsAppComponent setWhatsappSession={setWhatsappSession} whatsappId={whatsappId}/>
+      )} */}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}
@@ -355,8 +357,6 @@ function Table() {
               <tbody className="divide-y divide-gray-200">
                 {peoplePagination
                   ?.filter((people) => {
-                    //console.log(people);
-                    //console.log(search);
                     return search.toLowerCase() === ""
                       ? people
                       : people.nombre
