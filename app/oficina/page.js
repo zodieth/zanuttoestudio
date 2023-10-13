@@ -18,8 +18,8 @@ function Oficina() {
       <div>
         <Header />
         <div className="flex">
-          <SideBar session={session} setWhatsappSession={setWhatsappSession}/>
-          <Table whatsappSession={whatsappSession} setWhatsappSession={setWhatsappSession}/>
+          <SideBar session={session} />
+          <Table />
         </div>
       </div>
     );

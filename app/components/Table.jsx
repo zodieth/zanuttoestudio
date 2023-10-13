@@ -17,7 +17,7 @@ import CalculateUser from "../components/CalculateUser";
 import CreatePerson from "../components/CreatePerson";
 import WhatsAppComponent from "./whatsapp/whatsappPruebas";
 
-function Table({whatsappSession, setWhatsappSession}) {
+function Table() {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 10;
 
