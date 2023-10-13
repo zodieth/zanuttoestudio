@@ -4,11 +4,16 @@ const citaSchema = new mongoose.Schema({
   nombre: String,
   telefono: String,
   fecha: Date,
-  hora: String,
+  hora: {
+    type: String,
+    enum: ["9pm", "10pm", "11pm", "12pm", "14pm", "15pm"],
+    required: [true, "El horario es requerido"]
+  },
   calendario: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Calendario",
+    type: String,
+    enum: ["MUNRO", "SAN-ISIDRO", "GRAND-BOURG", "VIDEOLLAMADA"],
+    required: [true, "El calendario es requerido"]
   },
 });
 
-export default mongoose.model.Cita || mongoose.model("Cita", citaSchema);
+export default mongoose.models.Cita || mongoose.model("Cita", citaSchema);
