@@ -5,8 +5,6 @@ import Cita from "../../models/Cita";
 export async function POST(request) {
   const { nombre, telefono, fecha, hora, calendario } = await request.json();
 
-  console.log(nombre, telefono, fecha, hora, calendario);
-
   try {
     await dbConnect();
 
@@ -18,7 +16,6 @@ export async function POST(request) {
       calendario,
     });
 
-    console.log(nuevaCita);
 
     nuevaCita.save();
 
