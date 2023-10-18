@@ -1,3 +1,4 @@
+import { tr } from "date-fns/locale";
 import React, { useState } from "react";
 
 const actual = new Date();
@@ -26,11 +27,45 @@ function Calendar({ setCalendarOn, calendarOn }) {
         setSelectedMonth(11);
         setSelectedYear(selectedYear-1)
     }
-    const arrDias = [];
-    for (let dias = 1; dias <= diasDelMes; dias++){
-        arrDias.push(dias)       
+    const handleSelectDia = (e)=> {
+        const claseComun = "px-3 my-1 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer";
+        const claseSelected = "px-3 w-14 flex justify-center items-center border border-green-500 text-white bg-green-500 rounded-2xl cursor-pointer shadow-md";
+        const selectedDay = document.getElementsByClassName(claseSelected)[0]
+        if(selectedDay !== undefined){
+            selectedDay.className = claseComun
+        }
+        // e.target.className === claseSelected ?
+        // e.target.className = claseComun :
+        e.target.className = claseSelected;
+        
     }
-    
+
+    const primerDiaMes = new Date(selectedYear,selectedMonth,1).getDay();
+    const ultimaCelda = primerDiaMes+diasDelMes
+    const arrDias = [];
+    let dia = 0
+    for (let i = 0; i <= 41; i++){
+        if(i===primerDiaMes){
+            dia=1
+        }
+        if(i<primerDiaMes || i>= ultimaCelda){
+            arrDias.push(<td key={i} className="px-3 my-1    w-14 flex justify-center items-center ">&nbsp;</td>);
+        }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0){
+            arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center border border-red-500 text-red-500">{dia}</td>);
+            dia++;
+        }else{
+            arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer" value={dia} onClick={(e)=> handleSelectDia(e)}>{dia}</td>);
+            dia++;
+        }
+    }
+    const semanasCalendario = arrDias.map((dia, i) => {
+        return Math.floor(i/7);
+    }).reduce((acc, item) => {
+        if(!acc.includes(item)){
+            acc.push(item);
+        }
+        return acc;
+    }, [])
 
     return (
             <div className='flex justify-center items-center gap-5 w-full'>
@@ -49,226 +84,38 @@ function Calendar({ setCalendarOn, calendarOn }) {
                         </div>
                
                     </div>
-                    <div className="flex justify-between font-medium uppercase text-xs pt-4 pb-2 border-t">
-                        {/* {diasSemana.map((dia) => {
-                            if(dia === "dom") {
-                                return (<div key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-red-500 text-red-500 shadow-md"        > {dia}</div>)
-                            }else{
-                                return (<div key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-green-500 text-green-500 shadow-md"> {dia}</div>)
-                            }
-                        })} */}
-        
-                    </div>
-                    
-                    <div className="grid grid-cols-7 justify-items-center font-medium text-sm pb-2">
+                    <div className="flex justify-center items-center font-medium uppercase text-xs pt-4 pb-2 border-t">
+                        <table>
+                            <thead>
+                                <tr className="flex mb-5 justify-center items-center gap-7 w-full ">
                         {diasSemana.map((dia) => {
                             if(dia === "dom") {
-                                return (<div key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-red-500 text-red-500 shadow-md"> {dia}</div>)
+                                return (<th key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-red-500 text-red-500 shadow-md"> {dia}</th>)
                             }else{
-                                return (<div key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-green-500 text-green-500 shadow-md"> {dia}</div>)
+                                return (<th key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-green-500 text-green-500 shadow-md"> {dia}</th>)
                             }
                         })}
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        {arrDias.map((dia, i) => {
-                            const column = new Date(selectedYear,selectedMonth,dia).getDay()+1;
-                            return(
-                            <span key={dia} className={`px-3 w-14 m-1 items-center border hover:border-green-500 hover:text-green-500 cursor-pointer col-start-${column}`}>
-                                {dia}
-                            </span>)
+                        {semanasCalendario.map((semana) => {
+                            return (
+                                <tr key={"semana "+ semana+1} className="flex justify-center items-center gap-7 w-full " >
+                                    {arrDias.filter((dia, i) => {
+                                        if(Math.floor(i/7) === semana) {
+                                            return (dia)
+                                        }
+                                    })}
+                                </tr>
+                            )
                         })}
-                    </div>
-                    {/* <div className="flex justify-between font-medium text-sm pb-2">
-                        {
+                            </tbody>
+                        </table>
+                        
 
-                        }
         
-                        <span className="px-3 text-gray-400 w-14 flex justify-center items-center">
-        30
-                        </span>
-        
-        
-                        <span className="px-3 text-gray-400 w-14 flex justify-center items-center">
-        31
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        01
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        02
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        03
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        04
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        05
-                        </span>
-        
-                    </div>
-                    <div className="flex justify-between font-medium text-sm pb-2">
-        
-                        <span className="px-3 w-14 flex justify-center items-center border border-red-500 text-red-500 cursor-pointer">
-        06
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        07
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        08
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        09
-                        </span>
-        
-        
-                        <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        10
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        11
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        12
-            </span>
-        
-                    </div>
-        
-                    <div className="flex justify-between font-medium text-sm pb-2">
-        
-                        <span className="px-3 w-14 flex justify-center items-center border border-red-500 text-red-500 cursor-pointer">
-        13
-                        </span>
-        
-        
-           <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        14
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        15
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        16
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        17
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        18
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        19
-            </span>
-        
-                    </div>
-        
-                    <div className="flex justify-between font-medium text-sm pb-2">
-        
-           <span className="px-3 w-14 flex justify-center items-center border border-red-500 text-red-500 cursor-pointer">
-        20
-            </span>
-        
-        
-           <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        21
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        22
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        23
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        24
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border border-green-500 text-white bg-green-500 rounded-2xl cursor-pointer shadow-md">
-        25
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        26
-            </span>
-        
-                    </div>
-        
-                    <div className="flex justify-between font-medium text-sm pb-2">
-        
-           <span className="px-3 w-14 flex justify-center items-center border border-red-500 text-red-500 cursor-pointer">
-        27
-            </span>
-        
-        
-           <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        28
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        29
-            </span>
-        
-        
-            <span className="px-3 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer">
-        30
-            </span>
-        
-        
-            <span className="px-3 text-gray-400 w-14 flex justify-center items-center">
-        01
-            </span>
-        
-        
-            <span className="px-3 text-gray-400 w-14 flex justify-center items-center">
-        02
-            </span>
-        
-        
-            <span className="px-3 text-gray-400 w-14 flex justify-center items-center">
-        03
-            </span>
-        
-                    </div> */}
-        
+                    </div>        
                 </div>
             </div>
         
