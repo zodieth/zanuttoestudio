@@ -205,3 +205,7 @@ export const getDetalle = async () => {
 export const deleteDetail = async (id) => {
   await api.delete(`detalle/${id}`);
 };
+
+export const getCitas = async () => {
+  await api.get(`citas`);
+};

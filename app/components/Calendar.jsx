@@ -1,11 +1,15 @@
-import { tr } from "date-fns/locale";
-import React, { useState } from "react";
-
 const actual = new Date();
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCitas } from "../lib/utils";
+import { addCita } from "../redux/features/citaSlice";
+import { api } from "../page";
 
-function Calendar({ setCalendarOn, calendarOn }) {
+function Calendar({ setErrors, errors, oficina }) {
     const diasSemana = ["dom","lun","mar","mie","jue","vie", "sab"];
     const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+    const horarios = ["9am", "10am", "11am", "12pm", "14pm", "15pm"];
+    const dispatch = useDispatch();
     const [selectedYear,setSelectedYear] = useState(actual.getFullYear());
     const [selectedMonth,setSelectedMonth] = useState(actual.getMonth());
     const diasDelMes = new Date(selectedYear,selectedMonth+1,0).getDate()
@@ -14,11 +18,10 @@ function Calendar({ setCalendarOn, calendarOn }) {
         mes:"",
         año:""
     })
-    const [calendario, setCalendario] = useState({
-        dias: 0,
-        mes: selectedMonth,
-        año: selectedYear
-    })
+    const [horario, setHorario] = useState("");
+
+    const citas = useSelector((state) => state.citas).cita;
+
     if(selectedMonth>11){
         setSelectedMonth(0);
         setSelectedYear(selectedYear+1)
@@ -28,16 +31,19 @@ function Calendar({ setCalendarOn, calendarOn }) {
         setSelectedYear(selectedYear-1)
     }
     const handleSelectDia = (e)=> {
-        const claseComun = "px-3 my-1 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer";
-        const claseSelected = "px-3 w-14 flex justify-center items-center border border-green-500 text-white bg-green-500 rounded-2xl cursor-pointer shadow-md";
-        const selectedDay = document.getElementsByClassName(claseSelected)[0]
-        if(selectedDay !== undefined){
-            selectedDay.className = claseComun
-        }
-        // e.target.className === claseSelected ?
-        // e.target.className = claseComun :
-        e.target.className = claseSelected;
-        
+        // const claseComun = "px-3 my-1 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer";
+        // const claseSelected = "px-3 w-14 flex justify-center items-center border border-green-500 text-white bg-green-500 rounded-2xl cursor-pointer shadow-md";
+        // const selectedDay = document.getElementsByClassName(claseSelected)[0]
+        // if(selectedDay !== undefined){
+        //     selectedDay.className = claseComun
+        // }
+        // e.target.className = claseSelected;
+        setDiaCita({
+            dia: e.target.value,
+            mes: selectedMonth,
+            año: selectedYear
+        })
+        setErrors({...errors, dia: ""})        
     }
 
     const primerDiaMes = new Date(selectedYear,selectedMonth,1).getDay();
@@ -50,7 +56,7 @@ function Calendar({ setCalendarOn, calendarOn }) {
         }
         if(i<primerDiaMes || i>= ultimaCelda){
             arrDias.push(<td key={i} className="px-3 my-1    w-14 flex justify-center items-center ">&nbsp;</td>);
-        }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0){
+        }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0 || new Date(selectedYear, selectedMonth, dia) < actual ){
             arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center border border-red-500 text-red-500">{dia}</td>);
             dia++;
         }else{
@@ -65,7 +71,35 @@ function Calendar({ setCalendarOn, calendarOn }) {
             acc.push(item);
         }
         return acc;
-    }, [])
+    }, []);
+    
+    useEffect(() => {
+        api.get("citas").then((data)=>{
+            dispatch(addCita(data.data))
+        })        
+    }, [dispatch]);
+
+    const handleCancel = () => {
+        setDiaCita({...diaCita, dia: ""});
+        setHorario("");
+        setErrors({...errors,dia: "Debe seleccionar un dia para su turno", horario: "Debe seleccionar un horario disponible para su turno"})        
+    }
+
+    const handleConfirm = () => {
+        setDiaCita({...diaCita, dia: ""});
+    }
+    const handleSelectHora = (e) => {
+        const claseComun = "flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer";
+        const claseSelected = "flex h-9 justify-center items-center border rounded-2xl shadow w-full bg-green-500 text-white";
+        const selectedDay = document.getElementsByClassName(claseSelected)[0]
+        if(selectedDay !== undefined){
+            selectedDay.className = claseComun
+        }
+        e.target.className = claseSelected;
+        setHorario(e.target.outerText);
+        setErrors({...errors, horario: ""})        
+    }
+    console.log(citas);
 
     return (
             <div className='flex justify-center items-center gap-5 w-full'>
@@ -112,10 +146,34 @@ function Calendar({ setCalendarOn, calendarOn }) {
                         })}
                             </tbody>
                         </table>
-                        
-
-        
-                    </div>        
+                    </div>
+                    {diaCita.dia !== ""?
+                    <div className="absolute bg-white w-full max-w-2xl p-6 mx-auto rounded-2xl shadow-2xl">
+                        <div className="flex justify-center items-center gap-7 mb-5">
+                            <h3>Horario:</h3>
+                        </div>    
+                        <div className="flex flex-col justify-center items-center gap-7">
+                            {horarios.map((hora, i) => {
+                                return (
+                                    <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer" key={hora} value={hora} onClick={(e)=>handleSelectHora(e)}>
+                                        <span value={hora}>{hora}</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div className="flex justify-between items-center mt-5">
+                            <button
+                                onClick={() => handleCancel()}
+                                className="flex flex-row items-center justify-center rounded-lg bg-red-500 px-5 py-3 text-sm font-medium text-white cursor-pointer">
+                                Volver a selección de día
+                            </button>
+                            <button
+                                onClick={() => handleConfirm()}
+                                className="flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer">
+                                Reservá tu turno
+                            </button>
+                        </div>
+                    </div> :""}      
                 </div>
             </div>
         

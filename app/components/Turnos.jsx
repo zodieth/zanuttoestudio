@@ -5,11 +5,17 @@ import Calendar from "./Calendar";
 
 function Turnos() {
   const [calendarOn, setCalendarOn] = useState(false);
-
+  const [oficina, setOficina] = useState("");
+  const [errors, setErrors] = useState({
+    oficina : "Debe seleccionar una oficina",
+    dia: "Debe seleccionar un dia para su turno",
+    horario: "Debe seleccionar un horario disponible para su turno"
+});
+console.log(errors);
   return (
     <div className="flex flex-col items-center justify-center mt-20">
-      <Munro setCalendarOn={setCalendarOn} calendarOn={calendarOn} />
-      {calendarOn && <Calendar className="md:w-[800px] lg:w-[1000px] h-screen mt-20 mx-10" />}
+      <Munro setCalendarOn={setCalendarOn} calendarOn={calendarOn} setOficina={setOficina} setErrors={setErrors} errors={errors}/>
+      {calendarOn && <Calendar setErrors={setErrors} errors={errors} oficina={oficina} className="md:w-[800px] lg:w-[1000px] h-screen mt-20 mx-10" />}
     </div>
   );
 }

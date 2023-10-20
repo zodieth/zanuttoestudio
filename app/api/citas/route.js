@@ -27,11 +27,23 @@ export async function POST(request) {
 }
 
 export async function GET(request) {
+  await dbConnect();
+  const cita = await Cita.find({});
+  
   try {
-    await dbConnect();
-    const cita = await Cita.find({});
-
-    return NextResponse.json(cita);
+    const token = request.cookies.get("next-auth.session-token")
+    if(token){ 
+      return NextResponse.json(cita);
+    }else{
+      const citaFiltrada = cita.map((e)=>{
+        return {
+          fecha: e.fecha,
+          hora: e.hora,
+          calendario: e.calendario
+        }
+      })
+      return NextResponse.json(citaFiltrada);
+    }
   } catch (error) {
     return NextResponse.json({ msg: error }, { status: 404 });
   }

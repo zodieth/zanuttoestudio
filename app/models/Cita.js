@@ -6,7 +6,7 @@ const citaSchema = new mongoose.Schema({
   fecha: Date,
   hora: {
     type: String,
-    enum: ["9pm", "10pm", "11pm", "12pm", "14pm", "15pm"],
+    enum: ["9am", "10am", "11am", "12pm", "14pm", "15pm"],
     required: [true, "El horario es requerido"]
   },
   calendario: {
