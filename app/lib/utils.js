@@ -209,3 +209,19 @@ export const deleteDetail = async (id) => {
 export const getCitas = async () => {
   await api.get(`citas`);
 };
+export const createCitas = async (     
+    nombre,
+    telefono,
+    fecha,
+    hora,
+    calendario
+  ) => {
+    const response = await api.post(`citas`, {
+      nombre,
+      telefono,
+      fecha,
+      hora,
+      calendario
+  });
+  console.log(response);
+};

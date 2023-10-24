@@ -1,11 +1,11 @@
 const actual = new Date();
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCitas } from "../lib/utils";
+import { createCitas } from "../lib/utils";
 import { addCita } from "../redux/features/citaSlice";
 import { api } from "../page";
 
-function Calendar({ setErrors, errors, oficina }) {
+function Calendar({ setErrors, errors, oficina, nombre, telefono }) {
     const diasSemana = ["dom","lun","mar","mie","jue","vie", "sab"];
     const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
     const horarios = ["9am", "10am", "11am", "12pm", "14pm", "15pm"];
@@ -38,8 +38,9 @@ function Calendar({ setErrors, errors, oficina }) {
         //     selectedDay.className = claseComun
         // }
         // e.target.className = claseSelected;
+        //console.log(e.target.outerText);
         setDiaCita({
-            dia: e.target.value,
+            dia: +e.target.outerText,
             mes: selectedMonth,
             año: selectedYear
         })
@@ -86,6 +87,13 @@ function Calendar({ setErrors, errors, oficina }) {
     }
 
     const handleConfirm = () => {
+        if(errors.oficina === "" &&
+        errors.dia === "" &&
+        errors.horario === "" &&
+        errors.nombre === "" &&
+        errors.telefono === "" ) {
+            createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina)
+        }
         setDiaCita({...diaCita, dia: ""});
     }
     const handleSelectHora = (e) => {
@@ -99,7 +107,17 @@ function Calendar({ setErrors, errors, oficina }) {
         setHorario(e.target.outerText);
         setErrors({...errors, horario: ""})        
     }
-    console.log(citas);
+    const checkAvailability = (diaObj, hora) => {
+        const dia = `${diaObj.año}-${diaObj.mes+1}-${diaObj.dia.toString().length === 2 ? diaObj.dia : "0"+diaObj.dia }`
+
+        const arrAvailable = citas.map((cita)=>{
+            if(cita.fecha.slice(0,10) === dia && cita.hora === hora && cita.calendario === oficina) {
+                return false
+            }
+            return true
+        })
+        return arrAvailable.includes(false);
+    }
 
     return (
             <div className='flex justify-center items-center gap-5 w-full'>
@@ -154,6 +172,12 @@ function Calendar({ setErrors, errors, oficina }) {
                         </div>    
                         <div className="flex flex-col justify-center items-center gap-7">
                             {horarios.map((hora, i) => {
+                                if(checkAvailability(diaCita, hora)){
+                                    return (
+                                        <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full bg-red-500 text-white" key={hora} value={hora}>
+                                            <span value={hora}>{hora}</span>
+                                        </div>)
+                                }
                                 return (
                                     <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer" key={hora} value={hora} onClick={(e)=>handleSelectHora(e)}>
                                         <span value={hora}>{hora}</span>
