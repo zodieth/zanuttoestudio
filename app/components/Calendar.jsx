@@ -5,7 +5,7 @@ import { createCitas } from "../lib/utils";
 import { addCita } from "../redux/features/citaSlice";
 import { api } from "../page";
 
-function Calendar({ setErrors, errors, oficina, nombre, telefono }) {
+function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono }) {
     const diasSemana = ["dom","lun","mar","mie","jue","vie", "sab"];
     const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
     const horarios = ["9am", "10am", "11am", "12pm", "14pm", "15pm"];
@@ -31,14 +31,6 @@ function Calendar({ setErrors, errors, oficina, nombre, telefono }) {
         setSelectedYear(selectedYear-1)
     }
     const handleSelectDia = (e)=> {
-        // const claseComun = "px-3 my-1 w-14 flex justify-center items-center border hover:border-green-500 hover:text-green-500 cursor-pointer";
-        // const claseSelected = "px-3 w-14 flex justify-center items-center border border-green-500 text-white bg-green-500 rounded-2xl cursor-pointer shadow-md";
-        // const selectedDay = document.getElementsByClassName(claseSelected)[0]
-        // if(selectedDay !== undefined){
-        //     selectedDay.className = claseComun
-        // }
-        // e.target.className = claseSelected;
-        //console.log(e.target.outerText);
         setDiaCita({
             dia: +e.target.outerText,
             mes: selectedMonth,
@@ -56,7 +48,7 @@ function Calendar({ setErrors, errors, oficina, nombre, telefono }) {
             dia=1
         }
         if(i<primerDiaMes || i>= ultimaCelda){
-            arrDias.push(<td key={i} className="px-3 my-1    w-14 flex justify-center items-center ">&nbsp;</td>);
+            arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center ">&nbsp;</td>);
         }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0 || new Date(selectedYear, selectedMonth, dia) < actual ){
             arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center border border-red-500 text-red-500">{dia}</td>);
             dia++;
@@ -111,7 +103,7 @@ function Calendar({ setErrors, errors, oficina, nombre, telefono }) {
         const dia = `${diaObj.año}-${diaObj.mes+1}-${diaObj.dia.toString().length === 2 ? diaObj.dia : "0"+diaObj.dia }`
 
         const arrAvailable = citas.map((cita)=>{
-            if(cita.fecha.slice(0,10) === dia && cita.hora === hora && cita.calendario === oficina) {
+            if(cita.fecha?.slice(0,10) === dia && cita.hora === hora && cita.calendario === oficina) {
                 return false
             }
             return true
@@ -200,7 +192,6 @@ function Calendar({ setErrors, errors, oficina, nombre, telefono }) {
                     </div> :""}      
                 </div>
             </div>
-        
     );
 }
 
