@@ -15,9 +15,9 @@ import * as XLSX from "xlsx";
 import { BsFillCalculatorFill, BsFillPersonPlusFill } from "react-icons/bs";
 import CalculateUser from "../components/CalculateUser";
 import CreatePerson from "../components/CreatePerson";
-import WhatsAppComponent from "./whatsapp/whatsappPruebas";
+import Citas from "../components/Citas";
 
-function Table() {
+function Table( {turnosOn, setTurnosOn} ) {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 10;
 
@@ -233,9 +233,9 @@ function Table() {
       )} */}
 
       {createUser && <CreatePerson setCreateUser={setCreateUser} />}
-      {/* {whatsappSession && (
-        <WhatsAppComponent setWhatsappSession={setWhatsappSession} whatsappId={whatsappId}/>
-      )} */}
+      {turnosOn && (
+        <Citas setTurnosOn={setTurnosOn}/>
+      )}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
       )}

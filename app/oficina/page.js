@@ -11,15 +11,15 @@ import { RiLoader5Fill } from "react-icons/ri";
 function Oficina() {
 
   const { data: session, status } = useSession();
-  //const [whatsappSession, setWhatsappSession] = useState(false);
+  const [turnosOn, setTurnosOn] = useState(false);
 
   if (session && session.user) {
     return (
       <div>
         <Header />
         <div className="flex">
-          <SideBar session={session} />
-          <Table />
+          <SideBar session={session} setTurnosOn={setTurnosOn}/>
+          <Table turnosOn={turnosOn} setTurnosOn={setTurnosOn}/>
         </div>
       </div>
     );

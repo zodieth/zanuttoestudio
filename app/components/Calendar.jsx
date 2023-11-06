@@ -8,7 +8,7 @@ import { api } from "../page";
 function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono }) {
     const diasSemana = ["dom","lun","mar","mie","jue","vie", "sab"];
     const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    const horarios = ["9am", "10am", "11am", "12pm", "14pm", "15pm"];
+    const horarios = ["9", "10", "11", "12", "14", "15"];
     const dispatch = useDispatch();
     const [selectedYear,setSelectedYear] = useState(actual.getFullYear());
     const [selectedMonth,setSelectedMonth] = useState(actual.getMonth());
@@ -83,8 +83,10 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
         errors.dia === "" &&
         errors.horario === "" &&
         errors.nombre === "" &&
-        errors.telefono === "" ) {
-            createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina)
+        errors.telefono === "" ) 
+        {
+            const newCita = createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina)
+            console.log(newCita);
         }
         setDiaCita({...diaCita, dia: ""});
     }
@@ -96,7 +98,7 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
             selectedDay.className = claseComun
         }
         e.target.className = claseSelected;
-        setHorario(e.target.outerText);
+        setHorario(e.target.outerText.slice(0,e.target.outerText.length - 2));
         setErrors({...errors, horario: ""})        
     }
     const checkAvailability = (diaObj, hora) => {
@@ -109,6 +111,21 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
             return true
         })
         return arrAvailable.includes(false);
+    }
+    const reservaBtn = document.getElementById("reserva")
+
+    if(errors.oficina === "" &&
+    errors.dia === "" &&
+    errors.horario === "" &&
+    errors.nombre === "" &&
+    errors.telefono === "" ) 
+    {
+        reservaBtn.removeAttribute("disabled");
+        reservaBtn.className= "flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer"
+    }
+    else {
+        reservaBtn?.setAttribute("disabled", "disabled");
+        reservaBtn? reservaBtn.className= "flex flex-row items-center justify-center rounded-lg bg-zinc-400 px-5 py-3 text-sm font-medium text-white": ""
     }
 
     return (
@@ -159,7 +176,8 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
                     </div>
                     {diaCita.dia !== ""?
                     <div className="absolute bg-white w-full max-w-2xl p-6 mx-auto rounded-2xl shadow-2xl">
-                        <div className="flex justify-center items-center gap-7 mb-5">
+                        <div className="flex flex-col justify-center items-center gap-7 mb-5">
+                            <h2 className="border rounded-2xl px-5 font-semibold">{diaCita.dia} de {mesesAño[diaCita.mes]} del {diaCita.año}</h2>
                             <h3>Horario:</h3>
                         </div>    
                         <div className="flex flex-col justify-center items-center gap-7">
@@ -167,12 +185,12 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
                                 if(checkAvailability(diaCita, hora)){
                                     return (
                                         <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full bg-red-500 text-white" key={hora} value={hora}>
-                                            <span value={hora}>{hora}</span>
+                                            <span value={hora}>{hora}:00</span>
                                         </div>)
                                 }
                                 return (
                                     <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer" key={hora} value={hora} onClick={(e)=>handleSelectHora(e)}>
-                                        <span value={hora}>{hora}</span>
+                                        <span value={hora}>{hora}:00</span>
                                     </div>
                                 )
                             })}
@@ -184,8 +202,9 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
                                 Volver a selección de día
                             </button>
                             <button
+                                id="reserva"
                                 onClick={() => handleConfirm()}
-                                className="flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer">
+                                className="flex flex-row items-center justify-center rounded-lg bg-zinc-400 px-5 py-3 text-sm font-medium text-white ">
                                 Reservá tu turno
                             </button>
                         </div>
