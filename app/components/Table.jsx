@@ -16,8 +16,9 @@ import { BsFillCalculatorFill, BsFillPersonPlusFill } from "react-icons/bs";
 import CalculateUser from "../components/CalculateUser";
 import CreatePerson from "../components/CreatePerson";
 import Citas from "../components/Citas";
+import Oficinas from "../components/Oficinas";
 
-function Table( {turnosOn, setTurnosOn} ) {
+function Table( {turnosOn, setTurnosOn, oficinasOn, setOficinasOn} ) {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 10;
 
@@ -224,17 +225,13 @@ function Table( {turnosOn, setTurnosOn} ) {
 
   return (
     <div className="overflow-x-auto mx-10 my-10 w-full flex-col items-start justify-center ">
-      {/* {deleteUser && (
-        <DeleteConfirm
-          user={user}
-          setDeleteUser={setDeleteUser}
-          detail={detail}
-        />
-      )} */}
 
       {createUser && <CreatePerson setCreateUser={setCreateUser} />}
       {turnosOn && (
         <Citas setTurnosOn={setTurnosOn}/>
+      )}
+      {oficinasOn && (
+        <Oficinas setOficinasOn={setOficinasOn}/>
       )}
       {editUser && (
         <EditUser user={user} setEditUser={setEditUser} detail={detail} />
@@ -350,7 +347,9 @@ function Table( {turnosOn, setTurnosOn} ) {
                       onChange={(e) => handleSelectAll(e.target.checked)}
                     />
                   </th>
-                  <th className="px-4 py-2"></th>
+                  <th className="px-4 py-2">
+                    Seleccionados: {dataPerson.length}
+                  </th>
                 </tr>
               </thead>
 

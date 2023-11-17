@@ -12,14 +12,15 @@ function Oficina() {
 
   const { data: session, status } = useSession();
   const [turnosOn, setTurnosOn] = useState(false);
+  const [oficinasOn, setOficinasOn] = useState(false);
 
   if (session && session.user) {
     return (
       <div>
         <Header />
         <div className="flex">
-          <SideBar session={session} setTurnosOn={setTurnosOn}/>
-          <Table turnosOn={turnosOn} setTurnosOn={setTurnosOn}/>
+          <SideBar session={session} setTurnosOn={setTurnosOn} setOficinasOn={setOficinasOn}/>
+          <Table turnosOn={turnosOn} setTurnosOn={setTurnosOn} oficinasOn={oficinasOn} setOficinasOn={setOficinasOn}/>
         </div>
       </div>
     );

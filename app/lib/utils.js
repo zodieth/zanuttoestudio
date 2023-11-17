@@ -211,3 +211,20 @@ export const createCitas = async (
   });
   return response;
 };
+export const updateCita = async (
+  _id,
+  nombre,
+  telefono,
+  fecha,
+  hora,
+  calendario
+) => {
+  const response = await api.put(`citas/${_id}`, {
+    nombre,
+    telefono,
+    fecha,
+    hora,
+    calendario
+  });
+  return response
+};

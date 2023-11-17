@@ -1,3 +1,4 @@
+"use client";
 const actual = new Date();
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -5,7 +6,7 @@ import { createCitas } from "../lib/utils";
 import { addCita } from "../redux/features/citaSlice";
 import { api } from "../page";
 
-function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono }) {
+function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefono, setResponseData }) {
     const diasSemana = ["dom","lun","mar","mie","jue","vie", "sab"];
     const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
     const horarios = ["9", "10", "11", "12", "14", "15"];
@@ -44,12 +45,14 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
     const arrDias = [];
     let dia = 0
     for (let i = 0; i <= 41; i++){
+        const mañana = new Date(actual.getTime() + 60 * (24 * 60 * 60 * 1000)) // 60 Dias desde hoy
+        
         if(i===primerDiaMes){
             dia=1
         }
         if(i<primerDiaMes || i>= ultimaCelda){
             arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center ">&nbsp;</td>);
-        }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0 || new Date(selectedYear, selectedMonth, dia) < actual ){
+        }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0 || new Date(selectedYear, selectedMonth, dia) < actual || new Date(selectedYear, selectedMonth, dia) > mañana){
             arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center border border-red-500 text-red-500">{dia}</td>);
             dia++;
         }else{
@@ -86,10 +89,18 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
         errors.telefono === "" ) 
         {
             const newCita = createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina)
-            console.log(newCita);
+                .then((data) => {
+                    setConfirmTurno(true)
+                    setResponseData(data.data)
+                    return data})
+                .catch((error) => {
+                    setResponseData(error)
+                    setConfirmTurno(true)
+                })
         }
         setDiaCita({...diaCita, dia: ""});
     }
+
     const handleSelectHora = (e) => {
         const claseComun = "flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer";
         const claseSelected = "flex h-9 justify-center items-center border rounded-2xl shadow w-full bg-green-500 text-white";
@@ -98,7 +109,7 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
             selectedDay.className = claseComun
         }
         e.target.className = claseSelected;
-        setHorario(e.target.outerText.slice(0,e.target.outerText.length - 2));
+        setHorario(e.target.outerText.slice(0,e.target.outerText.length - 3));
         setErrors({...errors, horario: ""})        
     }
     const checkAvailability = (diaObj, hora) => {
@@ -120,17 +131,17 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
     errors.nombre === "" &&
     errors.telefono === "" ) 
     {
-        reservaBtn.removeAttribute("disabled");
-        reservaBtn.className= "flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer"
+        reservaBtn?.removeAttribute("disabled");
+        reservaBtn? reservaBtn.className= "flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer": "";
     }
     else {
         reservaBtn?.setAttribute("disabled", "disabled");
-        reservaBtn? reservaBtn.className= "flex flex-row items-center justify-center rounded-lg bg-zinc-400 px-5 py-3 text-sm font-medium text-white": ""
+        reservaBtn? reservaBtn.className= "flex flex-row items-center justify-center rounded-lg bg-zinc-400 px-5 py-3 text-sm font-medium text-white": "";
     }
 
     return (
             <div className='flex justify-center items-center gap-5 w-full'>
-                <div className='w-full max-w-2xl p-6 mx-auto bg-white rounded-2xl shadow-2xl flex flex-col'>
+                <div className='w-full p-6 mx-auto bg-white rounded-2xl shadow-2xl flex flex-col'>
                     <div className="flex justify-between pb-4">
                         <div className="-rotate-90 cursor-pointer" onClick={() => setSelectedMonth(selectedMonth-1)}>
                             <svg width="12" height="9" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -146,14 +157,14 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
                
                     </div>
                     <div className="flex justify-center items-center font-medium uppercase text-xs pt-4 pb-2 border-t">
-                        <table>
+                        <table className="table-fixed">
                             <thead>
-                                <tr className="flex mb-5 justify-center items-center gap-7 w-full ">
+                                <tr className="flex mb-5 justify-center items-center md:gap-7">
                         {diasSemana.map((dia) => {
                             if(dia === "dom") {
-                                return (<th key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-red-500 text-red-500 shadow-md"> {dia}</th>)
+                                return (<th key={dia} className="border rounded-sm w-14 h-12 flex items-center justify-center border-red-500 text-red-500 shadow-md md:px-5"> {dia}</th>)
                             }else{
-                                return (<th key={dia} className="px-5 border rounded-sm w-14 h-12 flex items-center justify-center border-green-500 text-green-500 shadow-md"> {dia}</th>)
+                                return (<th key={dia} className="border rounded-sm w-14 h-12 flex items-center justify-center border-green-500 text-green-500 shadow-md md:px-5"> {dia}</th>)
                             }
                         })}
                                 </tr>
@@ -162,7 +173,7 @@ function Calendar({ setCalendarOn, setErrors, errors, oficina, nombre, telefono 
 
                         {semanasCalendario.map((semana) => {
                             return (
-                                <tr key={"semana "+ semana+1} className="flex justify-center items-center gap-7 w-full " >
+                                <tr key={"semana "+ semana+1} className="flex justify-center items-center w-full md:gap-7" >
                                     {arrDias.filter((dia, i) => {
                                         if(Math.floor(i/7) === semana) {
                                             return (dia)
