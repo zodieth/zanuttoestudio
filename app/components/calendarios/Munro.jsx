@@ -31,7 +31,7 @@ function Munro({ setCalendarOn, setAnimationErrors, setOficina, setErrors, error
     api.get("calendario").then((data)=>{
         dispatch(addCalendario(data.data))
     })        
-}, []);
+}, [dispatch]);
 
 
   return (
