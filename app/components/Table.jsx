@@ -154,7 +154,7 @@ function Table( {turnosOn, setTurnosOn, oficinasOn, setOficinasOn} ) {
     } else {
       setAllCheckedState(false);
     }
-  }, [checkedState]);
+  }, [checkedState, peoplePagination]);
 
   const dataSelected = (people, checkedState) => {
     const dataPersonArr = [];

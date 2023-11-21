@@ -4,31 +4,26 @@ import esLocale from '@fullcalendar/core/locales/es';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { useDispatch, useSelector } from "react-redux";
 import { addCita, editCita } from "../redux/features/citaSlice";
+import { addCalendario } from "../redux/features/calendarioSlice";
 import { updateCita } from "../lib/utils";
 import { RiLoader5Fill } from "react-icons/ri";
 import { api } from "../page";
 
 function Citas({setTurnosOn}) {
-  const actual = new Date();
-  const diasSemana = ["dom","lun","mar","mie","jue","vie", "sab"];
   const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-  const horarios = ["9am", "10am", "11am", "12pm", "14pm", "15pm"];
   const dispatch = useDispatch();
   const citas = useSelector((state) => state.citas);
-  const oficinasColor = {
-    "MUNRO": "#f8df81",
-    "SAN-ISIDRO": "#f6aa90",
-    "GRAND-BOURG": "#d5b6d5",
-    "VIDEOLLAMADA": "#badfda"
-  }
-  const oficinas = Object.keys(oficinasColor);
+  const oficinas = useSelector((state) => state.calendario);
 
   const [event, setEvent] = useState(false);
 
   useEffect(() => {
       api.get("citas").then((data)=>{
           dispatch(addCita(data.data))
-      })        
+      })
+      api.get("calendario").then((data) =>{
+          dispatch(addCalendario(data.data))
+      })
   }, [dispatch]);
 
   function renderEventContent(eventInfo) {
@@ -45,11 +40,11 @@ function Citas({setTurnosOn}) {
     date.setDate(date.getDate()+1);
     const horario = parseInt(cita.hora);
     let color;
-    for (let key in oficinasColor) {
-      if(key === cita.calendario) {
-        color = oficinasColor[key]
+    oficinas.calendario?.map((oficina) => {
+      if(oficina.nombre === cita.calendario) {
+        color = oficina.color
       }
-    }
+    })
 
     return { 
       title: cita.nombre, 
@@ -58,7 +53,8 @@ function Citas({setTurnosOn}) {
       textColor: 'black',
       extendedProps: {
         telefono: cita.telefono,
-        id: cita._id
+        id: cita._id,
+        oficina: cita.calendario
       }
     }
   });
@@ -71,7 +67,7 @@ function Citas({setTurnosOn}) {
     const mes = e.event.start.getMonth();
     const año = e.event.start.getFullYear();
     const hora = e.event.start.getHours() + "";
-    console.log("MES",mes);
+    const oficina = e.event.extendedProps.oficina;
     setEvent({
       nombre,
       telefono,
@@ -79,6 +75,7 @@ function Citas({setTurnosOn}) {
       mes,
       año,
       hora,
+      oficina,
       _id
     })
   }
@@ -86,18 +83,15 @@ function Citas({setTurnosOn}) {
   const handleConfirmEdit = async (e) => {
     const fecha = `${event.año}-${event.mes+1}-${event.dia}`;
 
-
     const newCita = await updateCita(
       event._id,
       event.nombre,
       event.telefono,
       fecha,
       event.hora,
-      "MUNRO"
+      event.oficina
     )
     dispatch(editCita(newCita.data));
-
-    /// Esta funcion debe editar la cita en la DB 
     setEvent(false)
   };
 
@@ -113,7 +107,7 @@ function Citas({setTurnosOn}) {
                 <div className="flex w-full px-5 mt-3 justify-end">
                   <button className="w-10 h-10 bg-red-500  rounded-lg text-white font-bold aspect-square" onClick={()=> setTurnosOn(false)}>X</button>
                 </div>
-                {citas.isLoading ? (
+                {citas.isLoading || oficinas.isLoading ? (
                     <div className="flex items-center justify-between">
                       <RiLoader5Fill size={40} className="animate-spin text-blue-500" />
                     </div>
@@ -149,6 +143,16 @@ function Citas({setTurnosOn}) {
                       <input type="number" placeholder={event.hora} value={event.hora} onChange={(e) => setEvent({...event, hora:e.target.value})}/>
                     </div>
                     <div className="flex items-center justify-center">
+                      <h4>Oficina:</h4>
+                      <select name="oficinas" id="oficinas" defaultValue={event.oficina} onChange={(e) => {
+                        setEvent({...event, oficina:e.target.value})}}>
+                        {oficinas.calendario.map((oficina) => {
+                          return (
+                            <option value={oficina.nombre} key={oficina.nombre}>{oficina.nombre}</option>
+                          )
+                        })}
+                      </select>                    </div>
+                    <div className="flex items-center justify-center">
                       <button className="h-10 bg-red-500 p-2 rounded-lg text-white" onClick={()=> setEvent(false)}>Cancelar Edición</button>
                       <button className="h-10 bg-blue-500 p-2 rounded-lg text-white font-bold" onClick={(e)=> handleConfirmEdit(e)}>Confirmar Edición</button>
                     </div>
@@ -174,20 +178,20 @@ function Citas({setTurnosOn}) {
                       allDaySlot={false}
                       //height={"auto"}
                     />
+                    <div>
+                      <h6>Leyenda:</h6>
+                      <div className="flex m-3">
+                        {oficinas.calendario.map((oficina)=>{
+                          return (
+                            <div className="rounded-lg font-light bg-[$] mx-2" style={{ backgroundColor: `${oficina.color}`}} key={oficina.nombre}>
+                              <h5>{oficina.nombre}</h5>
+                            </div>                        
+                          )
+                        })}
+                      </div>
+                    </div>
                   </div>
-                ) }
-                <div>
-                  <h6>Leyenda:</h6>
-                  <div className="flex m-3">
-                    {oficinas.map((oficina)=>{
-                      return (
-                        <div className="rounded-lg font-light bg-[$] mx-2" style={{ backgroundColor: `${oficinasColor[oficina]}`}} key={oficina}>
-                          <h5>{oficina}</h5>
-                        </div>                        
-                      )
-                    })}
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
