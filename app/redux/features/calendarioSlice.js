@@ -26,6 +26,8 @@ export const calendarioSlice = createSlice({
         state.calendario = findCalendario;
       },
       deleteCalendario: (state, action) => {
+        console.log(action.payload);
+
         state.calendario = state.calendario.filter((e) => action.payload !== e._id);
         state.calendarioCopy = state.calendarioCopy.filter(
           (e) => action.payload !== e._id

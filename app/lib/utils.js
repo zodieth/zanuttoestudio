@@ -228,3 +228,38 @@ export const updateCita = async (
   });
   return response
 };
+
+export const createOffice = async (
+  nombre,
+  direccion,
+  color
+) => {
+  const newOffice = await api
+    .post("calendario", {
+      nombre,
+      direccion,
+      color
+    })
+    .then((office) => {
+      return office;
+    });
+  return newOffice;
+};
+export const updateOffice = async (
+  _id,
+  nombre,
+  direccion,
+  color
+) => {
+  const response = await api.put(`calendario/${_id}`, {
+    nombre,
+    direccion,
+    color
+  });
+  console.log(response);
+  return response
+};
+export const deleteOffice = async (id) => {
+  const response = await api.delete(`calendario/${id}`);
+  return response
+};
