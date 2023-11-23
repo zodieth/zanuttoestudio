@@ -19,7 +19,7 @@ export async function POST(request) {
 
     nuevaCita.save();
 
-    return NextResponse.json({ msg: "cita creada" });
+    return NextResponse.json({ msg: "cita creada" , nuevaCita});
 
   } catch (error) {
     return NextResponse.json({ msg: "Internal server error" }, { status: 500 });

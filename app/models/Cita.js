@@ -3,15 +3,17 @@ import mongoose from "mongoose";
 const citaSchema = new mongoose.Schema({
   nombre: String,
   telefono: String,
-  fecha: Date,
+  fecha: {
+    type: Date,
+    expires: 172800
+  },
   hora: {
     type: String,
-    enum: ["9am", "10am", "11am", "12pm", "14pm", "15pm"],
+    enum: ["9", "10", "11", "12", "14", "15"],
     required: [true, "El horario es requerido"]
   },
   calendario: {
     type: String,
-    enum: ["MUNRO", "SAN-ISIDRO", "GRAND-BOURG", "VIDEOLLAMADA"],
     required: [true, "El calendario es requerido"]
   },
 });
