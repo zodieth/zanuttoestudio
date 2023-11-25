@@ -1,18 +1,14 @@
 const mongoose = require("mongoose");
 
-const calendarioSchema = new mongoose.Schema({
-  nombre: {
-    type: String,
-    required: [true, "El nombre es requerido"]
+const citaSchema = new mongoose.Schema({
+  nombre: String,
+  telefono: String,
+  fecha: Date,
+  hora: String,
+  calendario: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Calendario",
   },
-  direccion: {
-    type: String,
-    //required: [true, "La direccion es requerida"]
-  },
-  color: {
-    type: String,
-    required: [true, "El color es requerido"]
-  }
 });
 
-export default mongoose.models.Calendario ||  mongoose.model("Calendario", calendarioSchema);
+module.exports = mongoose.model("Cita", citaSchema);
