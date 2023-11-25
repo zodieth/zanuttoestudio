@@ -77,7 +77,6 @@ function Table( {turnosOn, setTurnosOn, oficinasOn, setOficinasOn} ) {
 
   // ----------------------------
 
-  // const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [deleteSelected, setDeleteSelected] = useState(false);
   const [calculateUser, setCalculateUser] = useState(false);
