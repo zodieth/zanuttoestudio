@@ -153,20 +153,6 @@ export const updateUser = async (
   });
 };
 
-// export const addCita = async (cliente, fecha, hora, calendario) => {
-//   const horaTimeString = fecha.toTimeString().slice(0, 5);
-//   const horaInt = parseInt(horaTimeString.slice(0, 2));
-//   const horaArg = (horaInt - 3 + 24) % 24;
-
-//   if (horaArg >= 10 && horaArg < 16) {
-//     await api.post("/cita", {
-//       cliente,
-//       fecha,
-//       hora,
-//       calendario,
-//     });
-//   }
-// };
 export const createDetalle = async (
   año,
   cantidadMeses,
@@ -204,4 +190,76 @@ export const getDetalle = async () => {
 };
 export const deleteDetail = async (id) => {
   await api.delete(`detalle/${id}`);
+};
+
+export const getCitas = async () => {
+  await api.get(`citas`);
+};
+export const createCitas = async (     
+    nombre,
+    telefono,
+    fecha,
+    hora,
+    calendario
+  ) => {
+    const response = await api.post(`citas`, {
+      nombre,
+      telefono,
+      fecha,
+      hora,
+      calendario
+  });
+  return response;
+};
+export const updateCita = async (
+  _id,
+  nombre,
+  telefono,
+  fecha,
+  hora,
+  calendario
+) => {
+  const response = await api.put(`citas/${_id}`, {
+    nombre,
+    telefono,
+    fecha,
+    hora,
+    calendario
+  });
+  return response
+};
+
+export const createOffice = async (
+  nombre,
+  direccion,
+  color
+) => {
+  const newOffice = await api
+    .post("calendario", {
+      nombre,
+      direccion,
+      color
+    })
+    .then((office) => {
+      return office;
+    });
+  return newOffice;
+};
+export const updateOffice = async (
+  _id,
+  nombre,
+  direccion,
+  color
+) => {
+  const response = await api.put(`calendario/${_id}`, {
+    nombre,
+    direccion,
+    color
+  });
+  console.log(response);
+  return response
+};
+export const deleteOffice = async (id) => {
+  const response = await api.delete(`calendario/${id}`);
+  return response
 };
