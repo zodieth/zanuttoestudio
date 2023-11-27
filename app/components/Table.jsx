@@ -33,7 +33,7 @@ function Table( {turnosOn, setTurnosOn, oficinasOn, setOficinasOn} ) {
     api
       .get("people")
       .then((datos) =>
-        datos.data.sort((a, b) => {
+        datos?.data.sort((a, b) => {
           const idA = a.idInc || a._id;
           const idB = b.idInc || b._id;
 
@@ -66,7 +66,7 @@ function Table( {turnosOn, setTurnosOn, oficinasOn, setOficinasOn} ) {
     setActualPage(1);
   }, [people.people]);
 
-  peoplePagination = people.people.slice(
+  peoplePagination = people?.people.slice(
     (actualPage - 1) * total_Page,
     actualPage * total_Page - 1
   );
