@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "../../lib/dbConnect";
 import Cita from "../../models/Cita";
+const  {AUTH_TOKEN}  = process.env
 
 export async function POST(request) {
   const { nombre, telefono, fecha, hora, calendario } = await request.json();
@@ -31,7 +32,7 @@ export async function GET(request) {
   const cita = await Cita.find({});
   
   try {
-    const token = request.cookies.get("next-auth.session-token")
+    const token = request.cookies.get(AUTH_TOKEN)
     if(token){ 
       return NextResponse.json(cita);
     }else{
