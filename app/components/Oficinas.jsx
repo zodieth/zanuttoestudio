@@ -129,7 +129,7 @@ function Oficinas({ setOficinasOn }) {
                     <div className="grid mt-12 items">
                         <h2>Oficinas Actuales:</h2>
                         <div className="flex">
-                            {!oficinas.isLoading ? oficinas.calendario.map((oficina)=>{
+                            {!oficinas.isLoading ? oficinas.calendario.length ? oficinas.calendario.map((oficina)=>{
                                 return (
                                     <div className="grid items-center justify-center m-5 p-2 text-center border-2 borde-indigo-400 rounded-lg hover:cursor-pointer"
                                         key={oficina._id}
@@ -144,6 +144,10 @@ function Oficinas({ setOficinasOn }) {
                                     </div>
                                 )
                             }) : (
+                                <div>
+                                    No hay oficinas cargadas
+                                </div>
+                            ) : (
                                 <div>
                                     Cargando...
                                 </div>

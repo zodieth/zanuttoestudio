@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import FullCalendar from '@fullcalendar/react';
 import esLocale from '@fullcalendar/core/locales/es';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import FilterCitas from "./FilterCitas"
 import { useDispatch, useSelector } from "react-redux";
 import { addCita, editCita } from "../redux/features/citaSlice";
 import { addCalendario } from "../redux/features/calendarioSlice";
@@ -128,7 +129,6 @@ function Citas({setTurnosOn}) {
                       {/* Select con los meses, valor por index */}
                       <select name="meses" id="meses" defaultValue={event.mes} onChange={(e) => {
                         const mes = Number(e.target.value);
-                        console.log("MES EVENT",mes);
                         setEvent({...event, mes:mes})}}>
                         {mesesAño.map((mes, i) => {
                           return (
@@ -159,6 +159,7 @@ function Citas({setTurnosOn}) {
                   </div>
                 ) : (
                   <div className="w-5/6 py-8 overflow-y-auto">
+                    <FilterCitas useDispatch={useDispatch} />
                     <FullCalendar
                       locale={esLocale}
                       plugins={[timeGridPlugin]}
