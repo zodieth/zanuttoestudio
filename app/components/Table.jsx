@@ -32,7 +32,7 @@ function Table() {
     api
       .get("people")
       .then((datos) =>
-        datos.data.sort((a, b) => {
+        datos?.data.sort((a, b) => {
           const idA = a.idInc || a._id;
           const idB = b.idInc || b._id;
 
@@ -65,7 +65,7 @@ function Table() {
     setActualPage(1);
   }, [people.people]);
 
-  peoplePagination = people.people.slice(
+  peoplePagination = people?.people.slice(
     (actualPage - 1) * total_Page,
     actualPage * total_Page - 1
   );
@@ -76,7 +76,6 @@ function Table() {
 
   // ----------------------------
 
-  // const [deleteUser, setDeleteUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [deleteSelected, setDeleteSelected] = useState(false);
   const [calculateUser, setCalculateUser] = useState(false);
