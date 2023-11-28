@@ -21,7 +21,7 @@ const FilterStatusSelect = ({ useDispatch }) => {
                 <option value="todos">Todos</option>
                 {oficinas.calendario.map((oficina) => {
                     return (
-                        <option value={oficina.nombre}>{oficina.nombre}</option>
+                        <option key={oficina._id} value={oficina.nombre}>{oficina.nombre}</option>
                     )
                 })}
             </select>
