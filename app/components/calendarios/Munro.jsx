@@ -35,13 +35,7 @@ function Munro({ setCalendarOn, setAnimationErrors, setOficina, setErrors, error
 
 
   return (
-    <div className="flex justify-center items-center gap-10 w-full">
-      <button
-        onClick={() => setCalendarOn(calendarOn ? false : true)}
-        className="flex flex-row items-center justify-center rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white cursor-pointer"
-      >
-        Reservá tu turno
-      </button>
+    <div className="flex justify-center items-center gap-10 w-full mb-9">
       <div className="flex items-center justify-center gap-2  text-gray-700">
         {
           oficinas.isLoading ? (

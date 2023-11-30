@@ -6,9 +6,9 @@ const citaSchema = new mongoose.Schema({
   fecha: Date,
   hora: String,
   calendario: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Calendario",
+    type: String,
+    required: [true, "El calendario es requerido"]
   },
 });
 
-export default mongoose.model.Cita || mongoose.model("Cita", citaSchema);
+export default mongoose.models.Cita || mongoose.model("Cita", citaSchema);

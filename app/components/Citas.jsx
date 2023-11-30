@@ -37,6 +37,7 @@ function Citas({setTurnosOn}) {
     )
   }
   const events = citas.cita?.map((cita)=> {
+    console.log(cita);
     const date = new Date(cita.fecha);
     date.setDate(date.getDate()+1);
     const horario = parseInt(cita.hora);
