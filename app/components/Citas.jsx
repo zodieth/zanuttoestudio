@@ -37,21 +37,16 @@ function Citas({setTurnosOn}) {
     )
   }
   const events = citas.cita?.map((cita)=> {
-    console.log(cita);
     const date = new Date(cita.fecha);
     date.setDate(date.getDate()+1);
     const horario = parseInt(cita.hora);
-    let color;
-    oficinas.calendario?.map((oficina) => {
-      if(oficina.nombre === cita.calendario) {
-        color = oficina.color
-      }
-    })
-
+    const office = oficinas.calendario?.filter((oficina) => {
+      return oficina._id === cita.calendario;
+    })[0];
     return { 
       title: cita.nombre, 
       start: date.setHours(horario,0,0,0),
-      color: color,
+      color: office?.color,
       textColor: 'black',
       extendedProps: {
         telefono: cita.telefono,
@@ -149,7 +144,7 @@ function Citas({setTurnosOn}) {
                         setEvent({...event, oficina:e.target.value})}}>
                         {oficinas.calendario.map((oficina) => {
                           return (
-                            <option value={oficina.nombre} key={oficina.nombre}>{oficina.nombre}</option>
+                            <option value={oficina._id} key={oficina._id}>{oficina.nombre}</option>
                           )
                         })}
                       </select>                    </div>
