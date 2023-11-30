@@ -51,7 +51,7 @@ function Munro({ setCalendarOn, setAnimationErrors, setOficina, setErrors, error
               <option value="none">Seleccione una oficina</option>
               {
                 oficinas.calendario.map((oficina, key) => {
-                  return (<option value={oficina.nombre} key={key}>
+                  return (<option value={oficina._id} key={key}>
                   {oficina.nombre} ({oficina.direccion})
                 </option>)
                 })
