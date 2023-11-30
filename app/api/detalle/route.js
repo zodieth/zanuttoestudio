@@ -9,6 +9,7 @@ export async function GET() {
 
     return NextResponse.json(detalle);
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ msg: error }, { status: 404 });
   }
 }

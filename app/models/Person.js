@@ -17,7 +17,7 @@ const PersonSchema = new mongoose.Schema(
     moratoria: { type: Number, required: true, default: 0 },
     status: {
       type: String,
-      enum: ["consulta", "carpeta", "derivado", "escrito"],
+      enum: ["consulta", "carpeta", "derivado"],
       default: "consulta",
     },
     extranjero: { type: Boolean, default: false },

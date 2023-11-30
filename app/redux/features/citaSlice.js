@@ -34,8 +34,11 @@ export const citaSlice = createSlice({
       filterCita: (state, action) => {
         const citas = [...state.citaCopy];
   
-        state.cita = citas.filter((e) =>
+        state.cita = citas.filter((e) =>{
+          console.log(e.calendario);
           action.payload === "todos" ? e : e.calendario.includes(action.payload)
+
+        }
         );
       },
     },
