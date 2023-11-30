@@ -13,8 +13,8 @@ const citaSchema = new mongoose.Schema({
     required: [true, "El horario es requerido"]
   },
   calendario: {
-    type: String,
-    required: [true, "El calendario es requerido"]
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Calendario",
   },
 });
 

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 function ConfirmacionTurno({responseData}) {
 
-  const nuevaCita = responseData? responseData.nuevaCita : undefined;
+  const nuevaCita = responseData.nuevaCita? responseData.nuevaCita : undefined;
   const fecha = nuevaCita?.fecha.slice(0,10).split("-").reverse().join("/");
 
   return (

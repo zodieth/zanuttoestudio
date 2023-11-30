@@ -88,10 +88,11 @@ function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefon
         errors.nombre === "" &&
         errors.telefono === "" ) 
         {
-            const newCita = createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina)
+            createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina)
                 .then((data) => {
                     setConfirmTurno(true)
                     setResponseData(data.data)
+    console.log(data);
                     return data})
                 .catch((error) => {
                     setResponseData(error)

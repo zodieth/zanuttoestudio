@@ -17,9 +17,8 @@ export async function POST(request) {
       calendario,
     });
 
-
-    nuevaCita.save();
-
+    await nuevaCita.save();
+    
     return NextResponse.json({ msg: "cita creada" , nuevaCita});
 
   } catch (error) {
