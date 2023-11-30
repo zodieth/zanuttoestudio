@@ -7,7 +7,7 @@ const FilterStatusSelect = ({ useDispatch }) => {
     const dispatch = useDispatch();
     return (
         <div className="relative ">
-        <label className="sr-only">Search</label>
+        <label className="sr-only">Filter</label>
         {oficinas.isLoading? (
             <div>Cargando oficinas</div>
         ) : (
@@ -19,9 +19,9 @@ const FilterStatusSelect = ({ useDispatch }) => {
             >
                 <option disabled>Oficinas</option>
                 <option value="todos">Todos</option>
-                {oficinas.calendario.map((oficina) => {
+                {oficinas.calendario?.map((oficina) => {
                     return (
-                        <option key={oficina._id} value={oficina.nombre}>{oficina.nombre}</option>
+                        <option key={oficina._id} value={oficina._id}>{oficina.nombre}</option>
                     )
                 })}
             </select>
