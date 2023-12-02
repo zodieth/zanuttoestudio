@@ -20,6 +20,8 @@ function Oficinas({ setOficinasOn }) {
     const [horarioStartSabado, setHorarioStartSabado] = useState(8);
     const [horarioEndSabado, setHorarioEndSabado] = useState(15);
     const [errorHorario, setErrorHorario] = useState("");
+    const horarioSemana = [];
+    const horarioSabado = [];
 
     useEffect(() => {
       api.get("calendario").then((data)=>{
@@ -44,12 +46,14 @@ function Oficinas({ setOficinasOn }) {
         setEditOffice(oficina)
     }
     const handleEditOffice = async() => {
-        
+
         const editedOffice = await updateOffice(
             editOffice._id,
             editOffice.nombre,
             editOffice.direccion,
-            editOffice.color
+            editOffice.color,
+            editOffice.horarioSemana,
+            editOffice.horarioSabado
         )
         dispatch(editCalendario(editedOffice.data))
         setEditOffice(false)
@@ -63,7 +67,7 @@ function Oficinas({ setOficinasOn }) {
     
     const createNewOffice = async() => {
         if(newOffice.nombre && newOffice.direccion) {
-            const nuevo = await createOffice(newOffice.nombre, newOffice.direccion, newOffice.color)
+            const nuevo = await createOffice(newOffice.nombre, newOffice.direccion, newOffice.color, newOffice.horarioSemana, newOffice.horarioSabado)
                 .then((data) => data.data)
             dispatch(addCalendario([...oficinas.calendario, nuevo.calendario]));
         };
@@ -71,11 +75,9 @@ function Oficinas({ setOficinasOn }) {
     }
     const handleChangeHours = (e) => {
         const value = Number(e.target.value)
-        console.log(e.target.value);
         switch (e.target.id) {
             case "horarioStartSemana":
                 if(e.target.value > horarioEndSemana){
-                    console.log(horarioEndSemana);
                     setErrorHorario("El horario de apertura debe ser menor al de cierre");
                     setTimeout(() => {
                         setErrorHorario("")
@@ -87,7 +89,6 @@ function Oficinas({ setOficinasOn }) {
                 break;
             case "horarioStartSabado":
                 if(e.target.value > horarioEndSabado){
-                    console.log(horarioEndSabado);
                     setErrorHorario("El horario de apertura debe ser menor al de cierre");
                     setTimeout(() => {
                         setErrorHorario("")
@@ -99,7 +100,6 @@ function Oficinas({ setOficinasOn }) {
                 break;
             case "horarioEndSemana":
                 if(e.target.value < horarioStartSemana){
-                    console.log(horarioStartSemana);
                     setErrorHorario("El horario de cierre debe ser mayor al de apertura");
                     setTimeout(() => {
                         setErrorHorario("")
@@ -112,7 +112,6 @@ function Oficinas({ setOficinasOn }) {
                 break;
             case "horarioEndSabado":
                 if(e.target.value < horarioStartSabado){
-                    console.log(horarioStartSabado);
                     setErrorHorario("El horario de cierre debe ser mayor al de apertura");
                     setTimeout(() => {
                         setErrorHorario("")
@@ -125,6 +124,15 @@ function Oficinas({ setOficinasOn }) {
             default:
                 setErrorHorario("Ha ocurrido un error, por favor actualice la página");
         }
+        for (let i = horarioStartSemana; i < horarioEndSemana; i++) {
+            horarioSemana.push(i+"")
+        }
+        for (let i = horarioStartSabado; i < horarioEndSabado; i++) {
+            horarioSabado.push(i+"")
+        }
+        newOffice?
+        setNewOffice({...newOffice, horarioSemana, horarioSabado}) :
+        setEditOffice({...editOffice, horarioSemana, horarioSabado})
     };
     
   return (
@@ -295,6 +303,61 @@ function Oficinas({ setOficinasOn }) {
                             }}
                             color={sketchPickerColor}
                             />
+                            </div>
+                            <div className="flex flex-col my-1.5 items-center justify-center">
+                                <h6>Seleccione el horario de atencion de Lunes a Viernes:</h6>
+                                <div  className="flex items-center justify-center space-x-3">
+                                    <h6>Apertura:</h6>
+                                    <select
+                                    className="py-2.5 px-5 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" 
+                                    name="horarioStart"
+                                    id="horarioStartSemana"
+                                    value={horarioStartSemana}
+                                    onChange={(e) => handleChangeHours(e)}>
+                                        {horarios.map((hora) => {
+                                            return <option value={hora} key={hora+"StartSemana"}>{hora}</option>
+                                        })}
+                                    </select>
+                                    <h6>Cierre:</h6>
+                                    <select
+                                    className="py-2.5 px-5 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" 
+                                    name="horarioEnd"
+                                    id="horarioEndSemana"
+                                    value={horarioEndSemana}
+                                    onChange={(e) => handleChangeHours(e)}>
+                                        {horarios.map((hora) => {
+                                            return <option value={hora} key={hora+"EndSemana"}>{hora}</option>
+                                        })}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="flex flex-col my-3 items-center justify-center">
+                                <h6>Seleccione el horario de atencion los Sábados:</h6>
+                                <div  className="flex items-center justify-center space-x-3">
+                                    <h6>Apertura:</h6>
+                                    <select
+                                    className="py-2.5 px-5 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" 
+                                    name="horarioStart"
+                                    id="horarioStartSabado"
+                                    value={horarioStartSabado}
+                                    onChange={(e) => handleChangeHours(e)}>
+                                        {horarios.map((hora) => {
+                                            return <option value={hora} key={hora+"StartSabado"}>{hora}</option>
+                                        })}
+                                    </select>
+                                    <h6>Cierre:</h6>
+                                    <select
+                                    className="py-2.5 px-5 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" 
+                                    name="horarioEnd"
+                                    id="horarioEndSabado"
+                                    value={horarioEndSabado}
+                                    onChange={(e) => handleChangeHours(e)}>
+                                        {horarios.map((hora) => {
+                                            return <option value={hora} key={hora+"EndSabado"}>{hora}</option>
+                                        })}
+                                    </select>
+                                </div>
+                                {errorHorario && <h6 className="flex justify-center items-center space-x-4 w-full text-red-500">{errorHorario}</h6>}
                             </div>
                             <div className="flex justify-center space-x-6">
                                 <button className="bg-red-500 p-2 mt-12 rounded-lg text-white font-bold" onClick={()=>setNewOffice(false)}>Cancelar</button>
