@@ -7,6 +7,7 @@ import { api } from "../../page";
 function Munro({ setCalendarOn, setAnimationErrors, setOficina, setErrors, errors}) {
 
   const handleSelectOffice = (e) => {
+    const calendarioSelected = oficinas.calendario.filter((oficina) => oficina._id === e.target.value)[0]
     if (errors.nombre !== "" || errors.telefono !== "") {
       setAnimationErrors(true)
       setCalendarOn(false)
@@ -18,7 +19,7 @@ function Munro({ setCalendarOn, setAnimationErrors, setOficina, setErrors, error
         setErrors({...errors, oficina: "Debe seleccionar una oficina"})
         setCalendarOn(false)
       }else{
-        setOficina(e.target.value);
+        setOficina(calendarioSelected);
         setCalendarOn(true);
         setErrors({...errors, oficina: ""})
       }

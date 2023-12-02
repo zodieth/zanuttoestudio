@@ -9,7 +9,10 @@ import { api } from "../page";
 function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefono, setResponseData }) {
     const diasSemana = ["dom","lun","mar","mie","jue","vie", "sab"];
     const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    const horarios = ["9", "10", "11", "12", "14", "15"];
+    const horarios = {
+        semanal: oficina.horarioSemana,
+        sabado: oficina.horarioSabado
+    };
     const dispatch = useDispatch();
     const [selectedYear,setSelectedYear] = useState(actual.getFullYear());
     const [selectedMonth,setSelectedMonth] = useState(actual.getMonth());
@@ -88,11 +91,10 @@ function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefon
         errors.nombre === "" &&
         errors.telefono === "" ) 
         {
-            createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina)
+            createCitas(nombre, telefono, `${diaCita.año}-${diaCita.mes+1}-${diaCita.dia}`, horario, oficina._id)
                 .then((data) => {
                     setConfirmTurno(true)
                     setResponseData(data.data)
-    console.log(data);
                     return data})
                 .catch((error) => {
                     setResponseData(error)
@@ -117,7 +119,7 @@ function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefon
         const dia = `${diaObj.año}-${diaObj.mes+1}-${diaObj.dia.toString().length === 2 ? diaObj.dia : "0"+diaObj.dia }`
 
         const arrAvailable = citas.map((cita)=>{
-            if(cita.fecha?.slice(0,10) === dia && cita.hora === hora && cita.calendario === oficina) {
+            if(cita.fecha?.slice(0,10) === dia && cita.hora === hora && cita.calendario === oficina._id) {
                 return false
             }
             return true
@@ -193,19 +195,35 @@ function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefon
                             <h3>Horario:</h3>
                         </div>    
                         <div className="flex flex-col justify-center items-center gap-7">
-                            {horarios.map((hora, i) => {
-                                if(checkAvailability(diaCita, hora)){
-                                    return (
-                                        <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full bg-red-500 text-white" key={hora} value={hora}>
-                                            <span value={hora}>{hora}:00</span>
-                                        </div>)
-                                }
-                                return (
-                                    <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer" key={hora} value={hora} onClick={(e)=>handleSelectHora(e)}>
-                                        <span value={hora}>{hora}:00</span>
-                                    </div>
-                                )
-                            })}
+                            { new Date(diaCita.año, diaCita.mes, diaCita.dia).getDay() === 6 ?
+                                    horarios.sabado.map((hora, i) => {
+                                        if(checkAvailability(diaCita, hora)){
+                                            return (
+                                                <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full bg-red-500 text-white" key={hora} value={hora}>
+                                                    <span value={hora}>{hora}:00</span>
+                                                </div>)
+                                        }
+                                        return (
+                                            <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer" key={hora} value={hora} onClick={(e)=>handleSelectHora(e)}>
+                                                <span value={hora}>{hora}:00</span>
+                                            </div>
+                                        )
+                                    }) :
+                                    horarios.semanal.map((hora, i) => {
+                                        if(checkAvailability(diaCita, hora)){
+                                            return (
+                                                <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full bg-red-500 text-white" key={hora} value={hora}>
+                                                    <span value={hora}>{hora}:00</span>
+                                                </div>)
+                                        }
+                                        return (
+                                            <div className="flex h-9 justify-center items-center border rounded-2xl shadow w-full hover:border-green-500 cursor-pointer" key={hora} value={hora} onClick={(e)=>handleSelectHora(e)}>
+                                                <span value={hora}>{hora}:00</span>
+                                            </div>
+                                        )
+                                    })
+
+                            }
                         </div>
                         <div className="flex justify-between items-center mt-5">
                             <button
