@@ -398,6 +398,8 @@ function Table( {turnosOn, setTurnosOn, oficinasOn, setOficinasOn} ) {
                                 ? "whitespace-nowrap rounded-full bg-green-100 px-2.5 py-0.5 text-sm text-green-700"
                                 : e.status === "carpeta"
                                 ? "whitespace-nowrap rounded-full bg-blue-100 px-2.5 py-0.5 text-sm text-blue-700"
+                                : e.status === "escrito"
+                                ? "whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700"
                                 : "whitespace-nowrap rounded-full bg-red-100 px-2.5 py-0.5 text-sm text-red-700 "
                             }
                           >

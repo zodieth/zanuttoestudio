@@ -78,7 +78,7 @@ function Citas({setTurnosOn}) {
   }
 
   const handleConfirmEdit = async (e) => {
-    const fecha = `${event.año}-${event.mes+1}-${event.dia}`;
+    const fecha = `${event.año}-${event.mes+1}-${event.dia-1}`;
 
     const newCita = await updateCita(
       event._id,

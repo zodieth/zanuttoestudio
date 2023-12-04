@@ -581,7 +581,7 @@ function EditUser({ user, setEditUser }) {
                     Estado
                   </label>
                   <div className="flex items-center justify-center ">
-                    {["CONSULTA", "CARPETA", "DERIVADO"].map((e, index) => (
+                    {["CONSULTA", "CARPETA", "DERIVADO", "ESCRITO"].map((e, index) => (
                       <button
                         key={index}
                         className={
@@ -589,8 +589,9 @@ function EditUser({ user, setEditUser }) {
                             ? "mx-1 mt-1  inline-flex w-full justify-center rounded-md bg-blue-600 px-1 py-3.5 text-xs font-semibold text-white shadow-sm"
                             : (e === "CARPETA") & (usuario.status === "carpeta")
                             ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-1 py-3.5 text-xs font-semibold text-white shadow-sm"
-                            : (e === "DERIVADO") &
-                              (usuario.status === "derivado")
+                            : (e === "DERIVADO") & (usuario.status === "derivado")
+                            ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-1 py-3.5 text-xs font-semibold text-white shadow-sm"
+                            : (e === "ESCRITO") & (usuario.status === "escrito")
                             ? "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-blue-600 px-1 py-3.5 text-xs font-semibold text-white shadow-sm"
                             : "mx-1 mt-1 inline-flex w-full justify-center rounded-md bg-gray-300 px-1 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 "
                         }
@@ -599,6 +600,8 @@ function EditUser({ user, setEditUser }) {
                             ? setUsuario({ ...usuario, status: "consulta" })
                             : e === "CARPETA"
                             ? setUsuario({ ...usuario, status: "carpeta" })
+                            : e === "ESCRITO"
+                            ? setUsuario({ ...usuario, status: "escrito"})
                             : setUsuario({ ...usuario, status: "derivado" })
                         }
                       >
