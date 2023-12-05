@@ -46,16 +46,38 @@ function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefon
     const primerDiaMes = new Date(selectedYear,selectedMonth,1).getDay();
     const ultimaCelda = primerDiaMes+diasDelMes
     const arrDias = [];
+    const feriados = citas.map((cita) => {
+        if(cita.hora === "allDay") {
+            return cita
+        }
+    }).filter((cita)=> cita !== undefined)
+    const feriadosOficina = feriados.map((feriado) => {
+        if (feriado.calendario === oficina._id) {
+            return feriado.fecha
+        }
+    }).filter((fecha)=> fecha !== undefined)
     let dia = 0
     for (let i = 0; i <= 41; i++){
         const mañana = new Date(actual.getTime() + 60 * (24 * 60 * 60 * 1000)) // 60 Dias desde hoy
-        
+        let diaStr = dia +"";
+        if(diaStr.length === 1) {
+            diaStr = `0${diaStr}`
+        }
+
+        const isFeriado = feriadosOficina.map((fecha) => {
+            const holiday = fecha.slice(0,10);
+            const day = `${selectedYear}-${selectedMonth+1}-${diaStr}`;
+            if(day === holiday) {
+                return true
+            }
+        }).filter((holiday) => holiday === true)[0];
+
         if(i===primerDiaMes){
             dia=1
         }
         if(i<primerDiaMes || i>= ultimaCelda){
             arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center ">&nbsp;</td>);
-        }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0 || new Date(selectedYear, selectedMonth, dia) < actual || new Date(selectedYear, selectedMonth, dia) > mañana){
+        }else if(new Date(selectedYear, selectedMonth, dia).getDay() === 0 || new Date(selectedYear, selectedMonth, dia) < actual || new Date(selectedYear, selectedMonth, dia) > mañana || isFeriado){
             arrDias.push(<td key={i} className="px-3 my-1 w-14 flex justify-center items-center border border-red-500 text-red-500">{dia}</td>);
             dia++;
         }else{

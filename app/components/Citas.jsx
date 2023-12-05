@@ -6,15 +6,24 @@ import FilterCitas from "./FilterCitas"
 import { useDispatch, useSelector } from "react-redux";
 import { addCita, editCita } from "../redux/features/citaSlice";
 import { addCalendario } from "../redux/features/calendarioSlice";
-import { updateCita } from "../lib/utils";
+import { updateCita, createCitas } from "../lib/utils";
 import { RiLoader5Fill } from "react-icons/ri";
 import { api } from "../page";
+const actual = new Date();
 
 function Citas({setTurnosOn}) {
   const mesesAño = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   const dispatch = useDispatch();
   const citas = useSelector((state) => state.citas);
   const oficinas = useSelector((state) => state.calendario);
+  
+  const [newHoliday, setNewHoliday] = useState(false);
+  const [newHolidayDate, setNewHolidayDate] = useState({
+    dia: actual.getDate(),
+    mes: actual.getMonth(),
+    año: actual.getFullYear(),
+  });
+  const [motivo, setMotivo] = useState("");
 
   const [event, setEvent] = useState(false);
 
@@ -24,6 +33,7 @@ function Citas({setTurnosOn}) {
       })
       api.get("calendario").then((data) =>{
           dispatch(addCalendario(data.data))
+          setCheckedState(new Array(data.data?.length).fill(false))
       })
   }, [dispatch]);
 
@@ -92,6 +102,45 @@ function Citas({setTurnosOn}) {
     setEvent(false)
   };
 
+  const [checkedState, setCheckedState] = useState(
+    new Array(oficinas.calendario?.length).fill(false) 
+  );
+  const [allChecked, setAllChecked] = useState(false)
+  const handleCheckedOffice = (e, position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+    const filterChecked = updatedCheckedState.filter((bool)=> bool === true);
+    if(filterChecked.length === checkedState.length) {
+      setAllChecked(true);
+    }else{
+      setAllChecked(false);
+    };
+    setCheckedState(updatedCheckedState);
+    if(e.target.value === "todos"){
+      const allCheckedState = checkedState.map(() => { return true});
+      const notChecked = checkedState.map(() => { return false});
+      allChecked ? (
+        setCheckedState(notChecked),
+        setAllChecked(false)
+        ) : (
+          setCheckedState(allCheckedState),
+          setAllChecked(true)
+        );
+    };
+  };
+  const handleCreateHoliday = async (e) => {
+    const fecha = `${newHolidayDate.año}-${newHolidayDate.mes+1}-${newHolidayDate.dia}`;
+    const oficinasChecked = oficinas.calendario.filter((oficina, index) => checkedState[index])
+    //const nuevoFeriado = await createCitas(motivo, "", fecha, "allDay");
+    for (let index = 0; index < oficinasChecked.length; index++) {
+      const calendario = oficinasChecked[index]._id
+      const element = await createCitas(motivo, "", fecha, "allDay", calendario);
+      console.log(element);
+    }
+    //console.log("fecha", fecha);
+  };
+
   return (
     <div
       className="relative z-10 "
@@ -147,15 +196,66 @@ function Citas({setTurnosOn}) {
                             <option value={oficina._id} key={oficina._id}>{oficina.nombre}</option>
                           )
                         })}
-                      </select>                    </div>
+                      </select>
+                    </div>
                     <div className="flex items-center justify-center">
                       <button className="h-10 bg-red-500 p-2 rounded-lg text-white" onClick={()=> setEvent(false)}>Cancelar Edición</button>
                       <button className="h-10 bg-blue-500 p-2 rounded-lg text-white font-bold" onClick={(e)=> handleConfirmEdit(e)}>Confirmar Edición</button>
                     </div>
                   </div>
+                ) : newHoliday ? (
+                  <div className="space-y-7">
+                    <div>Feriados existentes
+                      
+                    </div>
+                    <h4>Seleccione el dia que desea inhabilitar:</h4>
+                    <input type="number" placeholder={newHolidayDate.dia} value={newHolidayDate.dia} onChange={(e) => setNewHolidayDate({...newHolidayDate, dia:e.target.value})}/>
+                      {/* Select con los meses, valor por index */}
+                      <select name="meses" id="meses" defaultValue={newHolidayDate.mes} onChange={(e) => {
+                        const mes = Number(e.target.value);
+                        setNewHolidayDate({...newHolidayDate, mes:mes})}}>
+                        {mesesAño.map((mes, i) => {
+                          return (
+                            <option value={i} key={mes}>{mes}</option>
+                          )
+                        })}
+                      </select>
+                      <input type="number" placeholder={newHolidayDate.año} value={newHolidayDate.año} onChange={(e) => setNewHolidayDate({...newHolidayDate, año:e.target.value})}/>
+                      <h4>Motivo:</h4>
+                      <input type="text" placeholder={motivo} value={motivo} onChange={(e) => setMotivo(e.target.value)}/>
+                      <h4>Seleccione la/s oficina/s que no atenderán:</h4>
+                      <ul className="flex space-x-5">
+                        <li>
+                            <input 
+                              type="checkbox"
+                              id="todos"
+                              value="todos"
+                              checked={allChecked}
+                              onChange={(e) => handleCheckedOffice(e)}/>
+                            <label htmlFor="todos">Todas</label>
+                          </li>
+                        {oficinas.calendario.map((oficina, index) => {
+                          return (
+                            <li key={oficina._id}>
+                              <input 
+                                type="checkbox"
+                                id={oficina._id}
+                                value={oficina._id}
+                                checked={checkedState[index]}
+                                onChange={(e) => handleCheckedOffice(e, index)}/>
+                              <label htmlFor={oficina._id}>{oficina.nombre}</label>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                      <button className="h-10 bg-blue-500 p-2 rounded-lg text-white font-bold" onClick={(e)=> handleCreateHoliday(e)}>Crear nuevo Feriado</button>                   
+                  </div>
                 ) : (
                   <div className="w-5/6 py-8 overflow-y-auto">
-                    <FilterCitas useDispatch={useDispatch} />
+                    <div className="flex space-x-2">
+                      <FilterCitas useDispatch={useDispatch} />
+                      <button className="h-10 bg-blue-500 p-2 rounded-lg text-white font-bold" onClick={()=> setNewHoliday(true)}>Crear feriado</button>
+                    </div>
                     <FullCalendar
                       locale={esLocale}
                       plugins={[timeGridPlugin]}
