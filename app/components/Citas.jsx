@@ -4,9 +4,9 @@ import esLocale from '@fullcalendar/core/locales/es';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import FilterCitas from "./FilterCitas"
 import { useDispatch, useSelector } from "react-redux";
-import { addCita, editCita } from "../redux/features/citaSlice";
+import { addCita, editCita, deleteCita } from "../redux/features/citaSlice";
 import { addCalendario } from "../redux/features/calendarioSlice";
-import { updateCita, createCitas } from "../lib/utils";
+import { updateCita, createCitas, deleteCitas } from "../lib/utils";
 import { RiLoader5Fill } from "react-icons/ri";
 import { api } from "../page";
 const actual = new Date();
@@ -86,7 +86,32 @@ function Citas({setTurnosOn}) {
       _id
     })
   }
+  const feriados = citas.cita.filter((cita) => cita.hora === "allDay");
 
+  const arrFeriadosDuplicados = feriados.map((feriado) => {
+    const sameName = feriados.filter((day) => day.nombre === feriado.nombre);
+    const oficinasAfectadas = [];
+    sameName.map((office)=>{
+      const officeName = oficinas.calendario.filter((oficina) => oficina._id === office.calendario)[0];
+      if (officeName) {
+        oficinasAfectadas.push(officeName);
+      }
+    })
+    //****** Extraje Las oficinas Afectadas
+    return {
+      motivo: feriado.nombre,
+      fecha: feriado.fecha,
+      oficinas: oficinasAfectadas
+    }
+  })
+  const removeDuplicates = (citas) => {
+    const jsonObject = citas.map(JSON.stringify);
+    const uniqueSet = new Set(jsonObject);
+    const uniqueArray = Array.from(uniqueSet).map(JSON.parse);
+ 
+    return uniqueArray;
+  }
+  const feriadosFiltrados = removeDuplicates(arrFeriadosDuplicados).sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
   const handleConfirmEdit = async (e) => {
     const fecha = `${event.año}-${event.mes+1}-${event.dia-1}`;
 
@@ -132,14 +157,27 @@ function Citas({setTurnosOn}) {
   const handleCreateHoliday = async (e) => {
     const fecha = `${newHolidayDate.año}-${newHolidayDate.mes+1}-${newHolidayDate.dia}`;
     const oficinasChecked = oficinas.calendario.filter((oficina, index) => checkedState[index])
-    //const nuevoFeriado = await createCitas(motivo, "", fecha, "allDay");
     for (let index = 0; index < oficinasChecked.length; index++) {
       const calendario = oficinasChecked[index]._id
       const element = await createCitas(motivo, "", fecha, "allDay", calendario);
       console.log(element);
+      dispatch(addCita([...citas.cita, element.data.nuevaCita]))
     }
-    //console.log("fecha", fecha);
   };
+  const [deleteFeriados, setDeleteFeriados] = useState(false);
+  const handleDeleteFeriado = async (e) => {
+    const feriados = deleteFeriados
+    for (let i = 0; i < feriados.length; i++) {
+      // const deletedOffice = await deleteOffice(editOffice._id).then(data => data.data)
+      // dispatch(deleteCalendario(deletedOffice.id))
+      // setDeleteOfficeState(false)
+      // setEditOffice(false)
+      const feriadoId = feriados[i]._id;
+      const deletedCita = await deleteCitas(feriadoId).then(data => data.data)
+      dispatch(deleteCita(deletedCita._id))
+    }
+    setDeleteFeriados(false)
+  }
 
   return (
     <div
@@ -199,15 +237,44 @@ function Citas({setTurnosOn}) {
                       </select>
                     </div>
                     <div className="flex items-center justify-center">
-                      <button className="h-10 bg-red-500 p-2 rounded-lg text-white" onClick={()=> setEvent(false)}>Cancelar Edición</button>
-                      <button className="h-10 bg-blue-500 p-2 rounded-lg text-white font-bold" onClick={(e)=> handleConfirmEdit(e)}>Confirmar Edición</button>
+                      <button className="bg-zinc-400 p-2 mt-8 rounded-lg text-white font-bold" onClick={()=> setDeleteFeriados(false)}>Cancelar Edición</button>
+                      <button className="h-10 bg-red-500 p-2 rounded-lg text-white font-bold" onClick={()=> handleDeleteFeriado(deleteFeriados)}>Confirmar Edición</button>
                     </div>
                   </div>
                 ) : newHoliday ? (
                   <div className="space-y-7">
-                    <div>Feriados existentes
-                      
-                    </div>
+                    <h3>Feriados existentes: </h3>
+                    {
+                      deleteFeriados? (
+                        <div>
+                          <h5>¿Seguro de borrar el feriado seleccionado?</h5>
+                          <div className="flex items-center justify-center">
+                            <button className="h-10 bg-red-500 p-2 rounded-lg text-white" onClick={()=> setDeleteFeriados(false)}>Cancelar Edición</button>
+                            <button className="h-10 bg-blue-500 p-2 rounded-lg text-white font-bold" onClick={(e)=> handleDeleteFeriado(e)}>Confirmar Edición</button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-4 space-x-4">
+                        {feriadosFiltrados.map((feriado)=> {
+                          const motivo = feriado.motivo;
+                          const fecha = feriado.fecha.slice(0,10).split("-").reverse().join("/");
+                          const arrOficinas = feriado.oficinas;
+                          return (
+                            <div key={motivo} className="rounded-lg border border-slate-300" value={motivo} onClick={()=>setDeleteFeriados(feriados.filter((cita) => cita.nombre === motivo))}>
+                              <h5 className="font-bold	">{motivo}</h5>
+                              <h5>Fecha: {fecha}</h5>
+                              <h5>Oficinas afectadas:</h5>
+                              {arrOficinas.map((oficina)=>{
+                                const nombreOficina = oficina.nombre;
+                                return <p key={oficina._id} className="italic font-bold">{nombreOficina}</p>
+                              })}
+                            </div>
+                          )
+                        })} 
+                      </div>
+                      )
+                    }
+
                     <h4>Seleccione el dia que desea inhabilitar:</h4>
                     <input type="number" placeholder={newHolidayDate.dia} value={newHolidayDate.dia} onChange={(e) => setNewHolidayDate({...newHolidayDate, dia:e.target.value})}/>
                       {/* Select con los meses, valor por index */}

@@ -229,6 +229,11 @@ export const updateCita = async (
   return response
 };
 
+export const deleteCitas = async (id) => {
+  const response = await api.delete(`citas/${id}`);
+  return response
+};
+
 export const createOffice = async (
   nombre,
   direccion,
