@@ -39,21 +39,21 @@ function Turnos() {
   return (
     <div className="flex flex-col items-center justify-center mt-20">
     {confirmTurno && <ConfirmacionTurno responseData={responseData}/> || 
-      <div>
-        <div className="grid justify-center items-center mb-5 space-x-4 w-full md:flex">
-          <div>
+      <div className="grid items-center justify-center">
+        <div className="justify-center items-center mb-5 space-y-4 md:flex">
+          <div className="flex flex-col items-center justify-center">
             <h4>Ingrese su nombre:</h4>
             <input type="text" name="name" id="name" onChange={(e)=> handleChangeName(e)} className="text-gray-500 bg-transparent border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"/>
             { errors.nombre !== "" ? 
-            <div className="flex justify-center items-center space-x-4 w-full text-red-500">
+            <div className="flex justify-center items-center text-red-500">
               <h6 className={`${animationErrors && "animate-wiggle"}`} onAnimationEnd={() => setAnimationErrors(false)}>{errors.nombre}</h6>
             </div> : "" }
           </div>
-          <div>
+          <div className="flex flex-col items-center justify-center">
             <h4>Ingrese su teléfono:</h4>
             <input type="tel" name="phoneNum" id="phoneNum" onChange={(e)=> handleChangePhone(e)} className="text-gray-500 bg-transparent  border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"/>
             { errors.telefono !== "" ? 
-            <div className="flex justify-center items-center space-x-4 w-full text-red-500">
+            <div className="flex justify-center items-center text-red-500">
               <h6 className={`${animationErrors && "animate-wiggle"}`} onAnimationEnd={() => setAnimationErrors(false)}>{errors.telefono}</h6>
             </div> : "" }
           </div>

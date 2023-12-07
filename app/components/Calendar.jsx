@@ -165,8 +165,8 @@ function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefon
     }
 
     return (
-            <div className='flex justify-center items-center gap-5 w-full'>
-                <div className='w-full p-6 mx-auto bg-white rounded-2xl shadow-2xl flex flex-col'>
+            <div className='flex justify-center items-center gap-5'>
+                <div className='p-6 mx-auto bg-white rounded-2xl shadow-2xl flex flex-col'>
                     <div className="flex justify-between pb-4">
                         <div className="-rotate-90 cursor-pointer" onClick={() => setSelectedMonth(selectedMonth-1)}>
                             <svg width="12" height="9" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,31 +182,31 @@ function Calendar({ setConfirmTurno, setErrors, errors, oficina, nombre, telefon
                
                     </div>
                     <div className="flex justify-center items-center font-medium uppercase text-xs pt-4 pb-2 border-t">
-                        <table className="table-fixed">
+                        <table className="table-auto">
                             <thead>
                                 <tr className="flex mb-5 justify-center items-center md:gap-7">
-                        {diasSemana.map((dia) => {
-                            if(dia === "dom") {
-                                return (<th key={dia} className="border rounded-sm w-14 h-12 flex items-center justify-center border-red-500 text-red-500 shadow-md md:px-5"> {dia}</th>)
-                            }else{
-                                return (<th key={dia} className="border rounded-sm w-14 h-12 flex items-center justify-center border-green-500 text-green-500 shadow-md md:px-5"> {dia}</th>)
-                            }
-                        })}
+                                    {diasSemana.map((dia) => {
+                                        if(dia === "dom") {
+                                            return (<th key={dia} className="border rounded-sm w-14 h-12 flex items-center justify-center border-red-500 text-red-500 shadow-md md:px-5"> {dia}</th>)
+                                        }else{
+                                            return (<th key={dia} className="border rounded-sm w-14 h-12 flex items-center justify-center border-green-500 text-green-500 shadow-md md:px-5"> {dia}</th>)
+                                        }
+                                    })}
                                 </tr>
                             </thead>
                             <tbody>
 
-                        {semanasCalendario.map((semana) => {
-                            return (
-                                <tr key={"semana "+ semana+1} className="flex justify-center items-center w-full md:gap-7" >
-                                    {arrDias.filter((dia, i) => {
-                                        if(Math.floor(i/7) === semana) {
-                                            return (dia)
-                                        }
-                                    })}
-                                </tr>
-                            )
-                        })}
+                                {semanasCalendario.map((semana) => {
+                                    return (
+                                        <tr key={"semana "+ semana+1} className="flex justify-center items-center w-full md:gap-7" >
+                                            {arrDias.filter((dia, i) => {
+                                                if(Math.floor(i/7) === semana) {
+                                                    return (dia)
+                                                }
+                                            })}
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>

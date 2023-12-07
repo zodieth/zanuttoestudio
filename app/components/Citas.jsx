@@ -24,6 +24,7 @@ function Citas({setTurnosOn}) {
     año: actual.getFullYear(),
   });
   const [motivo, setMotivo] = useState("");
+  const [errorMotivo, setErrorMotivo] = useState(false)
 
   const [event, setEvent] = useState(false);
 
@@ -106,7 +107,6 @@ function Citas({setTurnosOn}) {
       }
     })
     const oficinasFiltered = removeDuplicates(oficinasAfectadas)
-console.log(oficinasFiltered);
     return {
       motivo: feriado.nombre,
       fecha: feriado.fecha,
@@ -159,15 +159,21 @@ console.log(oficinasFiltered);
     };
   };
   const handleCreateHoliday = async (e) => {
-    const fecha = `${newHolidayDate.año}-${newHolidayDate.mes+1}-${newHolidayDate.dia}`;
-    const oficinasChecked = oficinas.calendario.filter((oficina, index) => checkedState[index]);
-    const arrCreated = []
-    for (let index = 0; index < oficinasChecked.length; index++) {
-      const calendario = oficinasChecked[index]._id
-      const element = await createCitas(motivo, "", fecha, "allDay", calendario).then((data)=> data.data.nuevaCita);
-      arrCreated.push(element)
+    const nombresFeriados = feriadosFiltrados.map((feriado)=> feriado.motivo);
+
+    if(nombresFeriados.includes(motivo)) {
+      setErrorMotivo("El motivo debe ser único")
+    }else {
+      const fecha = `${newHolidayDate.año}-${newHolidayDate.mes+1}-${newHolidayDate.dia}`;
+      const oficinasChecked = oficinas.calendario.filter((oficina, index) => checkedState[index]);
+      const arrCreated = []
+      for (let index = 0; index < oficinasChecked.length; index++) {
+        const calendario = oficinasChecked[index]._id
+        const element = await createCitas(motivo, "", fecha, "allDay", calendario).then((data)=> data.data.nuevaCita);
+        arrCreated.push(element)
+      }
+      dispatch(addCita([...citas.cita, ...arrCreated]));
     }
-    dispatch(addCita([...citas.cita, ...arrCreated]));
     setCheckedState( new Array(oficinas.calendario?.length).fill(false) );
     setAllChecked(false);
   };
@@ -272,7 +278,7 @@ console.log(oficinasFiltered);
                             ) : (
                         <div className="space-y-5">
                           <h3>Feriados existentes: </h3>
-                          <div className="grid grid-cols-4 space-x-4 ">
+                          <div className="grid grid-cols-4 space-x-2 space-y-2">
                             {feriadosFiltrados.map((feriado)=> {
                               const motivo = feriado.motivo;
                               const fecha = feriado.fecha.slice(0,10).split("-").reverse().join("/");
@@ -304,9 +310,8 @@ console.log(oficinasFiltered);
                         </select>
                         <input type="number" placeholder={newHolidayDate.año} value={newHolidayDate.año} onChange={(e) => setNewHolidayDate({...newHolidayDate, año:e.target.value})}/>
                         <h4>Motivo:</h4>
-                        {// HANDLESETMOTIVO
-}
-                        <input type="text" placeholder={motivo} value={motivo} onChange={(e) => setMotivo(e.target.value)}/>
+                        <input type="text" placeholder={motivo} value={motivo} onChange={(e) =>{setErrorMotivo(false); setMotivo(e.target.value)}}/>
+                        {errorMotivo? <p className="h-10 bg-red-500 p-2 rounded-lg text-white font-bold">{errorMotivo}</p> : ""}
                         <h4>Seleccione la/s oficina/s que no atenderán:</h4>
                         <ul className="flex space-x-5">
                           <li>

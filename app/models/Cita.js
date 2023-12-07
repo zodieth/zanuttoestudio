@@ -4,7 +4,11 @@ const citaSchema = new mongoose.Schema({
   nombre: String,
   telefono: String,
   fecha: Date,
-  hora: String,
+  hora: {
+    type: String,
+    enum: ["8" ,"9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "allDay"],
+    required: [true, "Error en el horario"]
+},
   calendario: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Calendario",
