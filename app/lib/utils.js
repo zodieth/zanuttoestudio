@@ -229,16 +229,25 @@ export const updateCita = async (
   return response
 };
 
+export const deleteCitas = async (id) => {
+  const response = await api.delete(`citas/${id}`);
+  return response
+};
+
 export const createOffice = async (
   nombre,
   direccion,
-  color
+  color,
+  horarioSemana,
+  horarioSabado
 ) => {
   const newOffice = await api
     .post("calendario", {
       nombre,
       direccion,
-      color
+      color,
+      horarioSemana,
+      horarioSabado
     })
     .then((office) => {
       return office;
@@ -249,14 +258,17 @@ export const updateOffice = async (
   _id,
   nombre,
   direccion,
-  color
+  color,
+  horarioSemana,
+  horarioSabado
 ) => {
-  const response = await api.put(`calendario/${_id}`, {
+  const response = await api.patch(`calendario/${_id}`, {
     nombre,
     direccion,
-    color
+    color,
+    horarioSemana,
+    horarioSabado
   });
-  console.log(response);
   return response
 };
 export const deleteOffice = async (id) => {

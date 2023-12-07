@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import Calendario from "../../../models/Calendario";
 import dbConnect from "../../../lib/dbConnect";
 
-export async function PUT(request, { params }) {
+export async function PATCH(request, { params }) {
   const {
     nombre,
     direccion,
     color,
+    horarioSemana,
+    horarioSabado
   } = await request.json();
 
   const { id } = params;
@@ -17,7 +19,9 @@ export async function PUT(request, { params }) {
     const officeUpdated = await Calendario.findByIdAndUpdate(id, {
       nombre,
       direccion,
-      color
+      color,
+      horarioSemana,
+      horarioSabado
     },{
       new: true
     });

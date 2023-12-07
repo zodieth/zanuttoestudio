@@ -19,17 +19,19 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const { nombre, direccion, color } = await request.json();
+  const { nombre, direccion, color, horarioSemana, horarioSabado } = await request.json();
 
   await dbConnect();
 
   const calendario = await new Calendario({
     nombre,
     direccion,
-    color
+    color,
+    horarioSemana,
+    horarioSabado
   });
 
-  calendario.save();
+  await calendario.save();
 
   return NextResponse.json({ msg: "calendario creado", calendario });
 }

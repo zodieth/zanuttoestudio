@@ -17,6 +17,7 @@ const FilterStatusSelect = ({ useDispatch }) => {
         <option value="consulta">Consulta</option>
         <option value="carpeta">Carpeta</option>
         <option value="derivado">Derivado</option>
+        <option value="escrito">Escrito</option>
       </select>
     </div>
   );

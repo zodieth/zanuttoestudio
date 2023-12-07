@@ -12,7 +12,13 @@ const calendarioSchema = new mongoose.Schema({
   color: {
     type: String,
     required: [true, "El color es requerido"]
-  }
+  },
+  horarioSemana: [{
+    type: String
+  }],
+  horarioSabado: [{
+    type: String
+  }]
 });
 
 export default mongoose.models.Calendario ||  mongoose.model("Calendario", calendarioSchema);
