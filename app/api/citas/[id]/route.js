@@ -40,7 +40,7 @@ export async function DELETE(request, { params }) {
   try {
     const citaDeleted = await Cita.deleteOne({ _id: id });
 
-    return NextResponse.json(citaDeleted);
+    return NextResponse.json({response: citaDeleted, id: id});
   } catch (error) {
     return NextResponse.json({ msg: error }, { status: 500 });
   }
