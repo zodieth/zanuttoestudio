@@ -40,8 +40,8 @@ function Citas({setTurnosOn}) {
 
   function renderEventContent(eventInfo) {
     return (
-      <div className="flex flex-col">
-        <b>{eventInfo.timeText}</b>
+      <div className="flex flex-col h-fit	">
+        <b>ID: {eventInfo.event.extendedProps.idInc}</b>
         <b>{eventInfo.event.title}</b>
         <i>Telefono: <b>{eventInfo.event.extendedProps.telefono}</b></i>
       </div>
@@ -62,7 +62,8 @@ function Citas({setTurnosOn}) {
       extendedProps: {
         telefono: cita.telefono,
         id: cita._id,
-        oficina: cita.calendario
+        oficina: cita.calendario,
+        idInc: cita.idInc
       }
     }
   });
@@ -369,7 +370,7 @@ function Citas({setTurnosOn}) {
                       }}
                       eventClick={(e) => handleClickEvent(e)}
                       allDaySlot={false}
-                      //height={"auto"}
+                      height={1200}
                     />
                     <div>
                       <h6>Leyenda:</h6>

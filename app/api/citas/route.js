@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "../../lib/dbConnect";
 import Cita from "../../models/Cita";
+import CounterCita from "../../models/CounterCita";
 const  {AUTH_TOKEN}  = process.env
 
 export async function POST(request) {
@@ -8,6 +9,13 @@ export async function POST(request) {
 
   try {
     await dbConnect();
+    const idSeq = await CounterCita.findOneAndUpdate(
+      {id:"autoval"},
+      {"$inc":{"seq":1}},
+      {upsert:true},
+      {new:true}
+    ).then(data => data!==null ? data.seq : 0)
+    const id = idSeq+1;
 
     const nuevaCita = await new Cita({
       nombre,
@@ -15,6 +23,7 @@ export async function POST(request) {
       fecha,
       hora,
       calendario,
+      idInc: id
     });
 
     await nuevaCita.save();
@@ -22,6 +31,7 @@ export async function POST(request) {
     return NextResponse.json({ msg: "cita creada" , nuevaCita});
 
   } catch (error) {
+    console.log(error);   
     return NextResponse.json({ msg: "Internal server error" }, { status: 500 });
   }
 }

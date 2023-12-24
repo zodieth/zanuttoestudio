@@ -209,6 +209,7 @@ export const createCitas = async (
       hora,
       calendario
   });
+  console.log(response);
   return response;
 };
 export const updateCita = async (

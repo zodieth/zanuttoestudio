@@ -13,6 +13,7 @@ const citaSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Calendario",
   },
+  idInc: { type: Number, required:false }
 });
 
 export default mongoose.models.Cita || mongoose.model("Cita", citaSchema);
